@@ -1,0 +1,116 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page_title }} | DesiHands{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="auth-card bg-white border rounded-3 p-4 p-md-5">
+                    <div class="d-flex justify-content-between align-items-center gap-3 mb-4">
+                        <h1 class="h3 mb-0">{{ page_title }}</h1>
+                        <a class="btn btn-outline-secondary btn-sm" href="{% url 'core:product_list' %}">Back</a>
+                    </div>
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors|striptags }}
+                            </div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.category.id_for_label }}">Category</label>
+                                {{ form.category }}
+                                {% if form.category.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.category.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.product_name_en.id_for_label }}">Product Name (English)</label>
+                                {{ form.product_name_en }}
+                                {% if form.product_name_en.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.product_name_en.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.product_name_hi.id_for_label }}">Product Name (Hindi)</label>
+                                {{ form.product_name_hi }}
+                                {% if form.product_name_hi.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.product_name_hi.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.price.id_for_label }}">Price</label>
+                                {{ form.price }}
+                                {% if form.price.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.price.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.stock.id_for_label }}">Stock</label>
+                                {{ form.stock }}
+                                {% if form.stock.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.stock.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.seller_name.id_for_label }}">Seller Name</label>
+                                {{ form.seller_name }}
+                                {% if form.seller_name.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.seller_name.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.product_image.id_for_label }}">Product Image</label>
+                                {{ form.product_image }}
+                                {% if form.product_image.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.product_image.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="{{ form.description_en.id_for_label }}">Description (English)</label>
+                                {{ form.description_en }}
+                                {% if form.description_en.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.description_en.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="{{ form.description_hi.id_for_label }}">Description (Hindi)</label>
+                                {{ form.description_hi }}
+                                {% if form.description_hi.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.description_hi.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <div class="form-check">
+                                    {{ form.is_available }}
+                                    <label class="form-check-label" for="{{ form.is_available.id_for_label }}">Available</label>
+                                </div>
+                                {% if form.is_available.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.is_available.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-4" type="submit">{{ button_text }}</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

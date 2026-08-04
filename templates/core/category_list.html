@@ -1,0 +1,529 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Categories" %} | DesiHands{% endblock %}
+
+{% block extra_css %}
+<style>
+
+/* =====================
+   DH Skeleton Loader
+   ===================== */
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+
+/* ---------- Breadcrumbs ---------- */
+.premium-breadcrumbs {
+    font-size: 0.88rem;
+    font-family: var(--font-body);
+    font-weight: 400;
+}
+.premium-breadcrumbs .breadcrumb-item a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.premium-breadcrumbs .breadcrumb-item a:hover {
+    color: var(--accent-deep);
+}
+.premium-breadcrumbs .breadcrumb-item.active {
+    color: var(--brown-body);
+    opacity: 0.8;
+}
+.premium-breadcrumbs .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--border);
+    content: "/";
+}
+
+/* ---------- Category list container ---------- */
+.category-list-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* ---------- Category Row Card ---------- */
+.category-row-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 36px;
+    padding: 32px;
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    box-shadow: 0 4px 20px rgba(44, 35, 24, 0.04);
+    position: relative;
+    overflow: hidden;
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.category-row-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 16px 36px rgba(139, 103, 68, 0.14);
+    border-color: var(--accent);
+}
+
+/* ---------- Left Section: Circle Image ---------- */
+.category-row-left {
+    flex-shrink: 0;
+}
+.category-image-circle {
+    width: 140px;
+    height: 140px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 4px solid var(--parchment);
+    box-shadow: 0 6px 18px rgba(44, 35, 24, 0.08);
+    transition: all 0.35s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.category-row-card:hover .category-image-circle {
+    transform: scale(1.06);
+    border-color: var(--accent);
+    box-shadow: 0 8px 24px rgba(139, 103, 68, 0.22);
+}
+.category-image-circle img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+}
+.category-row-card:hover .category-image-circle img {
+    transform: scale(1.1);
+}
+.category-image-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--parchment);
+    font-family: var(--font-display);
+    font-size: 2.8rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.category-row-center {
+    flex: 1;
+    position: relative;
+}
+
+.category-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 12px;
+}
+.badge-product-count {
+    background-color: var(--parchment);
+    color: var(--brown-mid);
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+}
+.badge-popularity {
+    background-color: rgba(196, 154, 90, 0.12);
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 30px;
+    font-size: 0.78rem;
+    display: inline-flex;
+    align-items: center;
+}
+
+.category-name-heading {
+    font-family: var(--font-display);
+    font-size: 1.85rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 8px;
+    transition: color 0.3s ease;
+}
+.category-row-card:hover .category-name-heading {
+    color: var(--accent);
+}
+
+.category-description-text {
+    color: var(--brown-body);
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 14px;
+    max-width: 680px;
+}
+
+.category-meta-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    font-size: 0.82rem;
+    color: var(--brown-body);
+    opacity: 0.8;
+}
+.meta-divider {
+    color: var(--border);
+}
+
+/* ---------- Right Section: Action Button ---------- */
+.category-row-right {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    justify-content: center;
+}
+
+.category-view-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 28px;
+    background: linear-gradient(135deg, #c89a63, #9b744d);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    text-decoration: none;
+    box-shadow: 0 4px 15px rgba(180, 136, 92, 0.2);
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+.category-view-btn:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(180, 136, 92, 0.35);
+}
+.category-view-btn i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+.category-view-btn:hover i {
+    transform: translateX(6px);
+}
+
+/* ---------- Admin Actions ---------- */
+.admin-actions {
+    display: flex;
+    gap: 8px;
+}
+.btn-outline-edit {
+    border: 1.5px solid var(--border);
+    color: var(--brown-mid);
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-outline-edit:hover {
+    background: var(--parchment);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+.btn-outline-delete {
+    border: 1.5px solid rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    background: transparent;
+    padding: 6px 14px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-outline-delete:hover {
+    background: rgba(220, 53, 69, 0.05);
+    border-color: #dc3545;
+}
+
+/* ---------- Responsive Layouts ---------- */
+@media (max-width: 991.98px) {
+    .category-row-card {
+        flex-wrap: wrap;
+        padding: 28px;
+        gap: 24px;
+    }
+    .category-row-left {
+        flex-shrink: 0;
+    }
+    .category-row-center {
+        flex: 1;
+        min-width: 250px;
+    }
+    .category-row-right {
+        flex-basis: 100%;
+        align-items: flex-start;
+        margin-top: 10px;
+        border-top: 1px solid var(--border);
+        padding-top: 20px;
+    }
+}
+
+@media (max-width: 575.98px) {
+    .category-row-card {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 30px 20px;
+        gap: 20px;
+    }
+    .category-row-left {
+        margin-bottom: 4px;
+    }
+    .category-row-center {
+        width: 100%;
+    }
+    .category-badges {
+        justify-content: center;
+    }
+    .category-meta-info {
+        justify-content: center;
+    }
+    .category-view-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .category-row-right {
+        width: 100%;
+        align-items: center;
+    }
+    .admin-actions {
+        width: 100%;
+        justify-content: center;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<style>
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+</style>
+
+<div id="page-skeleton">
+  <section class="py-5">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb premium-breadcrumbs mb-0">
+          <li class="breadcrumb-item"><div class="sk" style="height:12px;width:60px;border-radius:4px;"></div></li>
+          <li class="breadcrumb-item active" aria-current="page"><div class="sk" style="height:12px;width:90px;border-radius:4px;"></div></li>
+        </ol>
+      </nav>
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div style="flex:1;">
+          <div class="sk" style="height:30px;width:220px;border-radius:6px;"></div>
+          <div class="sk" style="height:14px;width:360px;border-radius:4px;margin-top:10px;"></div>
+        </div>
+        <div class="sk" style="height:44px;width:200px;border-radius:12px;"></div>
+      </div>
+
+      <div class="category-list-wrapper">
+        <div class="category-row-card">
+          <div class="category-row-left">
+            <div class="sk" style="height:140px;width:140px;border-radius:50%;"></div>
+          </div>
+          <div class="category-row-center">
+            <div class="sk" style="height:24px;width:180px;border-radius:30px;margin-bottom:12px;"></div>
+            <div class="sk" style="height:40px;width:65%;border-radius:6px;margin-bottom:14px;"></div>
+            <div class="sk" style="height:14px;width:85%;border-radius:4px;margin-bottom:12px;"></div>
+            <div class="sk" style="height:14px;width:70%;border-radius:4px;"></div>
+          </div>
+          <div class="category-row-right">
+            <div class="sk" style="height:44px;width:200px;border-radius:50px;"></div>
+            <div class="sk" style="height:38px;width:150px;border-radius:12px;margin-top:18px;"></div>
+          </div>
+        </div>
+
+        <div class="category-row-card">
+          <div class="category-row-left">
+            <div class="sk" style="height:140px;width:140px;border-radius:50%;"></div>
+          </div>
+          <div class="category-row-center">
+            <div class="sk" style="height:24px;width:210px;border-radius:30px;margin-bottom:12px;"></div>
+            <div class="sk" style="height:40px;width:60%;border-radius:6px;margin-bottom:14px;"></div>
+            <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-bottom:12px;"></div>
+            <div class="sk" style="height:14px;width:75%;border-radius:4px;"></div>
+          </div>
+          <div class="category-row-right">
+            <div class="sk" style="height:44px;width:200px;border-radius:50px;"></div>
+            <div class="sk" style="height:38px;width:150px;border-radius:12px;margin-top:18px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-content" style="display:none;">
+<section class="py-5">
+    <div class="container">
+        
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb premium-breadcrumbs mb-0">
+                <li class="breadcrumb-item"><a href="/">{% translate "Home" %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% translate "Categories" %}</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div>
+                <h1 class="h3 mb-1" style="font-family: var(--font-display); font-weight: 700; color: var(--brown-dark);">{% translate "Categories" %}</h1>
+                <p class="text-muted mb-0">{% translate "Find unique, quality crafts curated by category." %}</p>
+            </div>
+
+            {% if request.user.is_staff %}
+                <a class="btn btn-primary" href="{% url 'core:category_add' %}" style="border-radius: 12px; padding: 10px 20px;">
+                    <i class="bi bi-plus-circle me-1"></i> {% translate "Add Category" %}
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Categories List -->
+        {% if categories %}
+            <div class="category-list-wrapper">
+                {% for category in categories %}
+                    <div class="category-row-card">
+                        
+                        <!-- Left: Circular Image -->
+                        <div class="category-row-left">
+                            <div class="category-image-circle">
+                                {% if category.image %}
+                                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                                {% else %}
+                                    <div class="category-image-placeholder">
+                                        <span>{{ category.name|slice:":1" }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <!-- Center: Category Details -->
+                        <div class="category-row-center">
+                            <!-- Badges -->
+                            <div class="category-badges">
+                                <span class="badge-product-count">
+                                    <i class="bi bi-box-seam me-2"></i>{{ category.products.count }} {% translate "Products" %}
+                                </span>
+                                <span class="badge-popularity">
+                                    <i class="bi bi-stars me-2"></i>{% translate "Artisan Choice" %}
+                                </span>
+                            </div>
+
+                            <!-- Name & Description -->
+                            <h2 class="category-name-heading">{{ category.name }}</h2>
+                            <p class="category-description-text">{{ category.description }}</p>
+
+                            <!-- Meta details -->
+                            <div class="category-meta-info">
+                                <span>
+                                    <i class="bi bi-calendar-check me-2"></i>{% translate "Created" %}: {{ category.created_at|date:"M d, Y" }}
+                                </span>
+                                <span class="meta-divider">•</span>
+                                <span>
+                                    <i class="bi bi-shield-heart me-2"></i>{% translate "100% Authentic Craft" %}
+                                </span>
+                            </div>
+                        </div>
+
+                        <!-- Right: View button and Actions -->
+                        <div class="category-row-right">
+                            <a href="{% url 'core:product_list' %}?category={{ category.id }}" class="category-view-btn">
+                                <span>{% translate "View Products" %}</span>
+                                <i class="bi bi-chevron-right"></i>
+                            </a>
+
+                            {% if request.user.is_staff %}
+                                <div class="admin-actions mt-3">
+                                    <a class="btn-outline-edit text-decoration-none" href="{% url 'core:category_edit' category.id %}">
+                                        <i class="bi bi-pencil-square"></i> {% translate "Edit" %}
+                                    </a>
+                                    <a class="btn-outline-delete text-decoration-none" href="{% url 'core:category_delete' category.id %}">
+                                        <i class="bi bi-trash3"></i> {% translate "Delete" %}
+                                    </a>
+                                </div>
+                            {% endif %}
+                        </div>
+
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="bg-white border rounded-4 p-5 text-center shadow-sm">
+                <div class="text-muted mb-3" style="font-size: 3rem;">
+                    <i class="bi bi-archive"></i>
+                </div>
+                <h2 class="h5 mb-2" style="font-family: var(--font-display); font-weight: 700; color: var(--brown-dark);">{% translate "No Categories Yet" %}</h2>
+                <p class="text-muted mb-0">{% translate "Featured craft categories will appear here once added." %}</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+</div>
+
+{% block extra_js %}
+<script>
+setTimeout(function () {
+  var sk = document.getElementById('page-skeleton');
+  var pg = document.getElementById('page-content');
+  if (sk) sk.style.display = 'none';
+  if (pg) {
+    pg.style.opacity = '0';
+    pg.style.display = '';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        pg.style.opacity = '1';
+      });
+    });
+  }
+}, 500);
+</script>
+{% endblock %}
+
+{% endblock %}
+

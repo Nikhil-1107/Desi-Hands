@@ -1,0 +1,535 @@
+{% extends "base.html" %}
+{% load currency_filters %}
+
+{% block title %}Checkout — Shipping Address | DesiHands{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================================
+   CHECKOUT STYLES
+   ============================================================ */
+
+/* Progress Steps */
+.checkout-progress {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    margin-bottom: 40px;
+    padding: 0 20px;
+}
+
+.checkout-step {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    border-radius: 50px;
+    background: var(--warm-white);
+    border: 1.5px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.checkout-step.active {
+    background: linear-gradient(135deg, #8B6744, #6D5235);
+    border-color: #8B6744;
+    box-shadow: 0 4px 20px rgba(139, 103, 68, 0.25);
+}
+
+.checkout-step.completed {
+    background: var(--sage);
+    border-color: var(--sage);
+    box-shadow: 0 4px 16px rgba(90, 110, 82, 0.2);
+}
+
+.step-number {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    background: var(--parchment);
+    color: var(--brown-mid);
+    flex-shrink: 0;
+}
+
+.checkout-step.active .step-number {
+    background: rgba(255,255,255,0.25);
+    color: #fff;
+}
+
+.checkout-step.completed .step-number {
+    background: rgba(255,255,255,0.3);
+    color: #fff;
+}
+
+.step-label {
+    font-weight: 500;
+    font-size: 0.82rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--brown-mid);
+}
+
+.checkout-step.active .step-label,
+.checkout-step.completed .step-label {
+    color: #fff;
+}
+
+.step-connector {
+    width: 50px;
+    height: 2px;
+    background: var(--border);
+    flex-shrink: 0;
+}
+
+.step-connector.active {
+    background: var(--accent);
+}
+
+/* Address Form */
+.checkout-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+}
+
+.checkout-card-header {
+    background: linear-gradient(135deg, rgba(139, 103, 68, 0.06), rgba(109, 82, 53, 0.03));
+    padding: 24px 30px;
+    border-bottom: 1px solid var(--border);
+}
+
+.checkout-card-header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.checkout-card-header h2 i {
+    color: var(--accent);
+    font-size: 1.3rem;
+}
+
+.checkout-card-body {
+    padding: 30px;
+}
+
+.form-floating-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.form-floating-group label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 8px;
+}
+
+.form-floating-group label i {
+    color: var(--accent);
+    font-size: 0.9rem;
+}
+
+.form-floating-group .form-control {
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.form-floating-group .form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(139, 103, 68, 0.1);
+}
+
+.form-floating-group textarea.form-control {
+    min-height: 100px;
+    resize: vertical;
+}
+
+/* Order Summary Sidebar */
+.order-summary-card {
+    background: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow-soft);
+    position: sticky;
+    top: 100px;
+}
+
+.order-summary-header {
+    padding: 20px 24px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(139, 103, 68, 0.06), rgba(109, 82, 53, 0.03));
+    border-radius: 16px 16px 0 0;
+}
+
+.order-summary-body {
+    padding: 20px 24px;
+}
+
+.summary-item {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-item:last-child {
+    border-bottom: none;
+}
+
+.summary-item-img {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.summary-item-placeholder {
+    width: 56px;
+    height: 56px;
+    border-radius: 10px;
+    background: var(--placeholder-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.summary-item-details {
+    flex: 1;
+    min-width: 0;
+}
+
+.summary-item-name {
+    font-weight: 500;
+    font-size: 0.88rem;
+    color: var(--brown-dark);
+    margin-bottom: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.summary-item-qty {
+    font-size: 0.78rem;
+    color: var(--brown-body);
+}
+
+.summary-item-price {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--accent);
+    flex-shrink: 0;
+}
+
+.summary-totals {
+    padding-top: 16px;
+    margin-top: 4px;
+    border-top: 2px solid var(--border);
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.9rem;
+}
+
+.summary-row.total {
+    padding-top: 12px;
+    margin-top: 8px;
+    border-top: 2px dashed var(--border);
+}
+
+.summary-row.total span:first-child {
+    font-size: 1.1rem;
+    font-weight: 600;
+    font-family: var(--font-display);
+}
+
+.summary-row.total span:last-child {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+/* Buttons */
+.checkout-btn-row {
+    display: flex;
+    gap: 12px;
+    margin-top: 30px;
+}
+
+.btn-checkout-continue {
+    flex: 1;
+    background: linear-gradient(135deg, #8B6744, #6D5235);
+    color: #fff;
+    border: none;
+    padding: 14px 28px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    box-shadow: 0 4px 20px rgba(139, 103, 68, 0.25);
+}
+
+.btn-checkout-continue:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px rgba(139, 103, 68, 0.35);
+}
+
+.btn-checkout-back {
+    padding: 14px 24px;
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--brown-mid);
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.btn-checkout-back:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+
+/* Secure badge */
+.secure-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 10px;
+    background: rgba(90, 110, 82, 0.08);
+    border-radius: 8px;
+    font-size: 0.78rem;
+    color: var(--sage);
+    font-weight: 500;
+}
+
+.secure-badge i {
+    font-size: 0.9rem;
+}
+
+@media (max-width: 991px) {
+    .checkout-progress {
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .step-connector {
+        display: none;
+    }
+    .checkout-step {
+        padding: 10px 16px;
+    }
+    .step-label {
+        font-size: 0.75rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .checkout-card-body {
+        padding: 20px;
+    }
+    .checkout-btn-row {
+        flex-direction: column;
+    }
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+
+        <!-- Messages -->
+        {% if messages %}
+        <div class="mb-4">
+            {% for message in messages %}
+            <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                {{ message }}
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        <!-- Progress Steps -->
+        <div class="checkout-progress">
+            <div class="checkout-step active">
+                <span class="step-number">1</span>
+                <span class="step-label">Address</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="checkout-step">
+                <span class="step-number">2</span>
+                <span class="step-label">Payment</span>
+            </div>
+            <div class="step-connector"></div>
+            <div class="checkout-step">
+                <span class="step-number">3</span>
+                <span class="step-label">Confirmation</span>
+            </div>
+        </div>
+
+        <div class="row g-4">
+            <!-- Address Form -->
+            <div class="col-12 col-lg-7">
+                <div class="checkout-card">
+                    <div class="checkout-card-header">
+                        <h2><i class="bi bi-geo-alt"></i> Shipping Address</h2>
+                    </div>
+                    <div class="checkout-card-body">
+                        <form method="post" id="addressForm">
+                            {% csrf_token %}
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating-group">
+                                        <label for="fullname"><i class="bi bi-person"></i> Full Name</label>
+                                        <input type="text" class="form-control" id="fullname" name="fullname"
+                                               value="{{ form_data.fullname }}" required placeholder="Your full name">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-6">
+                                    <div class="form-floating-group">
+                                        <label for="phone"><i class="bi bi-telephone"></i> Phone Number</label>
+                                        <input type="tel" class="form-control" id="phone" name="phone"
+                                               value="{{ form_data.phone }}" required placeholder="+91 XXXXX XXXXX">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-floating-group">
+                                <label for="address"><i class="bi bi-house-door"></i> Street Address</label>
+                                <textarea class="form-control" id="address" name="address" required
+                                          placeholder="House no., Building, Street, Area">{{ form_data.address }}</textarea>
+                            </div>
+
+                            <div class="row g-3">
+                                <div class="col-12 col-md-4">
+                                    <div class="form-floating-group">
+                                        <label for="city"><i class="bi bi-building"></i> City</label>
+                                        <input type="text" class="form-control" id="city" name="city"
+                                               value="{{ form_data.city }}" required placeholder="City">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-floating-group">
+                                        <label for="state"><i class="bi bi-map"></i> State</label>
+                                        <input type="text" class="form-control" id="state" name="state"
+                                               value="{{ form_data.state }}" required placeholder="State">
+                                    </div>
+                                </div>
+                                <div class="col-12 col-md-4">
+                                    <div class="form-floating-group">
+                                        <label for="pincode"><i class="bi bi-pin-map"></i> Pincode</label>
+                                        <input type="text" class="form-control" id="pincode" name="pincode"
+                                               value="{{ form_data.pincode }}" required placeholder="6 digit pincode"
+                                               maxlength="6" pattern="[0-9]{6}">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="checkout-btn-row">
+                                <a href="{% url 'core:cart' %}" class="btn-checkout-back">
+                                    <i class="bi bi-arrow-left"></i> Back to Cart
+                                </a>
+                                <button type="submit" class="btn-checkout-continue">
+                                    Continue to Payment <i class="bi bi-arrow-right"></i>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Order Summary -->
+            <div class="col-12 col-lg-5">
+                <div class="order-summary-card">
+                    <div class="order-summary-header">
+                        <h2 class="h5 mb-0"><i class="bi bi-bag-check me-2"></i>Order Summary</h2>
+                    </div>
+                    <div class="order-summary-body">
+                        {% for item in cart_items %}
+                        <div class="summary-item">
+                            {% if item.product.product_image %}
+                            <img src="{{ item.product.product_image.url }}" class="summary-item-img"
+                                 alt="{{ item.product.product_name }}">
+                            {% else %}
+                            <div class="summary-item-placeholder">
+                                {{ item.product.product_name|slice:":1" }}
+                            </div>
+                            {% endif %}
+                            <div class="summary-item-details">
+                                <div class="summary-item-name">{{ item.product.product_name }}</div>
+                                <div class="summary-item-qty">Qty: {{ item.quantity }}</div>
+                            </div>
+                            <div class="summary-item-price">{{ item.line_total|convert_price:request }}</div>
+                        </div>
+                        {% endfor %}
+
+                        <div class="summary-totals">
+                            <div class="summary-row">
+                                <span class="text-muted">Items</span>
+                                <span>{{ cart_items|length }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="text-muted">Total Quantity</span>
+                                <span>{{ total_quantity }}</span>
+                            </div>
+                            <div class="summary-row">
+                                <span class="text-muted">Shipping</span>
+                                <span class="text-success fw-semibold">Free</span>
+                            </div>
+                            <div class="summary-row total">
+                                <span>Grand Total</span>
+                                <span>{{ grand_total|convert_price:request }}</span>
+                            </div>
+                        </div>
+
+                        <div class="secure-badge">
+                            <i class="bi bi-shield-lock"></i>
+                            Your information is safe & secure
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+{% endblock %}

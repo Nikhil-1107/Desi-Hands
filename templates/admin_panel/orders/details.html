@@ -1,0 +1,262 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% blocktrans with order_id=order.order_id %}Order Details: {{ order_id }}{% endblocktrans %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_orders %}active{% endblock %}
+
+{% block extra_css %}
+<style>
+    @media print {
+        @page {
+            size: auto;
+            margin: 12mm;
+        }
+
+        html,
+        body {
+            background: #ffffff !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+        }
+
+        body * {
+            visibility: hidden !important;
+        }
+
+        #sidebar,
+        .admin-navbar,
+        .d-print-none,
+        .breadcrumb,
+        .alert {
+            display: none !important;
+        }
+
+        #content-wrapper,
+        .admin-main-body,
+        .invoice-print-row,
+        .invoice-print-col,
+        #invoiceCard,
+        #invoiceCard * {
+            visibility: visible !important;
+        }
+
+        #content-wrapper,
+        .admin-main-body {
+            margin: 0 !important;
+            padding: 0 !important;
+            display: block !important;
+            width: 100% !important;
+            min-height: auto !important;
+        }
+
+        .admin-main-body > *:not(.invoice-print-row),
+        .invoice-print-row > *:not(.invoice-print-col) {
+            display: none !important;
+        }
+
+        .invoice-print-row {
+            display: block !important;
+            margin: 0 !important;
+            width: 100% !important;
+        }
+
+        .invoice-print-col {
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            padding: 0 !important;
+        }
+
+        #invoiceCard {
+            position: static !important;
+            display: block !important;
+            width: 100% !important;
+            max-width: 100% !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            border: 0 !important;
+            border-radius: 0 !important;
+            box-shadow: none !important;
+        }
+
+        #invoiceCard .d-none.d-print-block {
+            display: block !important;
+        }
+
+        #invoiceCard .table-responsive {
+            overflow: visible !important;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block admin_content %}
+<div class="mb-4 d-print-none">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:admin_order_list' %}" class="text-decoration-none text-muted">{% translate "Orders" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% translate "Order Details" %}</li>
+        </ol>
+    </nav>
+    <div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3">
+        <div>
+            <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% blocktrans with order_id=order.order_id %}Order: {{ order_id }}{% endblocktrans %}</h1>
+            <p class="text-muted mb-0">{% blocktrans with placed_at=order.created_at|date:"M d, Y h:i A" %}Placed on {{ placed_at }}{% endblocktrans %}</p>
+        </div>
+        <div>
+            <button onclick="window.print();" class="btn btn-outline-secondary btn-admin me-2">
+                <i class="bi bi-printer me-1"></i> {% translate "Print Invoice" %}
+            </button>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 invoice-print-row">
+    <!-- Main Order Details -->
+    <div class="col-12 col-lg-8 d-print-12 invoice-print-col">
+        <!-- Invoice Layout (For display & print) -->
+        <div class="admin-card p-4 bg-white mb-4" id="invoiceCard">
+            <!-- Header for print invoice -->
+            <div class="d-none d-print-block mb-4">
+                <div class="d-flex justify-content-between align-items-start border-bottom pb-3">
+                    <div>
+                        <h2 class="fw-bold mb-1" style="color: #8b6744; font-family: 'Playfair Display', serif;">DesiHands</h2>
+                        <p class="text-muted small mb-0">{% translate "Premium Handmade Marketplace" %}</p>
+                    </div>
+                    <div class="text-end">
+                        <h4 class="fw-bold mb-1">{% translate "INVOICE" %}</h4>
+                        <p class="mb-0">{% translate "Order ID" %}: {{ order.order_id }}</p>
+                        <p class="small text-muted mb-0">{% translate "Date" %}: {{ order.created_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="text-muted small uppercase fw-bold">{% translate "Customer Billing Info" %}</div>
+                    <strong class="text-dark">{{ order.user.fullname }}</strong>
+                    <div class="small text-muted">{{ order.user.email }}</div>
+                    <div class="small text-muted">{% translate "Phone" %}: {{ order.user.mobile }}</div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small uppercase fw-bold">{% translate "Shipping Address" %}</div>
+                    <div class="small text-dark lh-sm">{{ order.shipping_address }}</div>
+                </div>
+            </div>
+
+            <div class="row g-3 mb-4">
+                <div class="col-6">
+                    <div class="text-muted small uppercase fw-bold">{% translate "Payment Details" %}</div>
+                    <div class="small text-dark">{% translate "Method" %}: {% translate order.payment_method %}</div>
+                    <div class="small mt-1">
+                        {% if order.is_paid %}
+                            <span class="badge bg-success-subtle text-success border border-success-subtle">{% translate "Paid" %}</span>
+                        {% else %}
+                            <span class="badge bg-warning-subtle text-warning border border-warning-subtle">{% translate "Pending Payment" %}</span>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="text-muted small uppercase fw-bold">{% translate "Fulfilment Status" %}</div>
+                    <span class="admin-badge badge-{{ order.order_status|lower }}">{% translate order.order_status %}</span>
+                </div>
+            </div>
+
+            <h5 class="fw-bold mb-3 border-bottom pb-2">{% translate "Order Line Items" %}</h5>
+            <div class="table-responsive">
+                <table class="table align-middle">
+                    <thead>
+                        <tr class="table-light">
+                            <th>{% translate "Product Details" %}</th>
+                            <th class="text-center">{% translate "Unit Price" %}</th>
+                            <th class="text-center">{% translate "Qty" %}</th>
+                            <th class="text-end">{% translate "Total Amount" %}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in items %}
+                        <tr>
+                            <td>
+                                <div><strong class="text-dark">{{ item.product.product_name|default:item.product_name }}</strong></div>
+                                <span class="small text-muted">{% translate "Seller" %}: {{ item.product.seller_name }}</span>
+                            </td>
+                            <td class="text-center">{% translate "Rs." %} {{ item.unit_price }}</td>
+                            <td class="text-center">{{ item.quantity }}</td>
+                            <td class="text-end fw-bold">{% translate "Rs." %} {{ item.line_total }}</td>
+                        </tr>
+                        {% endfor %}
+                        <tr class="border-top-2">
+                            <td colspan="2"></td>
+                            <td class="text-end fw-semibold">{% translate "Grand Total" %}:</td>
+                            <td class="text-end fw-bold text-success fs-5">{% translate "Rs." %} {{ order.total_amount }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            <div class="d-none d-print-block mt-5 pt-4 border-top text-center text-muted small">
+                {% translate "Thank you for supporting independent artisans on DesiHands!" %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Status Fulfilment & Actions (Hidden on Print) -->
+    <div class="col-12 col-lg-4 d-print-none">
+        <div class="admin-card p-4 bg-white mb-4">
+            <h5 class="fw-bold mb-3">{% translate "Update Order Status" %}</h5>
+            
+            <form method="post">
+                {% csrf_token %}
+                <div class="mb-3">
+                    <label class="form-label text-muted small fw-bold">{% translate "Change Status to:" %}</label>
+                    <select class="form-select admin-form-control" name="order_status">
+                        {% for status_val, status_lbl in status_choices %}
+                            <option value="{{ status_val }}" {% if order.order_status == status_val %}selected{% endif %}>{% translate status_lbl %}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <button type="submit" class="btn btn-admin btn-admin-primary w-100">
+                    {% translate "Update Fulfilment" %}
+                </button>
+            </form>
+        </div>
+
+        {% if order.payment_method == "Cash on Delivery" and not order.is_paid %}
+            <div class="admin-card p-4 bg-white mb-4">
+                <h5 class="fw-bold mb-2">{% translate "COD Payment" %}</h5>
+                <p class="text-muted small mb-3">{% translate "Use this after receiving cash from the customer. Paid COD orders will be included in revenue." %}</p>
+                <form method="post" action="{% url 'core:admin_order_mark_paid' order.pk %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-success btn-admin w-100">
+                        <i class="bi bi-check-circle me-1"></i> {% translate "Mark as Paid" %}
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
+        <div class="admin-card p-4 bg-white">
+            <h5 class="fw-bold mb-3">{% translate "Customer Profile" %}</h5>
+            <div class="d-flex align-items-center gap-3 mb-3">
+                {% if order.user.profile_image %}
+                    <img src="{{ order.user.profile_image.url }}" alt="{{ order.user.fullname }}" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted fw-bold" style="width: 48px; height: 48px;">
+                        {{ order.user.fullname|slice:":1" }}
+                    </div>
+                {% endif %}
+                <div>
+                    <strong class="text-dark">{{ order.user.fullname }}</strong>
+                    <div class="small text-muted">{{ order.user.email }}</div>
+                </div>
+            </div>
+            <a href="{% url 'core:admin_user_details' order.user.pk %}" class="btn btn-outline-secondary btn-admin w-100">
+                {% translate "View Full Profile" %}
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

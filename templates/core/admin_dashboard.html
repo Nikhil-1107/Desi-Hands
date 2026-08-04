@@ -1,0 +1,358 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+  .admin-dashboard {
+    padding: 1.5rem 0;
+  }
+  .page-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+  .page-title {
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0;
+    color: #0f172a;
+  }
+  .page-subtitle {
+    margin: 0.25rem 0 0;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .stat-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    padding: 1rem;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+    min-height: 110px;
+  }
+  .stat-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 10px 28px rgba(15, 23, 42, 0.08);
+  }
+  .stat-card .stat-label {
+    color: #6b7280;
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .stat-card .stat-value {
+    color: #0f172a;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.03em;
+    margin-top: 0.35rem;
+  }
+  .stat-card .stat-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 12px;
+    display: grid;
+    place-items: center;
+    background: rgba(13, 110, 253, 0.08);
+    color: #0d6efd;
+    font-weight: 900;
+  }
+
+  .section {
+    margin-top: 1.25rem;
+  }
+  .section-title {
+    font-weight: 900;
+    color: #0f172a;
+    margin-bottom: 0.75rem;
+  }
+
+  .table-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    padding: 1rem;
+  }
+
+  .chart-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.04);
+    padding: 1rem;
+  }
+
+  .table thead th {
+    color: #475569;
+    font-weight: 900;
+    border-bottom-color: #e5e7eb;
+  }
+  .table td {
+    color: #0f172a;
+    font-weight: 600;
+  }
+
+  .chart-wrap {
+    position: relative;
+    height: 320px;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container admin-dashboard">
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">Admin Dashboard</h1>
+      <p class="page-subtitle">Overview of users, products, categories, orders & revenue</p>
+    </div>
+  </div>
+
+  <div class="row g-3">
+    <div class="col-12 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="stat-label">Total Users</div>
+            <div class="stat-value">{{ stats.total_users }}</div>
+          </div>
+          <div class="stat-icon">👤</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="stat-label">Total Products</div>
+            <div class="stat-value">{{ stats.total_products }}</div>
+          </div>
+          <div class="stat-icon">📦</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="stat-label">Total Categories</div>
+            <div class="stat-value">{{ stats.total_categories }}</div>
+          </div>
+          <div class="stat-icon">🏷️</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-lg-2">
+      <div class="stat-card">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="stat-label">Total Orders</div>
+            <div class="stat-value">{{ stats.total_orders }}</div>
+          </div>
+          <div class="stat-icon">🧾</div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 col-md-4 col-lg-4">
+      <div class="stat-card h-100">
+        <div class="d-flex justify-content-between align-items-start">
+          <div>
+            <div class="stat-label">Total Revenue</div>
+            <div class="stat-value">₹ {{ stats.total_revenue|floatformat:2 }}</div>
+          </div>
+          <div class="stat-icon">💰</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="row g-3">
+      <div class="col-12 col-lg-6">
+        <div class="table-card h-100">
+          <div class="section-title">Latest Orders</div>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Order ID</th>
+                  <th>User</th>
+                  <th>Status</th>
+                  <th class="text-end">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for o in stats.latest_orders %}
+                  <tr>
+                    <td>{{ o.order_id }}</td>
+                    <td>{{ o.user }}</td>
+                    <td>
+                      <span class="badge text-bg-light border">{{ o.order_status }}</span>
+                    </td>
+                    <td class="text-end">₹ {{ o.total_amount|floatformat:2 }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="4" class="text-muted">No orders yet.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="table-card h-100">
+          <div class="section-title">Latest Users</div>
+          <div class="table-responsive">
+            <table class="table align-middle mb-0">
+              <thead>
+                <tr>
+                  <th>Full name</th>
+                  <th>Email</th>
+                  <th>City</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for u in stats.latest_users %}
+                  <tr>
+                    <td>{{ u.fullname }}</td>
+                    <td>{{ u.email }}</td>
+                    <td>{{ u.city }}</td>
+                  </tr>
+                {% empty %}
+                  <tr><td colspan="3" class="text-muted">No users yet.</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="row g-3">
+      <div class="col-12 col-lg-6">
+        <div class="chart-card">
+          <div class="section-title">Orders Overview</div>
+          <div class="chart-wrap">
+            <canvas id="ordersChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-12 col-lg-6">
+        <div class="chart-card">
+          <div class="section-title">Revenue Overview</div>
+          <div class="chart-wrap">
+            <canvas id="revenueChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js"></script>
+<script>
+  const ordersLabels = {{ orders_labels_json|safe }};
+  const ordersValues = {{ orders_values_json|safe }};
+
+  const revenueLabels = {{ revenue_labels_json|safe }};
+  const revenueValues = {{ revenue_values_json|safe }};
+
+  function formatINR(value) {
+    try {
+      return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR' }).format(value);
+    } catch (e) {
+      return '₹ ' + value.toFixed(2);
+    }
+  }
+
+  const commonOptions = {
+    responsive: true,
+    maintainAspectRatio: false,
+    plugins: {
+      legend: { display: false },
+      tooltip: {
+        callbacks: {
+          label: (ctx) => {
+            return formatINR(ctx.parsed.y ?? 0);
+          }
+        }
+      }
+    },
+    scales: {
+      x: {
+        grid: { display: false },
+        ticks: { color: '#64748b', font: { weight: 700 } }
+      },
+      y: {
+        grid: { color: '#e5e7eb' },
+        ticks: { color: '#64748b', font: { weight: 700 } }
+      }
+    }
+  };
+
+  new Chart(document.getElementById('ordersChart'), {
+    type: 'bar',
+    data: {
+      labels: ordersLabels,
+      datasets: [{
+        label: 'Orders',
+        data: ordersValues,
+        backgroundColor: 'rgba(13, 110, 253, 0.18)',
+        borderColor: 'rgba(13, 110, 253, 1)',
+        borderWidth: 2,
+        borderRadius: 10,
+        barThickness: 18
+      }]
+    },
+    options: {
+      ...commonOptions,
+      plugins: {
+        ...commonOptions.plugins,
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `Orders: ${ctx.parsed.y}`
+          }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById('revenueChart'), {
+    type: 'line',
+    data: {
+      labels: revenueLabels,
+      datasets: [{
+        label: 'Revenue',
+        data: revenueValues,
+        borderColor: 'rgba(16, 185, 129, 1)',
+        backgroundColor: 'rgba(16, 185, 129, 0.08)',
+        tension: 0.35,
+        fill: true,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      ...commonOptions,
+      plugins: {
+        ...commonOptions.plugins,
+        tooltip: {
+          callbacks: {
+            label: (ctx) => `Revenue: ${formatINR(ctx.parsed.y ?? 0)}`
+          }
+        }
+      }
+    }
+  });
+</script>
+{% endblock %}
+

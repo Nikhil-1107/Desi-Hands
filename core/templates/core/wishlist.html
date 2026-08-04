@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Wishlist | DesiHands{% endblock %}
+
+{% block content %}
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex flex-column flex-lg-row justify-content-between align-items-lg-center gap-3 mb-4">
+            <div>
+                <h1 class="h3 mb-1">Your Wishlist</h1>
+                <p class="text-muted mb-0">Save products you love and find them anytime.</p>
+            </div>
+            <a class="btn btn-outline-primary" href="{% url 'core:product_list' %}">Continue Shopping</a>
+        </div>
+
+        {% if wishlists %}
+            <div class="row g-4">
+                <div class="col-12">
+                    <div class="bg-white border rounded-3 overflow-hidden">
+                        <div class="table-responsive">
+                            <table class="table table-hover align-middle mb-0">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th scope="col">Product</th>
+                                        <th scope="col">Price</th>
+                                        <th scope="col">Added</th>
+                                        <th scope="col">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in wishlists %}
+                                        <tr>
+                                            <td>
+                                                <div class="d-flex align-items-center gap-3">
+                                                    {% if item.product.product_image %}
+                                                        <img src="{{ item.product.product_image.url }}"
+                                                             class="cart-item-img rounded" alt="{{ item.product.product_name }}">
+                                                    {% else %}
+                                                        <div class="cart-item-placeholder rounded d-flex align-items-center justify-content-center">
+                                                            <span>{{ item.product.product_name|slice:"1" }}</span>
+                                                        </div>
+                                                    {% endif %}
+                                                    <div>
+                                                        <a class="fw-semibold text-decoration-none"
+                                                           href="{% url 'core:product_detail' item.product.id %}">
+                                                            {{ item.product.product_name }}
+                                                        </a>
+                                                        <div class="small text-muted">{{ item.product.category.name }}</div>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td>Rs. {{ item.product.price }}</td>
+                                            <td>{{ item.created_at|date:"M d, Y" }}</td>
+                                            <td>
+                                                <form method="post" action="{% url 'core:wishlist_remove' item.id %}">
+                                                    {% csrf_token %}
+                                                    <button class="btn btn-sm btn-outline-danger" type="submit">Remove</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="bg-white border rounded-3 p-4 p-md-5 text-center">
+                <h2 class="h5 mb-2">Your wishlist is empty</h2>
+                <p class="text-muted mb-4">Browse products and add items to your wishlist.</p>
+                <a class="btn btn-primary" href="{% url 'core:product_list' %}">Browse Products</a>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+

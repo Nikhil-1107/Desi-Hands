@@ -1,0 +1,108 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Review Management" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_reviews %}active{% endblock %}
+
+{% block admin_content %}
+<div class="mb-4">
+    <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Review Management" %}</h1>
+    <p class="text-muted">{% translate "Monitor and manage customer ratings and product reviews." %}</p>
+</div>
+
+<div class="admin-card p-4 mb-4 bg-white">
+    <form method="get" action="{% url 'core:admin_review_list' %}" class="row g-3">
+        <div class="col-12 col-md-6">
+            <label class="form-label text-muted small fw-bold">{% translate "Search" %}</label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0 admin-form-control" name="q" value="{{ query }}" placeholder="{% translate 'Search by review text, product name, or user name...' %}">
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <label class="form-label text-muted small fw-bold">{% translate "Filter Rating" %}</label>
+            <select class="form-select admin-form-control" name="rating">
+                <option value="">{% translate "All Ratings" %}</option>
+                <option value="5" {% if selected_rating == "5" %}selected{% endif %}>5 {% translate "Stars" %}</option>
+                <option value="4" {% if selected_rating == "4" %}selected{% endif %}>4 {% translate "Stars" %}</option>
+                <option value="3" {% if selected_rating == "3" %}selected{% endif %}>3 {% translate "Stars" %}</option>
+                <option value="2" {% if selected_rating == "2" %}selected{% endif %}>2 {% translate "Stars" %}</option>
+                <option value="1" {% if selected_rating == "1" %}selected{% endif %}>1 {% translate "Star" %}</option>
+            </select>
+        </div>
+        <div class="col-12 col-md-2 d-grid align-self-end">
+            <button type="submit" class="btn btn-outline-secondary btn-admin">{% translate "Apply Filter" %}</button>
+        </div>
+    </form>
+</div>
+
+<div class="admin-table-container">
+    <table class="table admin-table align-middle">
+        <thead>
+            <tr>
+                <th>{% translate "Customer" %}</th>
+                <th>{% translate "Product" %}</th>
+                <th>{% translate "Rating" %}</th>
+                <th>{% translate "Review Comment" %}</th>
+                <th>{% translate "Date Submitted" %}</th>
+                <th style="width: 100px;" class="text-end">{% translate "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for r in reviews %}
+            <tr>
+                <td>
+                    <strong>{{ r.user.fullname }}</strong>
+                    <div class="small text-muted">{{ r.user.email }}</div>
+                </td>
+                <td>
+                    <span class="text-dark fw-semibold">{{ r.product.product_name }}</span>
+                    <div class="small text-muted">{% translate "Seller" %}: {{ r.product.seller_name }}</div>
+                </td>
+                <td>
+                    <div class="text-warning" style="font-size: 1.05rem; line-height: 1;">
+                        {% if r.rating >= 1 %}<i class="bi bi-star-fill"></i>{% endif %}
+                        {% if r.rating >= 2 %}<i class="bi bi-star-fill"></i>{% endif %}
+                        {% if r.rating >= 3 %}<i class="bi bi-star-fill"></i>{% endif %}
+                        {% if r.rating >= 4 %}<i class="bi bi-star-fill"></i>{% endif %}
+                        {% if r.rating >= 5 %}<i class="bi bi-star-fill"></i>{% endif %}
+                        <span class="text-muted small ms-1">({{ r.rating }}/5)</span>
+                    </div>
+                </td>
+                <td>
+                    <span class="text-muted" style="font-size: 0.88rem; max-width: 380px; display: inline-block;">{{ r.review }}</span>
+                </td>
+                <td>{{ r.created_at|date:"M d, Y" }}</td>
+                <td class="text-end">
+                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ r.pk }}" title="{% translate 'Delete Review' %}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+
+                    <div class="modal fade" id="deleteModal{{ r.pk }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow" style="border-radius: 16px;">
+                                <div class="modal-header border-bottom-0">
+                                    <h5 class="modal-title fw-bold">{% translate "Delete Review" %}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}"></button>
+                                </div>
+                                <div class="modal-body text-start py-3">
+                                    {% blocktrans with customer_name=r.user.fullname product_name=r.product.product_name %}Are you sure you want to delete this review by <strong>{{ customer_name }}</strong> on product <strong>{{ product_name }}</strong>? This action cannot be undone.{% endblocktrans %}
+                                </div>
+                                <div class="modal-footer border-top-0">
+                                    <button type="button" class="btn btn-light btn-admin" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                                    <a href="{% url 'core:admin_review_delete' r.pk %}" class="btn btn-danger btn-admin">{% translate "Delete" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="6" class="text-center py-4 text-muted">{% translate "No reviews found matching your filters/queries." %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

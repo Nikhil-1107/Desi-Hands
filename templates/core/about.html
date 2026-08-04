@@ -1,0 +1,375 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "About Us" %} | DesiHands{% endblock %}
+
+{% block content %}
+<style>
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+</style>
+
+<div id="page-skeleton">
+  <!-- ABOUT HERO (dark-ish background in real CSS is image/sections; use rgba fill) -->
+  <section class="about-hero">
+    <div class="container text-center">
+      <div class="hero-top justify-content-center">
+        <div class="sk" style="height:1px;width:40px;border-radius:4px;background:rgba(200,149,95,0.3);"></div>
+        <div class="sk" style="width:22px;height:22px;border-radius:50%;background:rgba(200,149,95,0.35);"></div>
+        <div class="sk" style="height:1px;width:40px;border-radius:4px;background:rgba(200,149,95,0.3);"></div>
+      </div>
+      <div class="sk" style="height:11px;width:170px;border-radius:30px;background:rgba(255,255,255,0.12);margin:18px auto 0;"></div>
+      <div class="sk" style="height:64px;width:360px;border-radius:6px;background:rgba(255,255,255,0.12);margin:14px auto 0;"></div>
+      <div class="sk" style="height:14px;width:520px;border-radius:4px;background:rgba(255,255,255,0.15);margin:12px auto 0;"></div>
+      <div class="sk" style="height:14px;width:420px;border-radius:4px;background:rgba(255,255,255,0.15);margin:8px auto 0;"></div>
+    </div>
+  </section>
+
+  <!-- OUR STORY — IMAGE + TEXT -->
+  <section class="about-story-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-12 col-lg-6">
+          <div class="sk" style="height:420px;width:100%;border-radius:0;"></div>
+        </div>
+        <div class="col-12 col-lg-6">
+          <div class="sk" style="height:12px;width:160px;border-radius:30px;margin-bottom:16px;"></div>
+          <div class="sk" style="height:44px;width:420px;border-radius:6px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:14px;width:95%;border-radius:4px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:14px;width:88%;border-radius:4px;margin-bottom:12px;"></div>
+          <div class="row g-3" style="margin-top:18px;">
+            <div class="col-12 col-md-4">
+              <div class="sk" style="height:18px;width:120px;border-radius:30px;background:rgba(200,149,95,0.25);"></div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="sk" style="height:18px;width:140px;border-radius:30px;background:rgba(200,149,95,0.25);"></div>
+            </div>
+            <div class="col-12 col-md-4">
+              <div class="sk" style="height:18px;width:150px;border-radius:30px;background:rgba(200,149,95,0.25);"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW IT WORKS -->
+  <section class="about-process-section">
+    <div class="container">
+      <div class="text-center mb-5">
+        <div class="sk" style="height:12px;width:130px;border-radius:30px;margin:0 auto 18px;"></div>
+        <div class="sk" style="height:44px;width:360px;border-radius:6px;margin:0 auto 14px;"></div>
+        <div class="sk" style="height:14px;width:520px;border-radius:4px;margin:0 auto;"></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="sk" style="height:44px;width:54px;border-radius:10px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:54px;width:54px;border-radius:50%;margin-bottom:14px;"></div>
+          <div class="sk" style="height:22px;width:140px;border-radius:6px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-bottom:10px;"></div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="sk" style="height:44px;width:54px;border-radius:10px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:54px;width:54px;border-radius:50%;margin-bottom:14px;"></div>
+          <div class="sk" style="height:22px;width:120px;border-radius:6px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-bottom:10px;"></div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="sk" style="height:44px;width:54px;border-radius:10px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:54px;width:54px;border-radius:50%;margin-bottom:14px;"></div>
+          <div class="sk" style="height:22px;width:180px;border-radius:6px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:14px;width:92%;border-radius:4px;margin-bottom:10px;"></div>
+        </div>
+        <div class="col-12 col-md-6 col-lg-3">
+          <div class="sk" style="height:44px;width:54px;border-radius:10px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:54px;width:54px;border-radius:50%;margin-bottom:14px;"></div>
+          <div class="sk" style="height:22px;width:170px;border-radius:6px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:14px;width:88%;border-radius:4px;margin-bottom:10px;"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUR VALUES -->
+  <section class="about-values-section">
+    <div class="container">
+      <div class="row align-items-center g-5">
+        <div class="col-12 col-lg-5">
+          <div class="sk" style="height:12px;width:220px;border-radius:30px;margin-bottom:16px;"></div>
+          <div class="sk" style="height:44px;width:300px;border-radius:6px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:240px;width:100%;border-radius:0;margin-top:18px;"></div>
+        </div>
+        <div class="col-12 col-lg-7">
+          <div class="row g-4">
+            <div class="col-12 col-sm-6"><div class="sk" style="height:220px;width:100%;border-radius:22px;"></div></div>
+            <div class="col-12 col-sm-6"><div class="sk" style="height:220px;width:100%;border-radius:22px;"></div></div>
+            <div class="col-12 col-sm-6"><div class="sk" style="height:220px;width:100%;border-radius:22px;"></div></div>
+            <div class="col-12 col-sm-6"><div class="sk" style="height:220px;width:100%;border-radius:22px;"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BANNER -->
+  <section class="about-cta-section">
+    <div class="container text-center">
+      <div class="sk" style="height:44px;width:380px;border-radius:6px;margin:0 auto 14px;"></div>
+      <div class="sk" style="height:14px;width:520px;border-radius:4px;margin:0 auto 18px;"></div>
+      <div class="sk" style="height:48px;width:220px;border-radius:50px;margin:0 auto;"></div>
+    </div>
+  </section>
+</div>
+
+<div id="page-content" style="display:none;">
+<!-- ============================================
+     ABOUT HERO
+     ============================================ -->
+<section class="about-hero">
+    <div class="container text-center">
+        <div class="hero-top justify-content-center">
+            <div class="hero-divider"></div>
+            <div class="hero-icon"><i class="bi bi-flower1"></i></div>
+            <div class="hero-divider"></div>
+        </div>
+        <div class="hero-label">{% translate "OUR STORY" %}</div>
+        <h1 class="about-hero-title">{% translate "Crafted by Hand," %}<br>{% translate "Connected by Heart." %}</h1>
+        <p class="about-hero-subtitle">
+            {% translate "DesiHands began with a simple belief — that handmade things carry a warmth no factory can replicate. We built a home for India's artisans to share that warmth with the world." %}
+        </p>
+    </div>
+</section>
+
+
+<!-- ============================================
+     OUR STORY — IMAGE + TEXT
+     ============================================ -->
+<section class="about-story-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <div class="col-12 col-lg-6">
+                <div class="about-story-image-wrap">
+                    <img src="/media/1.jpg"
+                         alt="Artisan at work" class="about-story-img-main">
+                    <img src="/media/2.jpg"
+                         alt="Handmade pottery detail" class="about-story-img-floating">
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <span class="about-eyebrow">{% translate "Who We Are" %}</span>
+                <h2 class="about-section-title">{% translate "A Marketplace Built on Trust & Tradition" %}</h2>
+                <p class="about-body-text">
+                    {% translate "DesiHands was founded to close the distance between skilled local makers and the people who value their craft. Every seller on our platform is a real artisan — a potter, a weaver, a woodworker — running their own small business with our support behind them." %}
+                </p>
+                <p class="about-body-text">
+                    {% translate "We handle the technology so makers can focus on what they do best: creating. From listing a product to packing an order, every step is designed to be simple, fair, and transparent — for sellers and shoppers alike." %}
+                </p>
+
+                <div class="about-mini-features">
+                    <div class="about-mini-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>{% translate "Verified local artisans" %}</span>
+                    </div>
+                    <div class="about-mini-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>{% translate "Fair maker pricing" %}</span>
+                    </div>
+                    <div class="about-mini-feature">
+                        <i class="bi bi-check-circle-fill"></i>
+                        <span>{% translate "Quality checked products" %}</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+
+<!-- ============================================
+     HOW IT WORKS
+     ============================================ -->
+<section class="about-process-section">
+    <div class="container">
+        <div class="text-center mb-5">
+            <span class="about-eyebrow">{% translate "The Process" %}</span>
+            <h2 class="about-section-title">{% translate "How DesiHands Works" %}</h2>
+            <p class="about-section-subtext">
+                {% translate "From the maker's workbench to your doorstep — every order follows a simple, transparent journey." %}
+            </p>
+        </div>
+
+        <div class="row g-4">
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="about-process-step">
+                    <div class="about-process-number">01</div>
+                    <div class="about-process-icon"><i class="bi bi-search"></i></div>
+                    <h3 class="about-process-title">{% translate "Discover" %}</h3>
+                    <p class="about-process-text">
+                        {% translate "Browse curated categories and find products made by artisans near you and across India." %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="about-process-step">
+                    <div class="about-process-number">02</div>
+                    <div class="about-process-icon"><i class="bi bi-hand-index-thumb"></i></div>
+                    <h3 class="about-process-title">{% translate "Connect" %}</h3>
+                    <p class="about-process-text">
+                        {% translate "Every listing tells the maker's story, so you know exactly who crafted what you're buying." %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="about-process-step">
+                    <div class="about-process-number">03</div>
+                    <div class="about-process-icon"><i class="bi bi-bag-check"></i></div>
+                    <h3 class="about-process-title">{% translate "Order Securely" %}</h3>
+                    <p class="about-process-text">
+                        {% translate "Add to cart, checkout safely, and track your order every step of the way." %}
+                    </p>
+                </div>
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-3">
+                <div class="about-process-step">
+                    <div class="about-process-number">04</div>
+                    <div class="about-process-icon"><i class="bi bi-truck"></i></div>
+                    <h3 class="about-process-title">{% translate "Receive & Enjoy" %}</h3>
+                    <p class="about-process-text">
+                        {% translate "Your handmade piece arrives carefully packed, ready to be loved for years to come." %}
+                    </p>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================
+     OUR VALUES
+     ============================================ -->
+<section class="about-values-section">
+    <div class="container">
+        <div class="row align-items-center g-5">
+
+            <div class="col-12 col-lg-5">
+                <span class="about-eyebrow">{% translate "What We Stand For" %}</span>
+                <h2 class="about-section-title">{% translate "Our Values" %}</h2>
+                <p class="about-body-text">
+                    {% translate "These principles guide every decision we make — from the sellers we onboard to the products we feature." %}
+                </p>
+                <img src="/media/3.jpg"
+                     alt="Handmade craft materials" class="about-values-img d-none d-lg-block">
+            </div>
+
+            <div class="col-12 col-lg-7">
+                <div class="row g-4">
+
+                    <div class="col-12 col-sm-6">
+                        <div class="about-value-card">
+                            <div class="about-value-icon"><i class="bi bi-gem"></i></div>
+                            <h4 class="about-value-title">{% translate "Authenticity" %}</h4>
+                            <p class="about-value-text">
+                                {% translate "Every product is genuinely handmade — no mass production, ever." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="about-value-card">
+                            <div class="about-value-icon"><i class="bi bi-patch-check"></i></div>
+                            <h4 class="about-value-title">{% translate "Quality" %}</h4>
+                            <p class="about-value-text">
+                                {% translate "Each listing is reviewed so you can shop with full confidence." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="about-value-card">
+                            <div class="about-value-icon"><i class="bi bi-people"></i></div>
+                            <h4 class="about-value-title">{% translate "Community" %}</h4>
+                            <p class="about-value-text">
+                                {% translate "We grow alongside the makers — their success is our success." %}
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6">
+                        <div class="about-value-card">
+                            <div class="about-value-icon"><i class="bi bi-leaf"></i></div>
+                            <h4 class="about-value-title">{% translate "Sustainability" %}</h4>
+                            <p class="about-value-text">
+                                {% translate "Handmade means thoughtful, slower production — better for the planet." %}
+                            </p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+
+<!-- ============================================
+     CTA BANNER
+     ============================================ -->
+<section class="about-cta-section">
+    <div class="container text-center">
+        <h2 class="about-cta-title">{% translate "Ready to discover something handmade?" %}</h2>
+        <p class="about-cta-text">
+            {% translate "Explore thoughtful, authentic products crafted by real artisans from across India." %}
+        </p>
+        <a href="{% url 'core:product_list' %}" class="about-cta-btn">
+            {% translate "SHOP NOW" %} <i class="bi bi-arrow-right"></i>
+        </a>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+setTimeout(function () {
+  var sk = document.getElementById('page-skeleton');
+  var pg = document.getElementById('page-content');
+  if (sk) sk.style.display = 'none';
+  pg.style.opacity = '0';
+  pg.style.display = '';
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      pg.style.opacity = '1';
+    });
+  });
+}, 500);
+</script>
+{% endblock %}
+

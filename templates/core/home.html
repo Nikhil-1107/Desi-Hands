@@ -1,0 +1,574 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load currency_filters %}
+
+{% block title %}{% translate "Home" %} | DesiHands{% endblock %}
+
+{% block content %}
+<style>
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  .sk-hero {
+    height: calc(105vh - 90px);
+    min-height: 600px;
+    background: #2C2318;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 60px;
+  }
+  .sk-hero-content {
+    width: 450px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+  }
+  .sk-hero-divider-row {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    width: 100%;
+    justify-content: center;
+  }
+  .sk-hero-line { width: 50px; height: 1px; background: rgba(200,149,95,0.4); }
+  .sk-hero-icon { width: 22px; height: 22px; border-radius: 50%; background: rgba(200,149,95,0.35); }
+  .sk-cat-row {
+    display: flex;
+    gap: 44px;
+    padding: 20px 8px;
+    overflow: hidden;
+  }
+  .sk-cat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    flex-shrink: 0;
+  }
+  .sk-circle { width: 150px; height: 150px; border-radius: 50%; }
+  .sk-prod-card {
+    background: #fff;
+    border: 1px solid #E2D3C1;
+    border-radius: 20px;
+    overflow: hidden;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+  .sk-prod-img { height: 250px; border-radius: 0; }
+  .sk-prod-body { padding: 24px; flex: 1; display: flex; flex-direction: column; gap: 10px; }
+  .sk-prod-footer { padding: 0 24px 24px; display: flex; flex-direction: column; gap: 12px; }
+  .sk-why-card {
+    background: #fff;
+    border: 1px solid #EAE0CE;
+    border-radius: 22px;
+    padding: 40px 35px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 18px;
+    height: 100%;
+  }
+  .sk-faq-item {
+    background: #fff;
+    border-radius: 18px;
+    padding: 22px 25px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.05);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .sk-section-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 60px;
+  }
+  #page-content { transition: opacity 0.3s ease; }
+  @media (max-width: 991px) {
+    .sk-hero { justify-content: center; padding-right: 0; height: auto; min-height: 700px; padding: 80px 20px; }
+    .sk-hero-content { width: 100%; max-width: 500px; }
+  }
+  @media (max-width: 768px) {
+    .sk-circle { width: 100px; height: 100px; }
+    .sk-cat-row { gap: 22px; }
+    .sk-prod-img { height: 200px; }
+  }
+  @media (max-width: 480px) {
+    .sk-circle { width: 85px; height: 85px; }
+  }
+</style>
+
+<div id="page-skeleton">
+
+  <section class="sk-hero">
+    <div class="sk-hero-content">
+      <div class="sk-hero-divider-row">
+        <div class="sk-hero-line"></div>
+        <div class="sk-hero-icon"></div>
+        <div class="sk-hero-line"></div>
+      </div>
+      <div class="sk" style="height:11px;width:160px;border-radius:4px;background:rgba(200,149,95,0.3);"></div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:10px;width:100%;">
+        <div class="sk" style="height:52px;width:280px;border-radius:6px;background:rgba(255,255,255,0.12);"></div>
+        <div class="sk" style="height:52px;width:220px;border-radius:6px;background:rgba(255,255,255,0.12);"></div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:6px;width:100%;">
+        <div class="sk" style="height:14px;width:300px;border-radius:4px;background:rgba(255,255,255,0.15);"></div>
+        <div class="sk" style="height:14px;width:240px;border-radius:4px;background:rgba(255,255,255,0.15);"></div>
+      </div>
+      <div style="display:flex;gap:14px;margin-top:4px;">
+        <div class="sk" style="height:48px;width:130px;border-radius:8px;background:rgba(200,149,95,0.5);"></div>
+        <div class="sk" style="height:48px;width:160px;border-radius:8px;background:rgba(255,255,255,0.15);"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;width:100%;margin-top:10px;padding:0 10px;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="sk" style="width:26px;height:26px;border-radius:50%;background:rgba(200,149,95,0.4);"></div>
+          <div class="sk" style="height:11px;width:72px;border-radius:4px;background:rgba(255,255,255,0.18);"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="sk" style="width:26px;height:26px;border-radius:50%;background:rgba(200,149,95,0.4);"></div>
+          <div class="sk" style="height:11px;width:80px;border-radius:4px;background:rgba(255,255,255,0.18);"></div>
+        </div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:10px;">
+          <div class="sk" style="width:26px;height:26px;border-radius:50%;background:rgba(200,149,95,0.4);"></div>
+          <div class="sk" style="height:11px;width:68px;border-radius:4px;background:rgba(255,255,255,0.18);"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#FFFDF9;padding:70px 0 80px;border-top:1px solid #E2D3C1;">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;gap:16px;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="sk" style="height:30px;width:240px;border-radius:6px;"></div>
+          <div class="sk" style="height:14px;width:190px;border-radius:4px;"></div>
+        </div>
+        <div class="sk" style="height:34px;width:90px;border-radius:6px;margin-top:4px;"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="sk" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;"></div>
+        <div style="flex:1;overflow:hidden;">
+          <div class="sk-cat-row">
+            <div class="sk-cat-item"><div class="sk sk-circle"></div><div class="sk" style="height:13px;width:90px;border-radius:4px;"></div></div>
+            <div class="sk-cat-item"><div class="sk sk-circle"></div><div class="sk" style="height:13px;width:75px;border-radius:4px;"></div></div>
+            <div class="sk-cat-item"><div class="sk sk-circle"></div><div class="sk" style="height:13px;width:100px;border-radius:4px;"></div></div>
+            <div class="sk-cat-item"><div class="sk sk-circle"></div><div class="sk" style="height:13px;width:80px;border-radius:4px;"></div></div>
+            <div class="sk-cat-item"><div class="sk sk-circle"></div><div class="sk" style="height:13px;width:95px;border-radius:4px;"></div></div>
+          </div>
+        </div>
+        <div class="sk" style="width:42px;height:42px;border-radius:50%;flex-shrink:0;"></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:#fff;padding:60px 0;border-top:1px solid #E2D3C1;border-bottom:1px solid #E2D3C1;">
+    <div class="container">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;margin-bottom:32px;gap:16px;flex-wrap:wrap;">
+        <div style="display:flex;flex-direction:column;gap:10px;">
+          <div class="sk" style="height:30px;width:200px;border-radius:6px;"></div>
+          <div class="sk" style="height:14px;width:280px;border-radius:4px;"></div>
+        </div>
+        <div class="sk" style="height:34px;width:90px;border-radius:6px;"></div>
+      </div>
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+        <div class="col"><div class="sk-prod-card"><div class="sk sk-prod-img"></div><div class="sk-prod-body"><div class="sk" style="height:22px;width:70px;border-radius:30px;"></div><div class="sk" style="height:18px;width:85%;border-radius:4px;"></div><div class="sk" style="height:12px;width:100%;border-radius:4px;"></div><div class="sk" style="height:12px;width:68%;border-radius:4px;"></div><div class="sk" style="height:12px;width:58%;border-radius:4px;margin-top:4px;"></div><div class="sk" style="height:12px;width:48%;border-radius:4px;"></div></div><div class="sk-prod-footer"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="sk" style="height:22px;width:70px;border-radius:4px;"></div><div class="sk" style="height:22px;width:80px;border-radius:30px;"></div></div><div class="sk" style="height:42px;width:100%;border-radius:50px;"></div></div></div></div>
+        <div class="col"><div class="sk-prod-card"><div class="sk sk-prod-img"></div><div class="sk-prod-body"><div class="sk" style="height:22px;width:60px;border-radius:30px;"></div><div class="sk" style="height:18px;width:75%;border-radius:4px;"></div><div class="sk" style="height:12px;width:100%;border-radius:4px;"></div><div class="sk" style="height:12px;width:80%;border-radius:4px;"></div><div class="sk" style="height:12px;width:55%;border-radius:4px;margin-top:4px;"></div><div class="sk" style="height:12px;width:45%;border-radius:4px;"></div></div><div class="sk-prod-footer"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="sk" style="height:22px;width:65px;border-radius:4px;"></div><div class="sk" style="height:22px;width:75px;border-radius:30px;"></div></div><div class="sk" style="height:42px;width:100%;border-radius:50px;"></div></div></div></div>
+        <div class="col"><div class="sk-prod-card"><div class="sk sk-prod-img"></div><div class="sk-prod-body"><div class="sk" style="height:22px;width:80px;border-radius:30px;"></div><div class="sk" style="height:18px;width:90%;border-radius:4px;"></div><div class="sk" style="height:12px;width:100%;border-radius:4px;"></div><div class="sk" style="height:12px;width:62%;border-radius:4px;"></div><div class="sk" style="height:12px;width:60%;border-radius:4px;margin-top:4px;"></div><div class="sk" style="height:12px;width:50%;border-radius:4px;"></div></div><div class="sk-prod-footer"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="sk" style="height:22px;width:72px;border-radius:4px;"></div><div class="sk" style="height:22px;width:82px;border-radius:30px;"></div></div><div class="sk" style="height:42px;width:100%;border-radius:50px;"></div></div></div></div>
+        <div class="col"><div class="sk-prod-card"><div class="sk sk-prod-img"></div><div class="sk-prod-body"><div class="sk" style="height:22px;width:65px;border-radius:30px;"></div><div class="sk" style="height:18px;width:80%;border-radius:4px;"></div><div class="sk" style="height:12px;width:100%;border-radius:4px;"></div><div class="sk" style="height:12px;width:73%;border-radius:4px;"></div><div class="sk" style="height:12px;width:52%;border-radius:4px;margin-top:4px;"></div><div class="sk" style="height:12px;width:42%;border-radius:4px;"></div></div><div class="sk-prod-footer"><div style="display:flex;justify-content:space-between;align-items:center;"><div class="sk" style="height:22px;width:68px;border-radius:4px;"></div><div class="sk" style="height:22px;width:78px;border-radius:30px;"></div></div><div class="sk" style="height:42px;width:100%;border-radius:50px;"></div></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 0;background:linear-gradient(to bottom,#f8f5f1,#f3ede5);">
+    <div class="container">
+      <div class="sk-section-header">
+        <div class="sk" style="height:11px;width:140px;border-radius:4px;"></div>
+        <div class="sk" style="height:44px;width:260px;border-radius:6px;"></div>
+        <div class="sk" style="height:14px;width:340px;border-radius:4px;"></div>
+      </div>
+      <div class="row g-4">
+        <div class="col-lg-4"><div class="sk-why-card"><div class="sk" style="width:54px;height:54px;border-radius:50%;"></div><div class="sk" style="height:30px;width:160px;border-radius:6px;"></div><div class="sk" style="height:13px;width:90%;border-radius:4px;"></div><div class="sk" style="height:13px;width:78%;border-radius:4px;"></div><div class="sk" style="height:13px;width:66%;border-radius:4px;"></div></div></div>
+        <div class="col-lg-4"><div class="sk-why-card"><div class="sk" style="width:54px;height:54px;border-radius:50%;"></div><div class="sk" style="height:30px;width:140px;border-radius:6px;"></div><div class="sk" style="height:13px;width:88%;border-radius:4px;"></div><div class="sk" style="height:13px;width:76%;border-radius:4px;"></div><div class="sk" style="height:13px;width:64%;border-radius:4px;"></div></div></div>
+        <div class="col-lg-4"><div class="sk-why-card"><div class="sk" style="width:54px;height:54px;border-radius:50%;"></div><div class="sk" style="height:30px;width:150px;border-radius:6px;"></div><div class="sk" style="height:13px;width:92%;border-radius:4px;"></div><div class="sk" style="height:13px;width:80%;border-radius:4px;"></div><div class="sk" style="height:13px;width:68%;border-radius:4px;"></div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="padding:100px 0;background:#f8f5f1;">
+    <div class="container">
+      <div class="sk-section-header">
+        <div class="sk" style="height:11px;width:110px;border-radius:4px;"></div>
+        <div class="sk" style="height:44px;width:340px;border-radius:6px;"></div>
+        <div class="sk" style="height:14px;width:380px;border-radius:4px;"></div>
+      </div>
+      <div style="max-width:900px;margin:auto;">
+        <div class="sk-faq-item"><div class="sk" style="height:18px;width:65%;border-radius:4px;"></div></div>
+        <div class="sk-faq-item"><div class="sk" style="height:18px;width:50%;border-radius:4px;"></div></div>
+        <div class="sk-faq-item"><div class="sk" style="height:18px;width:58%;border-radius:4px;"></div></div>
+        <div class="sk-faq-item"><div class="sk" style="height:18px;width:44%;border-radius:4px;"></div></div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<div id="page-content" style="display:none;">
+
+<section class="home-hero">
+    <div class="container">
+        <div class="hero-wrapper">
+            <div class="hero-content">
+                <div class="hero-top">
+                    <div class="hero-divider"></div>
+                    <div class="hero-icon"><i class="bi bi-flower1"></i></div>
+                    <div class="hero-divider"></div>
+                </div>
+                <div class="hero-label">{% translate "HANDMADE WITH HEART" %}</div>
+                <h1 class="hero-title">
+                    {% translate "Handmade." %}<br>{% translate "Made with Love." %}
+                </h1>
+                <p class="hero-subtitle">
+                    {% translate "Thoughtful products crafted by talented artisans across India." %}
+                </p>
+                <div class="hero-buttons">
+                    <a href="{% url 'core:product_list' %}" class="hero-btn-primary">{% translate "SHOP NOW" %}</a>
+                    <a href="{% url 'core:category_list' %}" class="hero-btn-outline">{% translate "EXPLORE COLLECTION" %}</a>
+                </div>
+                <div class="hero-features">
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-gem"></i></div>
+                        <span>{% translate "Handcrafted" %}</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-patch-check"></i></div>
+                        <span>{% translate "Quality Assured" %}</span>
+                    </div>
+                    <div class="feature-item">
+                        <div class="feature-icon"><i class="bi bi-box-seam"></i></div>
+                        <span>{% translate "Fast Delivery" %}</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="categories-section">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-start gap-3 mb-5">
+      <div>
+        <h2 class="section-heading">{% translate "Featured Categories" %}</h2>
+        <p class="section-subtext">{% translate "Find your favourite craft by category." %}</p>
+      </div>
+      <a class="btn btn-outline-dark btn-sm mt-md-1" href="{% url 'core:category_list' %}">{% translate "View All" %}</a>
+    </div>
+    {% if featured_categories %}
+      <div class="categories-scroll-wrapper">
+        <button type="button" class="categories-scroll-arrow categories-scroll-arrow-left" aria-label="Scroll left">
+          <i class="bi bi-chevron-left"></i>
+        </button>
+        <div class="categories-row-container" style="overflow: hidden; flex: 1; min-width: 0;">
+          <div class="categories-circle-row" id="categoriesRow" style="display: flex; flex-wrap: nowrap; width: max-content; gap: 44px; padding: 20px 8px; will-change: transform;">
+            {% for category in featured_categories %}
+              <a href="{% url 'core:product_list' %}?category={{ category.pk }}" class="category-circle-item">
+                <div class="category-circle">
+                  {% if category.image %}
+                    <img src="{{ category.image.url }}" alt="{{ category.name }}">
+                  {% else %}
+                    <div class="category-circle-placeholder">
+                      <span>{{ category.name|slice:":1" }}</span>
+                    </div>
+                  {% endif %}
+                </div>
+                <span class="category-circle-name">{{ category.name }}</span>
+              </a>
+            {% endfor %}
+          </div>
+        </div>
+        <button type="button" class="categories-scroll-arrow categories-scroll-arrow-right" aria-label="Scroll right">
+          <i class="bi bi-chevron-right"></i>
+        </button>
+      </div>
+    {% else %}
+      <div class="text-center py-4">
+        <p class="section-subtext">{% translate "Featured categories will appear here once added." %}</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<section class="py-5 bg-white border-top border-bottom">
+    <div class="container">
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-end gap-3 mb-4">
+            <div>
+                <h2 class="h3 mb-1" style="font-family: var(--font-display); font-weight: 700; color: var(--brown-dark);">{% translate "Latest Products" %}</h2>
+                <p class="text-muted mb-0">{% translate "Fresh handmade arrivals from DesiHands sellers." %}</p>
+            </div>
+            <a class="btn btn-outline-dark btn-sm mt-md-1" href="{% url 'core:product_list' %}">{% translate "View All" %}</a>
+        </div>
+        {% if latest_products %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4">
+                {% for product in latest_products %}
+                    <div class="col">
+                        <div class="product-grid-card">
+                            <div class="card-img-wrapper">
+                                {% if product.product_image %}
+                                    <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
+                                {% else %}
+                                    <div class="product-image-placeholder">
+                                        <span>{{ product.product_name|slice:":1" }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="card-details-wrapper">
+                                <span class="badge-category">{{ product.category.name }}</span>
+                                <h3 class="product-name-heading">{{ product.product_name }}</h3>
+                                <p class="product-desc-text">{{ product.description }}</p>
+                                <div class="product-meta-details">
+                                    <span><i class="bi bi-person me-1"></i> {% translate "Seller" %}: {{ product.seller_name }}</span>
+                                    <span><i class="bi bi-stack me-1"></i> {% translate "Stock" %}: {{ product.stock }} {% translate "items" %}</span>
+                                </div>
+                            </div>
+                            <div class="card-bottom-wrapper">
+                                <div class="price-availability-row">
+                                    <div class="product-price-display">{{ product.price|convert_price:request }}</div>
+                                    <div>
+                                        {% if product.is_available %}
+                                            <span class="badge-availability badge-available">
+                                                <i class="bi bi-check-circle me-1"></i> {% translate "Available" %}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge-availability badge-unavailable">
+                                                <i class="bi bi-dash-circle me-1"></i> {% translate "Out of Stock" %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <a class="product-details-btn" href="{% url 'core:product_detail' product.id %}">
+                                    <span>{% translate "View Details" %}</span>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="border rounded-3 p-4 text-center">
+                <p class="text-muted mb-0">{% translate "Latest products will appear here once added." %}</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="why-section">
+    <div class="container">
+        <div class="section-heading">
+            <span>{% translate "WHY DESIHANDS" %}</span>
+            <h2>{% translate "Why Choose Us" %}</h2>
+            <p>{% translate "A thoughtful marketplace for handmade products crafted with passion." %}</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <i class="bi bi-gem"></i>
+                    <h4>{% translate "Authentic Craft" %}</h4>
+                    <p>{% translate "Products reflect real skill, cultural detail, and maker-led creativity." %}</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <i class="bi bi-shop"></i>
+                    <h4>{% translate "Local Sellers" %}</h4>
+                    <p>{% translate "Support independent artisans and discover unique collections." %}</p>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="feature-card">
+                    <i class="bi bi-bag-heart"></i>
+                    <h4>{% translate "Easy Shopping" %}</h4>
+                    <p>{% translate "Browse categories, explore products, and order with confidence." %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="faq" class="faq-section">
+    <div class="container">
+        <div class="section-heading">
+            <span>{% translate "HELP CENTER" %}</span>
+            <h2>{% translate "Frequently Asked Questions" %}</h2>
+            <p>{% translate "Everything you need to know about shopping at DesiHands." %}</p>
+        </div>
+        <div class="faq-wrapper">
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#faq1">
+                            {% translate "Are all products handmade?" %}
+                        </button>
+                    </h2>
+                    <div id="faq1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">{% translate "Yes. Every product is carefully crafted by skilled artisans and local makers." %}</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq2">
+                            {% translate "How long does delivery take?" %}
+                        </button>
+                    </h2>
+                    <div id="faq2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">{% translate "Orders are usually delivered within 3-7 business days depending on location." %}</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq3">
+                            {% translate "Can I return a product?" %}
+                        </button>
+                    </h2>
+                    <div id="faq3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">{% translate "Yes. Products can be returned within 7 days if they are damaged or incorrect." %}</div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#faq4">
+                            {% translate "Is online payment secure?" %}
+                        </button>
+                    </h2>
+                    <div id="faq4" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">{% translate "Absolutely. All transactions are processed through secure payment gateways." %}</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+</div>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+setTimeout(function () {
+  var sk = document.getElementById('page-skeleton');
+  var pg = document.getElementById('page-content');
+  sk.style.display = 'none';
+  pg.style.opacity = '0';
+  pg.style.display = '';
+  requestAnimationFrame(function () {
+    requestAnimationFrame(function () {
+      pg.style.opacity = '1';
+    });
+  });
+}, 500);
+
+document.addEventListener('DOMContentLoaded', function () {
+    const row      = document.getElementById('categoriesRow');
+    const leftBtn  = document.querySelector('.categories-scroll-arrow-left');
+    const rightBtn = document.querySelector('.categories-scroll-arrow-right');
+
+    if (!row || !leftBtn || !rightBtn) return;
+
+    const originalChildren = Array.from(row.children);
+    const n = originalChildren.length;
+    if (n === 0) return;
+
+    function getItemWidthAndGap() {
+        const itemWidth = originalChildren[0].offsetWidth || 155;
+        const computedGap = parseInt(getComputedStyle(row).gap);
+        const gap = isNaN(computedGap) ? 44 : computedGap;
+        return { itemWidth, gap };
+    }
+
+    function updateLayout() {
+        const { itemWidth, gap } = getItemWidthAndGap();
+        const currentSingleWidth = n * (itemWidth + gap);
+        const parentWidth = row.parentElement ? row.parentElement.clientWidth : 0;
+        if (parentWidth > 0 && currentSingleWidth - gap <= parentWidth) {
+            leftBtn.style.display = 'none';
+            rightBtn.style.display = 'none';
+            row.style.transition = 'none';
+            row.style.transform = 'none';
+            return false;
+        } else {
+            leftBtn.style.display = 'flex';
+            rightBtn.style.display = 'flex';
+            return true;
+        }
+    }
+
+    originalChildren.slice().reverse().forEach(item => {
+        const clone = item.cloneNode(true);
+        row.insertBefore(clone, row.firstChild);
+    });
+    originalChildren.forEach(item => {
+        const clone = item.cloneNode(true);
+        row.appendChild(clone);
+    });
+
+    let currentIndex = n;
+    let isTransitioning = false;
+
+    function getTranslateX(index) {
+        const { itemWidth, gap } = getItemWidthAndGap();
+        return -index * (itemWidth + gap);
+    }
+
+    function updatePosition(animate = true) {
+        if (!updateLayout()) return;
+        row.style.transition = animate ? 'transform 0.4s ease' : 'none';
+        row.style.transform  = `translateX(${getTranslateX(currentIndex)}px)`;
+    }
+
+    updatePosition(false);
+    window.addEventListener('load',   () => updatePosition(false));
+    window.addEventListener('resize', () => updatePosition(false));
+
+    rightBtn.addEventListener('click', function () {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        currentIndex++;
+        updatePosition(true);
+    });
+
+    leftBtn.addEventListener('click', function () {
+        if (isTransitioning) return;
+        isTransitioning = true;
+        currentIndex--;
+        updatePosition(true);
+    });
+
+    row.addEventListener('transitionend', function () {
+        isTransitioning = false;
+        if (currentIndex >= 2 * n) { currentIndex -= n; updatePosition(false); }
+        else if (currentIndex < n)  { currentIndex += n; updatePosition(false); }
+    });
+});
+</script>
+{% endblock %}

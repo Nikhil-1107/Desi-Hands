@@ -1,0 +1,498 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Contact Us" %} | DesiHands{% endblock %}
+
+{% block extra_css %}
+<style>
+
+/* ---------- Contact Hero (matching about-hero) ---------- */
+.contact-hero {
+    padding: 7rem 0;
+    position: relative;
+    overflow: hidden;
+    background-image: url('/media/about.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    text-align: center;
+}
+.contact-hero::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(20, 14, 8, 0.55) 0%,
+        rgba(20, 14, 8, 0.70) 60%,
+        rgba(20, 14, 8, 0.80) 100%
+    );
+    z-index: 0;
+}
+.contact-hero .container {
+    position: relative;
+    z-index: 1;
+}
+.contact-hero .hero-top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 0.5rem;
+}
+.contact-hero .hero-divider {
+    width: 40px;
+    height: 1px;
+    background-color: rgba(255, 255, 255, 0.35);
+}
+.contact-hero .hero-icon {
+    color: var(--gold);
+    font-size: 1.2rem;
+}
+.contact-hero .hero-label {
+    color: var(--gold);
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 3px;
+    margin-top: 0.8rem;
+    text-transform: uppercase;
+}
+.contact-hero-title {
+    font-family: var(--font-display);
+    font-size: clamp(2.2rem, 4.5vw, 3.4rem);
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1.18;
+    margin: 1.25rem 0 1rem;
+    text-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
+}
+.contact-hero-subtitle {
+    font-family: var(--font-body);
+    font-size: 1rem;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.92);
+    max-width: 600px;
+    margin: 0 auto;
+    line-height: 1.75;
+}
+
+/* ---------- Contact Section Layout ---------- */
+.contact-section {
+    padding: 6rem 0;
+    background-color: var(--warm-white);
+}
+
+.contact-eyebrow {
+    display: inline-block;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.6rem;
+}
+.contact-section-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.7rem, 3vw, 2.3rem);
+    font-weight: 600;
+    color: var(--brown-dark);
+    margin-bottom: 1.5rem;
+    line-height: 1.2;
+}
+
+/* ---------- Contact Info Card ---------- */
+.contact-info-card {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    margin-bottom: 24px;
+    box-shadow: 0 4px 15px rgba(44, 35, 24, 0.03);
+    display: flex;
+    align-items: flex-start;
+    gap: 20px;
+    transition: all 0.3s ease;
+}
+.contact-info-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(139, 103, 68, 0.08);
+    border-color: var(--accent);
+}
+.contact-info-icon {
+    font-size: 1.6rem;
+    color: var(--accent);
+    background: var(--parchment);
+    width: 50px;
+    height: 50px;
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+.contact-info-title {
+    font-family: var(--font-display);
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--brown-dark);
+    margin-bottom: 4px;
+}
+.contact-info-text {
+    font-family: var(--font-body);
+    font-size: 0.92rem;
+    color: var(--brown-body);
+    line-height: 1.6;
+    margin-bottom: 0;
+}
+
+/* ---------- Contact Form Wrapper ---------- */
+.contact-form-wrap {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 40px;
+    box-shadow: 0 4px 20px rgba(44, 35, 24, 0.04);
+}
+.contact-form-wrap .form-label {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.82rem;
+    color: var(--brown-dark);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.contact-form-wrap .form-control {
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: var(--brown-dark);
+    transition: all 0.25s ease;
+}
+.contact-form-wrap .form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196, 154, 90, 0.15);
+}
+.btn-contact-submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 14px 32px;
+    background: linear-gradient(135deg, #c89a63, #9b744d);
+    color: #fff;
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.8rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    border-radius: 50px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(180, 136, 92, 0.25);
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.btn-contact-submit:hover {
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(180, 136, 92, 0.35);
+}
+.btn-contact-submit i {
+    font-size: 1rem;
+    transition: transform 0.3s ease;
+}
+.btn-contact-submit:hover i {
+    transform: translateX(4px);
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<style>
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+</style>
+
+<div id="page-skeleton">
+  <section class="contact-hero">
+    <div class="container">
+      <div class="hero-top">
+        <div class="sk" style="height:1px;width:40px;border-radius:4px;background:rgba(255,255,255,0.35);"></div>
+        <div class="sk" style="width:22px;height:22px;border-radius:50%;background:rgba(200,149,95,0.35);"></div>
+        <div class="sk" style="height:1px;width:40px;border-radius:4px;background:rgba(255,255,255,0.35);"></div>
+      </div>
+      <div class="sk" style="height:11px;width:170px;border-radius:30px;margin:18px auto 0;background:rgba(255,255,255,0.12);"></div>
+      <div class="sk" style="height:56px;width:560px;border-radius:6px;margin:14px auto 0;background:rgba(255,255,255,0.12);"></div>
+      <div class="sk" style="height:14px;width:520px;border-radius:4px;margin:10px auto 0;background:rgba(255,255,255,0.15);"></div>
+      <div class="sk" style="height:14px;width:430px;border-radius:4px;margin:8px auto 0;background:rgba(255,255,255,0.15);"></div>
+    </div>
+  </section>
+
+  <section class="contact-section">
+    <div class="container">
+      <div class="row g-5">
+        <div class="col-12 col-lg-5">
+          <div class="sk" style="height:11px;width:170px;border-radius:30px;margin-bottom:14px;"></div>
+          <div class="sk" style="height:44px;width:420px;border-radius:6px;margin-bottom:16px;"></div>
+          <div class="sk" style="height:14px;width:100%;border-radius:4px;margin-bottom:12px;"></div>
+          <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-bottom:12px;"></div>
+          <div class="contact-info-card">
+            <div class="sk" style="width:50px;height:50px;border-radius:14px;"></div>
+            <div style="flex:1;margin-left:18px;">
+              <div class="sk" style="height:18px;width:160px;border-radius:6px;margin-bottom:10px;"></div>
+              <div class="sk" style="height:14px;width:100%;border-radius:4px;margin-bottom:8px;"></div>
+              <div class="sk" style="height:14px;width:80%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div class="contact-info-card">
+            <div class="sk" style="width:50px;height:50px;border-radius:14px;"></div>
+            <div style="flex:1;margin-left:18px;">
+              <div class="sk" style="height:18px;width:120px;border-radius:6px;margin-bottom:10px;"></div>
+              <div class="sk" style="height:14px;width:100%;border-radius:4px;margin-bottom:8px;"></div>
+              <div class="sk" style="height:14px;width:85%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div class="contact-info-card" style="margin-bottom:0;">
+            <div class="sk" style="width:50px;height:50px;border-radius:14px;"></div>
+            <div style="flex:1;margin-left:18px;">
+              <div class="sk" style="height:18px;width:160px;border-radius:6px;margin-bottom:10px;"></div>
+              <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-bottom:8px;"></div>
+              <div class="sk" style="height:14px;width:78%;border-radius:4px;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-7">
+          <div class="contact-form-wrap">
+            <div class="sk" style="height:22px;width:360px;border-radius:6px;margin-bottom:26px;"></div>
+            <div class="row g-3">
+              <div class="col-12 col-md-6">
+                <div class="sk" style="height:12px;width:140px;border-radius:4px;margin-bottom:8px;"></div>
+                <div class="sk" style="height:44px;width:100%;border-radius:12px;"></div>
+              </div>
+              <div class="col-12 col-md-6">
+                <div class="sk" style="height:12px;width:160px;border-radius:4px;margin-bottom:8px;"></div>
+                <div class="sk" style="height:44px;width:100%;border-radius:12px;"></div>
+              </div>
+              <div class="col-12">
+                <div class="sk" style="height:12px;width:120px;border-radius:4px;margin-bottom:8px;"></div>
+                <div class="sk" style="height:44px;width:100%;border-radius:12px;"></div>
+              </div>
+              <div class="col-12">
+                <div class="sk" style="height:12px;width:90px;border-radius:4px;margin-bottom:8px;"></div>
+                <div class="sk" style="height:110px;width:100%;border-radius:12px;"></div>
+              </div>
+              <div class="col-12 mt-4">
+                <div class="sk" style="height:48px;width:100%;border-radius:50px;"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-content" style="display:none;">
+
+<!-- Contact Hero -->
+<section class="contact-hero">
+    <div class="container">
+        <div class="hero-top">
+            <div class="hero-divider"></div>
+            <div class="hero-icon"><i class="bi bi-flower1"></i></div>
+            <div class="hero-divider"></div>
+        </div>
+        <div class="hero-label">{% translate "CONTACT US" %}</div>
+        <h1 class="contact-hero-title">{% translate "Let's Connect" %}</h1>
+        <p class="contact-hero-subtitle">
+            {% translate "We are here to support India's local artisans and assist you in finding the perfect, authentic handmade products." %}
+        </p>
+    </div>
+</section>
+
+<!-- Contact Form and Details Section -->
+<section class="contact-section">
+    <div class="container">
+        <div class="row g-5">
+            
+            <!-- Left Column: Contact Cards -->
+            <div class="col-12 col-lg-5">
+                <span class="contact-eyebrow">{% translate "Get In Touch" %}</span>
+                <h2 class="contact-section-title">{% translate "We'd Love to Hear From You" %}</h2>
+                <p class="text-muted mb-5" style="font-size: 0.95rem; line-height: 1.7;">
+                    {% translate "Whether you have queries about your orders, seek custom artisan pieces, or want to register as an independent creator, choose any of our support channels below." %}
+                </p>
+
+                <!-- Address Card -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-geo-alt"></i>
+                    </div>
+                    <div>
+                        <h4 class="contact-info-title">{% translate "Artisan Hub" %}</h4>
+                        <p class="contact-info-text">
+                            128, Craft House, Jaipur Road,<br>
+                            Rajasthan, India - 302001
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Email Card -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-envelope-open"></i>
+                    </div>
+                    <div>
+                        <h4 class="contact-info-title">{% translate "Email Us" %}</h4>
+                        <p class="contact-info-text">
+                            support@desihands.com<br>
+                            sellers@desihands.com
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Call Card -->
+                <div class="contact-info-card">
+                    <div class="contact-info-icon">
+                        <i class="bi bi-telephone"></i>
+                    </div>
+                    <div>
+                        <h4 class="contact-info-title">{% translate "Call / WhatsApp" %}</h4>
+                        <p class="contact-info-text">
+                            +91 98765 43210<br>
+                            Mon - Sat, 9:00 AM to 6:00 PM
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column: Contact Form -->
+            <div class="col-12 col-lg-7">
+                <div class="contact-form-wrap">
+                    <h3 class="h4 mb-4" style="font-family: var(--font-display); font-weight: 700; color: var(--brown-dark);">{% translate "Send Us a Message" %}</h3>
+                    
+                    <form method="post" action="{% url 'core:contact' %}">
+                        {% csrf_token %}
+                        
+                        <div class="row g-3">
+                            <!-- Name -->
+                            <div class="col-12 col-md-6">
+                                <label for="contactName" class="form-label">{% translate "Full Name" %}</label>
+                                <input type="text" class="form-control" id="contactName" name="name" placeholder="John Doe" required>
+                            </div>
+
+                            <!-- Email -->
+                            <div class="col-12 col-md-6">
+                                <label for="contactEmail" class="form-label">{% translate "Email Address" %}</label>
+                                <input type="email" class="form-control" id="contactEmail" name="email" placeholder="john@example.com" required>
+                            </div>
+
+                            <!-- Subject -->
+                            <div class="col-12">
+                                <label for="contactSubject" class="form-label">{% translate "Subject" %}</label>
+                                <input type="text" class="form-control" id="contactSubject" name="subject" placeholder="Artisan Inquiry / Order Help" required>
+                            </div>
+
+                            <!-- Message -->
+                            <div class="col-12">
+                                <label for="contactMessage" class="form-label">{% translate "Message" %}</label>
+                                <textarea class="form-control" id="contactMessage" name="message" rows="5" placeholder="Write your message here..." required></textarea>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <div class="col-12 mt-4">
+                                <button type="submit" class="btn-contact-submit">
+                                    <span>{% translate "Send Message" %}</span>
+                                    <i class="bi bi-send"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</section>
+
+{% if messages %}
+    {% for message in messages %}
+        {% if 'success' in message.tags %}
+        <!-- Success Modal Popup -->
+        <div class="modal fade show" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true" style="display: block; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(4px); z-index: 1060;">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content border-0 rounded-4 shadow-lg overflow-hidden" style="background-color: #ffffff;">
+                    <div class="modal-header border-0 pb-0 d-flex justify-content-end p-3">
+                        <button type="button" class="btn-close" onclick="closeSuccessModal()" aria-label="Close" style="box-shadow: none;"></button>
+                    </div>
+                    <div class="modal-body text-center px-4 pb-5 pt-0">
+                        <div class="mb-4 d-inline-flex align-items-center justify-content-center rounded-circle" style="width: 80px; height: 80px; background-color: #e8f5e9; color: #2e7d32;">
+                            <i class="bi bi-check-circle-fill" style="font-size: 3rem; line-height: 1;"></i>
+                        </div>
+                        <h4 class="fw-bold mb-2" style="font-family: var(--font-display); color: #2c2318;">{% translate "Message Sent!" %}</h4>
+                        <p class="text-secondary mb-4 px-3" style="font-size: 0.95rem;">{{ message }}</p>
+                        <button type="button" class="btn px-5 py-2.5 rounded-pill fw-semibold text-white shadow-sm" style="background: linear-gradient(135deg, #c89a63, #9b744d); border: none;" onclick="closeSuccessModal()">
+                            {% translate "Awesome" %}
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            function closeSuccessModal() {
+                const modal = document.getElementById('successModal');
+                modal.classList.remove('show');
+                setTimeout(() => {
+                    modal.style.display = 'none';
+                }, 150);
+            }
+            // Auto close after 5 seconds
+            setTimeout(closeSuccessModal, 5000);
+        </script>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+setTimeout(function () {
+  var sk = document.getElementById('page-skeleton');
+  var pg = document.getElementById('page-content');
+  if (sk) sk.style.display = 'none';
+  if (pg) {
+    pg.style.opacity = '0';
+    pg.style.display = '';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        pg.style.opacity = '1';
+      });
+    });
+  }
+}, 500);
+</script>
+{% endblock %}
+

@@ -1,0 +1,291 @@
+{% load static i18n %}
+<!DOCTYPE html>
+{% get_current_language as LANGUAGE_CODE %}
+<html lang="{{ LANGUAGE_CODE }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}DesiHands{% endblock %}</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <script type="text/javascript">
+    (function(c,l,a,r,i,t,y){
+        c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+        t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+        y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+    })(window, document, "clarity", "script", "xbz6k4mu59");
+    </script>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white border-bottom sticky-top">
+        <div class="container">
+            <a class="navbar-brand custom-logo" href="/">
+                <img src="/media/logo.jpeg" alt="DesiHands Logo">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNavbar"
+                    aria-controls="mainNavbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNavbar">
+                <ul class="navbar-nav mx-auto premium-nav">
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="/">{% translate "HOME" %}</a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:product_list' %}">
+                            {% translate "PRODUCTS" %}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:category_list' %}">
+                            {% translate "CATEGORIES" %}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:about' %}">
+                            {% translate "ABOUT" %}
+                        </a>
+                    </li>
+
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'core:contact' %}">
+                            {% translate "CONTACT" %}
+                        </a>
+                    </li>
+
+                </ul>
+                <ul class="navbar-nav ms-auto align-items-center nav-icons">
+
+                    <!-- Language Switcher -->
+                    <li class="nav-item dropdown lang-switcher me-2">
+                        <a class="lang-switcher-btn d-flex align-items-center gap-2 py-1 px-2" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="bi bi-globe2 lang-switcher-icon" aria-hidden="true"></i>
+                            <span class="lang-switcher-label">
+                                {% if LANGUAGE_CODE == 'hi' %}
+                                    हिन्दी
+                                {% else %}
+                                    English
+                                {% endif %}
+                            </span>
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end lang-switcher-menu" aria-labelledby="langDropdown">
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="lang-switcher-form">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                    <input name="language" type="hidden" value="en">
+                                    <button type="submit" class="lang-option-btn d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE != 'hi' %}active{% endif %}">
+                                        <span>🇬🇧 English</span>
+                                        {% if LANGUAGE_CODE != 'hi' %}<i class="bi bi-check ms-2"></i>{% endif %}
+                                    </button>
+                                </form>
+                            </li>
+                            <li>
+                                <form action="{% url 'set_language' %}" method="post" class="lang-switcher-form">
+                                    {% csrf_token %}
+                                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                                    <input name="language" type="hidden" value="hi">
+                                    <button type="submit" class="lang-option-btn d-flex align-items-center justify-content-between py-2 {% if LANGUAGE_CODE == 'hi' %}active{% endif %}">
+                                        <span>🇮🇳 हिन्दी</span>
+                                        {% if LANGUAGE_CODE == 'hi' %}<i class="bi bi-check ms-2"></i>{% endif %}
+                                    </button>
+                                </form>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    {% if request.session.registration_email %}
+
+                    <!-- Cart -->
+                    <li class="nav-item">
+                        <a class="nav-link icon-link cart-icon"
+                        href="{% url 'core:cart' %}">
+
+                            <i class="bi bi-bag-check"></i>
+
+                            <span class="cart-badge">
+                                {{ cart_count|default:0 }}
+                            </span>
+
+                        </a>
+                    </li>
+
+                    <!-- Profile -->
+                    <li class="nav-item dropdown">
+
+                        <a class="nav-link icon-link profile-icon"
+                        href="#"
+                        id="profileDropdown"
+                        role="button"
+                        data-bs-toggle="dropdown">
+
+                            <i class="bi bi-person-circle"></i>
+
+                        </a>
+
+                        <ul class="dropdown-menu dropdown-menu-end border shadow-sm premium-dropdown" aria-labelledby="profileDropdown">
+                            <li class="px-3 py-2 border-bottom bg-light rounded-top-2">
+                                <span class="d-block fw-semibold text-truncate small" style="color: var(--brown-dark);">
+                                    {{ request.session.registration_name|default:"My Account" }}
+                                </span>
+                                <span class="d-block text-muted text-truncate" style="font-size: 0.75rem;">
+                                    {{ request.session.registration_email }}
+                                </span>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="{% url 'core:profile' %}?tab=profile">
+                                    <i class="bi bi-person me-2 text-primary"></i> {% translate "My Profile" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="{% url 'core:profile' %}?tab=orders">
+                                    <i class="bi bi-bag-check me-2 text-primary"></i> {% translate "My Orders" %}
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item py-2" href="{% url 'core:profile' %}?tab=password">
+                                    <i class="bi bi-shield-lock me-2 text-primary"></i> {% translate "Change Password" %}
+                                </a>
+                            </li>
+                            <li><hr class="dropdown-divider my-1"></li>
+                            <li>
+                                <a class="dropdown-item py-2 text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                                    <i class="bi bi-box-arrow-right me-2"></i> {% translate "Logout" %}
+                                </a>
+                            </li>
+
+                        </ul>
+
+                    </li>
+
+                    {% else %}
+
+                    <li class="nav-item premium-auth">
+
+                        <a href="{% url 'core:login' %}" class="premium-login-btn">
+                            <i class="bi bi-person"></i>
+                            <span>{% translate "Login" %}</span>
+                        </a>
+
+                        <a href="{% url 'core:register' %}" class="premium-register-btn">
+                            <i class="bi bi-person-plus"></i>
+                            <span>{% translate "Register" %}</span>
+                            <i class="bi bi-arrow-right"></i>
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <main class="main-content">
+
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer pt-5 pb-4">
+        <div class="container">
+
+        
+
+            <!-- ===== Main Footer Columns ===== -->
+            <div class="row g-5 footer-main-row">
+
+                <div class="col-12 col-lg-4">
+                    <div class="footer-brand">
+                        <a href="/" class="footer-logo-link">
+                            <img src="/media/logo.jpeg" alt="DesiHands Logo" class="footer-logo">
+                        </a>
+                        <p class="footer-text">
+                            {% translate "DesiHands connects customers with handcrafted products inspired by local skill, culture, and care." %}
+                        </p>
+                    </div>
+                    <div class="footer-social">
+                        <a href="#" aria-label="Facebook"><i class="bi bi-facebook"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#" aria-label="Pinterest"><i class="bi bi-pinterest"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2">
+                    <h5 class="footer-title">{% translate "Quick Links" %}</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="/"><i class="bi bi-chevron-right"></i>{% translate "Home" %}</a></li>
+                        <li><a href="{% url 'core:category_list' %}"><i class="bi bi-chevron-right"></i>{% translate "Categories" %}</a></li>
+                        <li><a href="{% url 'core:product_list' %}"><i class="bi bi-chevron-right"></i>{% translate "Products" %}</a></li>
+                        <li><a href="{% url 'core:about' %}"><i class="bi bi-chevron-right"></i>{% translate "About" %}</a></li>
+                        <li><a href="{% url 'core:contact' %}"><i class="bi bi-chevron-right"></i>{% translate "Contact" %}</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-3">
+                    <h5 class="footer-title">{% translate "Customer Service" %}</h5>
+                    <ul class="footer-links list-unstyled">
+                        <li><a href="{% url 'core:profile' %}"><i class="bi bi-chevron-right"></i>{% translate "My Account" %}</a></li>
+                        <li><a href="{% url 'core:cart' %}"><i class="bi bi-chevron-right"></i>{% translate "My Cart" %}</a></li>
+                        <li><a href="/#faq"><i class="bi bi-chevron-right"></i>{% translate "FAQs" %}</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i>{% translate "Shipping Policy" %}</a></li>
+                        <li><a href="#"><i class="bi bi-chevron-right"></i>{% translate "Privacy Policy" %}</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-12 col-md-4 col-lg-3">
+                    <h5 class="footer-title">{% translate "Contact Information" %}</h5>
+                    <ul class="footer-contact list-unstyled">
+                        <li><i class="bi bi-envelope"></i>support@desihands.com</li>
+                        <li><i class="bi bi-telephone"></i>+91 98765 43210</li>
+                        <li><i class="bi bi-geo-alt"></i>{% translate "India" %}</li>
+                        <li><i class="bi bi-clock"></i>{% translate "Mon – Sat, 9:00 AM – 7:00 PM" %}</li>
+                    </ul>
+                </div>
+
+            </div>
+
+        </div>
+    </footer>
+
+    <!-- Logout Confirmation Modal -->
+    <div class="modal fade" id="logoutModal" tabindex="-1" aria-labelledby="logoutModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" style="max-width: 400px;">
+            <div class="modal-content border-0 shadow-lg" style="border-radius: 16px; background-color: var(--warm-white);">
+                <div class="modal-header border-0 pb-0 justify-content-end">
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center pt-0 px-4 pb-4">
+                    <div class="mb-3 mx-auto d-flex align-items-center justify-content-center rounded-circle" style="width: 60px; height: 60px; background-color: rgba(220, 53, 69, 0.1); color: #dc3545;">
+                        <i class="bi bi-box-arrow-right" style="font-size: 1.8rem;"></i>
+                    </div>
+                    <h4 class="modal-title fw-bold mb-2" id="logoutModalLabel" style="color: var(--brown-dark);">{% translate "Confirm Logout" %}</h4>
+                    <p class="text-muted mb-4" style="font-size: 0.9rem;">{% translate "Are you sure you want to log out of your DesiHands account?" %}</p>
+                    <div class="d-flex gap-3 justify-content-center">
+                        <button type="button" class="btn px-4 py-2 fw-semibold" data-bs-dismiss="modal" style="border-radius: 8px; border: 1px solid var(--border); color: var(--brown-mid); background-color: transparent; font-size: 0.85rem;">{% translate "Cancel" %}</button>
+                        <a href="{% url 'core:logout' %}" class="btn px-4 py-2 text-white fw-semibold" style="border-radius: 8px; background: linear-gradient(135deg, #8B6744, #6D5235); border: none; font-size: 0.85rem;">{% translate "Logout" %}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

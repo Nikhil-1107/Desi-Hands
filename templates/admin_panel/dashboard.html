@@ -1,0 +1,347 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Dashboard" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_dashboard %}active{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <div>
+        <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Dashboard Overview" %}</h1>
+        <p class="text-muted mb-0">{% translate "Welcome back! Here's what is happening on DesiHands today." %}</p>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Total Users" %}</div>
+                <div class="stat-card-value">{{ stats.total_users }}</div>
+            </div>
+            <div class="stat-card-icon">
+                <i class="bi bi-people"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Total Categories" %}</div>
+                <div class="stat-card-value">{{ stats.total_categories }}</div>
+            </div>
+            <div class="stat-card-icon">
+                <i class="bi bi-folder2"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Total Products" %}</div>
+                <div class="stat-card-value">{{ stats.total_products }}</div>
+            </div>
+            <div class="stat-card-icon">
+                <i class="bi bi-box-seam"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Total Orders" %}</div>
+                <div class="stat-card-value">{{ stats.total_orders }}</div>
+            </div>
+            <div class="stat-card-icon">
+                <i class="bi bi-cart3"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-3 mb-4">
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100 bg-white position-relative">
+            <div>
+                <select id="revenuePeriodSelect" style="font-size: 0.8rem; letter-spacing: 0.5px; font-weight: 600; text-transform: uppercase; color: var(--admin-text-muted); background: transparent; border: none; padding: 0; margin: 0 0 8px 0; cursor: pointer; outline: none; -webkit-appearance: none; -moz-appearance: none; appearance: none; background-image: url('data:image/svg+xml;charset=US-ASCII,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%2212%22 height=%2212%22 viewBox=%220 0 12 12%22%3E%3Cpath fill=%22%238c857b%22 d=%22M3 5l3 3 3-3z%22/%3E%3C/svg%3E'); background-repeat: no-repeat; background-position: right 0 center; padding-right: 16px;">
+                    <option value="total" selected>{% translate "Total Revenue" %}</option>
+                    <option value="daily">{% translate "Daily Revenue" %}</option>
+                    <option value="weekly">{% translate "Weekly Revenue" %}</option>
+                    <option value="monthly">{% translate "Monthly Revenue" %}</option>
+                    <option value="yearly">{% translate "Yearly Revenue" %}</option>
+                </select>
+                <div class="stat-card-value text-success" id="revenueValue">{% translate "Rs." %} {{ stats.total_revenue|floatformat:2 }}</div>
+            </div>
+            <div class="stat-card-icon text-success bg-light">
+                <i class="bi bi-currency-rupee"></i>
+            </div>
+        </div>
+        <script>
+            document.getElementById('revenuePeriodSelect').addEventListener('change', function() {
+                const values = {
+                    'total': '{% translate "Rs." %} {{ stats.total_revenue|floatformat:2 }}',
+                    'daily': '{% translate "Rs." %} {{ stats.daily_revenue|floatformat:2 }}',
+                    'weekly': '{% translate "Rs." %} {{ stats.weekly_revenue|floatformat:2 }}',
+                    'monthly': '{% translate "Rs." %} {{ stats.monthly_revenue|floatformat:2 }}',
+                    'yearly': '{% translate "Rs." %} {{ stats.yearly_revenue|floatformat:2 }}'
+                };
+                document.getElementById('revenueValue').textContent = values[this.value];
+            });
+        </script>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Pending Orders" %}</div>
+                <div class="stat-card-value text-warning">{{ stats.pending_orders }}</div>
+            </div>
+            <div class="stat-card-icon text-warning bg-light">
+                <i class="bi bi-clock-history"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Delivered Orders" %}</div>
+                <div class="stat-card-value text-success">{{ stats.delivered_orders }}</div>
+            </div>
+            <div class="stat-card-icon text-success bg-light">
+                <i class="bi bi-check-circle"></i>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-sm-6 col-lg-3">
+        <div class="admin-card stat-card d-flex align-items-center justify-content-between h-100">
+            <div>
+                <div class="stat-card-title">{% translate "Cancelled Orders" %}</div>
+                <div class="stat-card-value text-danger">{{ stats.cancelled_orders }}</div>
+            </div>
+            <div class="stat-card-icon text-danger bg-light">
+                <i class="bi bi-x-circle"></i>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Charts Section -->
+<div class="row g-4 mb-4">
+    <div class="col-12 col-lg-8">
+        <div class="admin-card p-4 h-100 bg-white">
+            <h5 class="fw-bold mb-3">{% translate "Revenue & Orders Trend (Last 7 Days)" %}</h5>
+            <div style="position: relative; height: 280px;">
+                <canvas id="revenueTrendChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-4">
+        <div class="admin-card p-4 h-100 bg-white">
+            <h5 class="fw-bold mb-3">{% translate "Category Distribution" %}</h5>
+            <div style="position: relative; height: 280px;">
+                <canvas id="categorySalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row g-4 mb-4">
+    <div class="col-12 col-lg-6">
+        <div class="admin-card p-4 bg-white">
+            <h5 class="fw-bold mb-3">{% translate "Monthly Sales Trend" %}</h5>
+            <div style="position: relative; height: 260px;">
+                <canvas id="monthlySalesChart"></canvas>
+            </div>
+        </div>
+    </div>
+    <div class="col-12 col-lg-6">
+        <div class="admin-card p-4 bg-white">
+            <h5 class="fw-bold mb-3">{% translate "Order Status Distribution" %}</h5>
+            <div style="position: relative; height: 260px;">
+                <canvas id="orderStatusChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Activity Tables -->
+<div class="row g-4 mb-4">
+    <!-- Latest Orders -->
+    <div class="col-12 col-xl-6">
+        <div class="admin-table-container">
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
+                <h5 class="mb-0 fw-bold">{% translate "Recent Orders" %}</h5>
+                <a href="{% url 'core:admin_order_list' %}" class="btn btn-sm btn-outline-secondary">{% translate "View All" %}</a>
+            </div>
+            <table class="table admin-table align-middle">
+                <thead>
+                    <tr>
+                        <th>{% translate "Order ID" %}</th>
+                        <th>{% translate "Customer" %}</th>
+                        <th>{% translate "Status" %}</th>
+                        <th>{% translate "Amount" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for o in latest_orders %}
+                    <tr>
+                        <td><a href="{% url 'core:admin_order_details' o.pk %}" class="text-decoration-none fw-bold text-dark">{{ o.order_id }}</a></td>
+                        <td>{{ o.user.fullname }}</td>
+                        <td><span class="admin-badge badge-{{ o.order_status|lower }}">{% translate o.order_status %}</span></td>
+                        <td>{% translate "Rs." %} {{ o.total_amount }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">{% translate "No recent orders." %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Latest Users -->
+    <div class="col-12 col-xl-6">
+        <div class="admin-table-container">
+            <div class="p-3 border-bottom d-flex justify-content-between align-items-center bg-white">
+                <h5 class="mb-0 fw-bold">{% translate "Recent Users" %}</h5>
+                <a href="{% url 'core:admin_user_list' %}" class="btn btn-sm btn-outline-secondary">{% translate "View All" %}</a>
+            </div>
+            <table class="table admin-table align-middle">
+                <thead>
+                    <tr>
+                        <th>{% translate "Name" %}</th>
+                        <th>{% translate "Email" %}</th>
+                        <th>{% translate "Mobile" %}</th>
+                        <th>{% translate "City" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for u in latest_users %}
+                    <tr>
+                        <td><a href="{% url 'core:admin_user_details' u.pk %}" class="text-decoration-none fw-bold text-dark">{{ u.fullname }}</a></td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.mobile }}</td>
+                        <td>{{ u.city }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="text-center text-muted">{% translate "No recent users." %}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<!-- Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // 1. Revenue & Orders Trend
+    const trendCtx = document.getElementById('revenueTrendChart').getContext('2d');
+    new Chart(trendCtx, {
+        type: 'line',
+        data: {
+            labels: {{ day_labels|safe }},
+            datasets: [
+                {
+                    label: '{% translate "Revenue (Rs.)" %}',
+                    data: {{ revenue_values|safe }},
+                    borderColor: '#8b6744',
+                    backgroundColor: 'rgba(139, 103, 68, 0.1)',
+                    fill: true,
+                    tension: 0.3,
+                    yAxisID: 'y'
+                },
+                {
+                    label: '{% translate "Orders Count" %}',
+                    data: {{ orders_values|safe }},
+                    borderColor: '#2c2318',
+                    backgroundColor: 'transparent',
+                    borderDash: [5, 5],
+                    tension: 0.3,
+                    yAxisID: 'y1'
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                y: {
+                    type: 'linear',
+                    display: true,
+                    position: 'left',
+                    grid: { drawOnChartArea: false }
+                },
+                y1: {
+                    type: 'linear',
+                    display: true,
+                    position: 'right',
+                    grid: { drawOnChartArea: false },
+                    ticks: { stepSize: 1 }
+                }
+            }
+        }
+    });
+
+    // 2. Category Distribution
+    const catCtx = document.getElementById('categorySalesChart').getContext('2d');
+    new Chart(catCtx, {
+        type: 'doughnut',
+        data: {
+            labels: {{ cat_labels|safe }},
+            datasets: [{
+                data: {{ cat_values|safe }},
+                backgroundColor: ['#8b6744', '#c89a63', '#a67d53', '#e4d3c2', '#4b3b27']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+
+    // 3. Monthly Sales
+    const monthCtx = document.getElementById('monthlySalesChart').getContext('2d');
+    new Chart(monthCtx, {
+        type: 'bar',
+        data: {
+            labels: {{ monthly_sales_labels|safe }},
+            datasets: [{
+                label: '{% translate "Monthly Sales (Rs.)" %}',
+                data: {{ monthly_sales_values|safe }},
+                backgroundColor: 'rgba(200, 154, 99, 0.7)',
+                borderColor: '#c89a63',
+                borderWidth: 1
+            }]
+        },
+        options: { responsive: true, maintainAspectRatio: false }
+    });
+
+    // 4. Order Status Distribution
+    const statusCtx = document.getElementById('orderStatusChart').getContext('2d');
+    new Chart(statusCtx, {
+        type: 'pie',
+        data: {
+            labels: ['{% translate "Pending" %}', '{% translate "Confirmed" %}', '{% translate "Shipped" %}', '{% translate "Delivered" %}', '{% translate "Cancelled" %}'],
+            datasets: [{
+                data: [
+                    {{ stats.pending_orders }},
+                    {{ stats.total_orders }} - {{ stats.pending_orders }} - {{ stats.delivered_orders }} - {{ stats.cancelled_orders }},
+                    0, // Shipped defaults
+                    {{ stats.delivered_orders }},
+                    {{ stats.cancelled_orders }}
+                ],
+                backgroundColor: ['#ffc107', '#0d6efd', '#198754', '#28a745', '#dc3545']
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,74 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Contact Message Details" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_contacts %}active{% endblock %}
+
+{% block admin_content %}
+<div class="mb-4">
+    <a href="{% url 'core:admin_contact_message_list' %}" class="btn btn-link text-decoration-none p-0 mb-3" style="color: var(--admin-primary);">
+        <i class="bi bi-arrow-left"></i> {% translate "Back to Messages" %}
+    </a>
+    <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Message Detail" %}</h1>
+    <p class="text-muted">{% translate "Review visitor's message details and send a direct reply to their email address." %}</p>
+</div>
+
+<div class="row g-4">
+    <!-- Left Column: Message Detail Card -->
+    <div class="col-12 col-lg-7">
+        <div class="admin-card p-4 bg-white mb-4">
+            <div class="d-flex justify-content-between align-items-start border-bottom pb-3 mb-3">
+                <div>
+                    <h4 class="fw-bold mb-1" style="color: var(--admin-primary-dark);">{{ msg.subject }}</h4>
+                    <p class="text-muted mb-0" style="font-size: 0.9rem;">{% translate "From" %}: <strong class="text-dark">{{ msg.name }}</strong> ({{ msg.email }})</p>
+                </div>
+                <div>
+                    {% if msg.replied %}
+                        <span class="badge bg-success-subtle text-success border border-success-subtle px-2.5 py-1">{% translate "Replied" %}</span>
+                    {% else %}
+                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle px-2.5 py-1">{% translate "Pending Reply" %}</span>
+                    {% endif %}
+                </div>
+            </div>
+            
+            <div class="mb-4">
+                <label class="form-label text-muted fw-bold small text-uppercase" style="letter-spacing: 0.5px;">{% translate "Message Content" %}</label>
+                <div class="p-3 bg-light rounded-3 text-dark" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem;">{{ msg.message }}</div>
+            </div>
+            
+            <div class="text-muted small">
+                {% blocktrans with received_at=msg.created_at|date:"F d, Y h:i A" %}Received on: {{ received_at }}{% endblocktrans %}
+            </div>
+        </div>
+
+        {% if msg.replied %}
+        <!-- Reply History Card -->
+        <div class="admin-card p-4 bg-white border border-success-subtle">
+            <h5 class="fw-bold text-success mb-3"><i class="bi bi-reply-all-fill"></i> {% translate "Sent Reply Details" %}</h5>
+            <div class="p-3 bg-success-subtle bg-opacity-10 rounded-3 text-dark mb-2" style="white-space: pre-wrap; line-height: 1.6; font-size: 0.95rem;">{{ msg.reply_message }}</div>
+            <p class="text-muted small mb-0">{% blocktrans with email=msg.email %}You replied to this inquiry. A copy of the message has been sent to {{ email }}.{% endblocktrans %}</p>
+        </div>
+        {% endif %}
+    </div>
+
+    <!-- Right Column: Reply Editor -->
+    <div class="col-12 col-lg-5">
+        <div class="admin-card p-4 bg-white">
+            <h4 class="fw-bold mb-3" style="color: var(--admin-primary-dark);">{% translate "Send Reply" %}</h4>
+            <p class="text-muted small mb-4">{% blocktrans with email=msg.email %}Draft a reply below. Submitting will send an official response email to <strong class="text-dark">{{ email }}</strong> using your SMTP email server.{% endblocktrans %}</p>
+            
+            <form method="post" action="{% url 'core:admin_contact_message_reply' msg.id %}">
+                {% csrf_token %}
+                <div class="mb-4">
+                    <label for="reply_message" class="form-label fw-semibold">{% translate "Reply Body" %}</label>
+                    <textarea class="form-control admin-form-control" id="reply_message" name="reply_message" rows="8" placeholder="{% translate 'Type your response here...' %}" required></textarea>
+                </div>
+                
+                <button type="submit" class="btn btn-primary btn-admin w-100" style="background-color: var(--admin-primary); border-color: var(--admin-primary);">
+                    <i class="bi bi-send-fill"></i> {% translate "Send Response Email" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

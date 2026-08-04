@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Login" %} | DesiHands{% endblock %}
+
+{% block content %}
+<section class="auth-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-md-7 col-lg-5">
+                <div class="auth-card bg-white border rounded-3 p-4 p-md-5">
+                    <h1 class="h3 mb-4">{% translate "Login" %}</h1>
+
+                    <form method="post" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors|striptags }}
+                            </div>
+                        {% endif %}
+
+                        <div class="mb-3">
+                            <label class="form-label" for="{{ form.email.id_for_label }}">{% translate "Email" %}</label>
+                            {{ form.email }}
+                            {% if form.email.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.email.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <div class="mb-4">
+                            <label class="form-label" for="{{ form.password.id_for_label }}">{% translate "Password" %}</label>
+                            {{ form.password }}
+                            {% if form.password.errors %}
+                                <div class="invalid-feedback d-block">
+                                    {{ form.password.errors|striptags }}
+                                </div>
+                            {% endif %}
+                        </div>
+
+                        <button class="btn btn-primary w-100" type="submit">{% translate "Login" %}</button>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0">
+                        {% translate "New to DesiHands?" %}
+                        <a href="{% url 'core:register' %}">{% translate "Create an account" %}</a>
+                    </p>
+                    <p class="text-center mt-2 mb-0">
+                        <a href="{% url 'core:admin_login' %}" class="text-muted small">{% translate "Admin Login" %}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

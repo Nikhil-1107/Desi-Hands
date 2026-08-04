@@ -1,0 +1,115 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "User Management" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_users %}active{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "User Management" %}</h1>
+        <p class="text-muted mb-0">{% translate "Manage registered customer accounts, view order history, block or delete accounts." %}</p>
+    </div>
+    <div>
+        <a href="{% url 'core:admin_user_add' %}" class="btn btn-admin btn-admin-primary">
+            <i class="bi bi-person-plus me-1"></i> {% translate "Add User" %}
+        </a>
+    </div>
+</div>
+
+<!-- Search Card -->
+<div class="admin-card p-4 mb-4 bg-white">
+    <form method="get" action="{% url 'core:admin_user_list' %}" class="row g-3">
+        <div class="col-12 col-md-8">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0 admin-form-control" name="q" value="{{ query }}" placeholder="{% translate 'Search users by name, email, or mobile...' %}">
+            </div>
+        </div>
+        <div class="col-12 col-md-4 d-grid">
+            <button type="submit" class="btn btn-outline-secondary btn-admin">{% translate "Apply Search" %}</button>
+        </div>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="admin-table-container">
+
+
+
+    <table class="table admin-table align-middle">
+        <thead>
+            <tr>
+                <th style="width: 70px;">{% translate "Avatar" %}</th>
+                <th>{% translate "Full Name" %}</th>
+                <th>{% translate "Email Address" %}</th>
+                <th>{% translate "Mobile Number" %}</th>
+                <th>{% translate "City" %}</th>
+                <th>{% translate "Status" %}</th>
+                <th>{% translate "Joined Date" %}</th>
+                <th style="width: 140px;" class="text-end">{% translate "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for customer in users %}
+            <tr>
+                <td>
+                    {% if customer.profile_image %}
+                        <img src="{{ customer.profile_image.url }}" alt="{{ customer.fullname }}" class="rounded-circle" style="width: 40px; height: 40px; object-fit: cover;">
+                    {% else %}
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted fw-bold" style="width: 40px; height: 40px;">
+                            {{ customer.fullname|slice:":1" }}
+                        </div>
+                    {% endif %}
+                </td>
+                <td><strong class="text-dark">{{ customer.fullname }}</strong></td>
+                <td>{{ customer.email }}</td>
+                <td>{{ customer.mobile }}</td>
+                <td>{{ customer.city }}</td>
+                <td>
+                    {% if customer.is_blocked %}
+                        <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-1">{% translate "Blocked" %}</span>
+                    {% else %}
+                        <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1">{% translate "Active" %}</span>
+                    {% endif %}
+                </td>
+                <td>{{ customer.created_at|date:"M d, Y" }}</td>
+                <td class="text-end">
+                    <a href="{% url 'core:admin_user_details' customer.pk %}" class="btn btn-sm btn-outline-secondary me-1" title="{% translate 'View Details' %}">
+                        <i class="bi bi-eye"></i>
+                    </a>
+                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ customer.pk }}" title="{% translate 'Delete' %}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal{{ customer.pk }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow" style="border-radius: 16px;">
+                                <div class="modal-header border-bottom-0">
+                                    <h5 class="modal-title fw-bold">{% translate "Delete Customer Account" %}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}"></button>
+                                </div>
+                                <div class="modal-body text-start py-3">
+                                    {% blocktrans with customer_name=customer.fullname %}Are you sure you want to permanently delete the customer account for <strong>{{ customer_name }}</strong>? All cart contents, reviews, and wishlists associated with this user will be removed.{% endblocktrans %}
+                                </div>
+                                <div class="modal-footer border-top-0">
+                                    <button type="button" class="btn btn-light btn-admin" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                                    <a href="{% url 'core:admin_user_delete' customer.pk %}" class="btn btn-danger btn-admin">{% translate "Delete" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center py-4 text-muted">{% translate "No customer accounts found matching your query." %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

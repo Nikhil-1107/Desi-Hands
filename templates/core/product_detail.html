@@ -1,0 +1,452 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load currency_filters %}
+
+{% block title %}{{ product.product_name }} | DesiHands{% endblock %}
+
+{% block content %}
+<style>
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+</style>
+
+<div id="page-skeleton">
+  <section class="py-5">
+    <div class="container">
+      <div class="mb-4">
+        <div class="sk" style="height:30px;width:220px;border-radius:8px;"></div>
+      </div>
+
+      <div class="row g-4 align-items-start">
+        <div class="col-12 col-lg-6">
+          <div class="bg-white border rounded-3 overflow-hidden">
+            <div class="sk" style="height:420px;width:100%;border-radius:0;"></div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="bg-white border rounded-3 p-4 p-md-5">
+            <div class="d-flex flex-wrap gap-2 mb-3">
+              <div class="sk" style="height:22px;width:140px;border-radius:30px;"></div>
+              <div class="sk" style="height:22px;width:120px;border-radius:30px;"></div>
+            </div>
+
+            <div class="sk" style="height:44px;width:88%;border-radius:6px;"></div>
+            <div class="sk" style="height:28px;width:160px;border-radius:6px;"></div>
+            <div class="sk" style="height:14px;width:100%;border-radius:4px;margin-bottom:14px;"></div>
+            <div class="sk" style="height:14px;width:65%;border-radius:4px;margin-bottom:22px;"></div>
+
+            <div class="sk" style="height:28px;width:100%;border-radius:6px;margin-bottom:22px;"></div>
+            <div class="sk" style="height:28px;width:100%;border-radius:6px;margin-bottom:22px;"></div>
+            <div class="sk" style="height:28px;width:100%;border-radius:6px;margin-bottom:22px;"></div>
+            <div class="sk" style="height:28px;width:100%;border-radius:6px;margin-bottom:22px;"></div>
+
+            <div class="sk" style="height:52px;width:100%;border-radius:14px;margin-bottom:18px;"></div>
+
+            <div class="d-flex flex-wrap gap-2 mt-4">
+              <div class="sk" style="height:44px;width:45%;border-radius:8px;"></div>
+              <div class="sk" style="height:44px;width:45%;border-radius:8px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="product-reviews product-reviews-separated mt-5">
+        <div class="premium-review-card">
+          <div class="premium-review-column premium-review-left">
+            <div class="premium-review-heading">
+              <div class="sk" style="height:44px;width:44px;border-radius:50%;"></div>
+              <div class="sk" style="height:20px;width:220px;border-radius:6px;margin-top:4px;"></div>
+              <div class="sk" style="height:44px;width:260px;border-radius:6px;margin-top:10px;"></div>
+            </div>
+
+            <div class="sk" style="height:22px;width:55%;border-radius:30px;margin-top:12px;"></div>
+
+            <div class="premium-review-list">
+              <div class="premium-review-item">
+                <div class="sk" style="height:44px;width:44px;border-radius:50%;"></div>
+                <div class="sk" style="height:18px;width:70%;border-radius:6px;"></div>
+                <div class="sk" style="height:12px;width:45%;border-radius:4px;margin-top:10px;"></div>
+                <div class="sk" style="height:18px;width:100%;border-radius:6px;margin-top:14px;"></div>
+                <div class="sk" style="height:14px;width:100%;border-radius:4px;margin-top:10px;"></div>
+                <div class="sk" style="height:14px;width:70%;border-radius:4px;margin-top:10px;"></div>
+              </div>
+            </div>
+
+            <div class="sk" style="height:44px;width:260px;border-radius:50px;margin-top:18px;"></div>
+          </div>
+
+          <div class="premium-review-column premium-review-right">
+            <div class="premium-review-heading">
+              <div class="sk" style="height:44px;width:44px;border-radius:50%;"></div>
+              <div class="sk" style="height:20px;width:220px;border-radius:6px;margin-top:4px;"></div>
+              <div class="sk" style="height:44px;width:250px;border-radius:6px;margin-top:10px;"></div>
+            </div>
+
+            <div class="sk" style="height:30px;width:140px;border-radius:6px;margin-top:18px;"></div>
+            <div class="sk" style="height:22px;width:260px;border-radius:12px;margin-top:18px;"></div>
+            <div class="sk" style="height:14px;width:90%;border-radius:4px;margin-top:16px;"></div>
+            <div class="sk" style="height:40px;width:90%;border-radius:6px;margin-top:14px;"></div>
+            <div class="sk" style="height:40px;width:90%;border-radius:6px;margin-top:14px;"></div>
+            <div class="sk" style="height:44px;width:250px;border-radius:18px;margin-top:18px;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-content" style="display:none;">
+<section class="py-5">
+    <div class="container">
+        <div class="mb-4">
+            <a class="btn btn-outline-secondary btn-sm" href="{% url 'core:product_list' %}">{% translate "Back to Products" %}</a>
+        </div>
+
+        <div class="row g-4 align-items-start">
+            <div class="col-12 col-lg-6">
+
+                <div class="bg-white border rounded-3 overflow-hidden">
+                    {% if product.product_image %}
+                        <img src="{{ product.product_image.url }}" class="product-detail-img" alt="{{ product.product_name }}">
+                    {% else %}
+                        <div class="product-detail-placeholder d-flex align-items-center justify-content-center">
+                            <span>{{ product.product_name|slice:":1" }}</span>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class="col-12 col-lg-6">
+                <div class="bg-white border rounded-3 p-4 p-md-5">
+                    <div class="d-flex flex-wrap gap-2 mb-3">
+                        <span class="badge text-bg-light">{{ product.category.name }}</span>
+                        {% if product.is_available %}
+                            <span class="badge text-bg-success">{% translate "Available" %}</span>
+                        {% else %}
+                            <span class="badge text-bg-secondary">{% translate "Unavailable" %}</span>
+                        {% endif %}
+                    </div>
+
+                    <h1 class="h2 mb-3">{{ product.product_name }}</h1>
+                    <p class="h4 text-primary mb-3">{{ product.price|convert_price:request }}</p>
+                    <p class="text-muted mb-4">{{ product.description }}</p>
+
+                    <dl class="row mb-4">
+                        <dt class="col-sm-4">{% translate "Stock" %}</dt>
+                        <dd class="col-sm-8">{{ product.stock }}</dd>
+
+                        <dt class="col-sm-4">{% translate "Seller" %}</dt>
+                        <dd class="col-sm-8">{{ product.seller_name }}</dd>
+
+                        <dt class="col-sm-4">{% translate "Added" %}</dt>
+                        <dd class="col-sm-8">{{ product.created_at|date:"M d, Y" }}</dd>
+                    </dl>
+
+                    {% if product.is_available and product.stock > 0 %}
+                        {% if request.session.registration_email %}
+                            <form class="row g-3 align-items-end mb-4" method="post" action="{% url 'core:cart_add' product.id %}">
+                                {% csrf_token %}
+                                <div class="col-auto">
+                                    <label class="form-label" for="quantity">{% translate "Quantity" %}</label>
+                                    <input class="form-control" id="quantity" type="number" name="quantity"
+                                           value="1" min="1" max="{{ product.stock }}" required>
+                                </div>
+                                <div class="col-auto d-flex flex-wrap gap-2">
+                                    <button class="btn btn-primary" type="submit">{% translate "Add to Cart" %}</button>
+                                    <button class="btn btn-outline-primary" type="submit" name="next" value="cart">{% translate "Add & View Cart" %}</button>
+                                </div>
+                            </form>
+                        {% else %}
+                            <div class="row g-3 align-items-end mb-4">
+                                <div class="col-auto">
+                                    <label class="form-label" for="quantity">{% translate "Quantity" %}</label>
+                                    <input class="form-control" id="quantity" type="number" name="quantity"
+                                           value="1" min="1" max="{{ product.stock }}" disabled>
+                                </div>
+                                <div class="col-auto d-flex flex-wrap gap-2">
+                                    <a class="btn btn-primary" href="{% url 'core:login' %}?next={{ request.path }}">
+                                        {% translate "Login to Add to Cart" %}
+                                    </a>
+                                </div>
+                            </div>
+                        {% endif %}
+                    {% else %}
+                        <p class="text-muted mb-4">{% translate "This product is not available for purchase right now." %}</p>
+                    {% endif %}
+
+                    {% if request.user.is_staff %}
+                        <div class="d-flex flex-wrap gap-2 mt-4">
+                            <a class="btn btn-primary" href="{% url 'core:product_edit' product.id %}">{% translate "Edit Product" %}</a>
+                            <a class="btn btn-outline-danger" href="{% url 'core:product_delete' product.id %}">{% translate "Delete Product" %}</a>
+                        </div>
+                    {% endif %}
+
+                </div>
+            </div>
+        </div>
+
+        <div class="product-reviews product-reviews-separated mt-5">
+            <div class="premium-review-card">
+                <div class="premium-review-column premium-review-left">
+                    <div class="premium-review-heading">
+                        <span class="premium-review-icon"><i class="bi bi-chat-square-heart"></i></span>
+                        <div>
+                            <span class="review-eyebrow">{% translate "Voices From Buyers" %}</span>
+                            <h2>{% translate "Customer Reviews" %}</h2>
+                        </div>
+                        {% if request.session.registration_email %}
+                            {% if user_review %}
+                                <button class="premium-review-action" type="button" data-bs-toggle="modal" data-bs-target="#editReviewModal">{% translate "Edit Review" %}</button>
+                            {% else %}
+                                <button class="premium-review-action" type="button" data-bs-toggle="modal" data-bs-target="#addReviewModal">{% translate "Write Review" %}</button>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+
+                    {% if reviews %}
+                        <div class="premium-review-list">
+                            {% for r in reviews %}
+                                <article class="premium-review-item">
+                                    <div class="premium-review-avatar" aria-hidden="true">{{ r.user.fullname|slice:":1" }}</div>
+                                    <div class="premium-review-content">
+                                        <div class="premium-review-meta">
+                                            <div>
+                                                <h3>{{ r.user.fullname }}</h3>
+                                                <span>{{ r.created_at|date:"M d, Y" }}</span>
+                                            </div>
+                                            <span class="premium-rating-badge">{{ r.rating }}/5</span>
+                                        </div>
+                                        <div class="rating-stars premium-card-stars" aria-label="{{ r.rating }} out of 5 stars">
+                                            <div class="rating-stars-base">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                            <div class="rating-stars-fill" style="width: {{ r.rating_percent }}%;">
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                                <i class="bi bi-star-fill"></i>
+                                            </div>
+                                        </div>
+                                        <p>{{ r.review }}</p>
+                                    </div>
+                                </article>
+                            {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="premium-empty-reviews">
+                            <i class="bi bi-star"></i>
+                            <p class="mb-0">{% translate "No reviews yet. Be the first to write one." %}</p>
+                        </div>
+                    {% endif %}
+
+                    <a class="premium-see-all-btn" href="{% url 'core:product_reviews' product.id %}">
+                        <span>{% translate "See All Reviews" %}</span>
+                        <i class="bi bi-arrow-right"></i>
+                    </a>
+                </div>
+
+                <div class="premium-review-column premium-review-right">
+                    <div class="premium-review-heading">
+                        <span class="premium-review-icon"><i class="bi bi-star"></i></span>
+                        <div>
+                            <span class="review-eyebrow">{% translate "Overall Score" %}</span>
+                            <h2>{% translate "Ratings Summary" %}</h2>
+                        </div>
+                    </div>
+
+                    <div class="premium-rating-score">
+                        <span>{% if average_rating %}{{ average_rating|floatformat:1 }}{% else %}0.0{% endif %}</span>
+                    </div>
+
+                    <div class="rating-stars premium-average-stars" aria-label="{% if average_rating %}Average rating {{ average_rating|floatformat:1 }} out of 5{% else %}No ratings yet{% endif %}">
+                        <div class="rating-stars-base">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                        <div class="rating-stars-fill" style="width: {{ average_rating_percent }}%;">
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                            <i class="bi bi-star-fill"></i>
+                        </div>
+                    </div>
+
+                    <p class="premium-rating-count">
+                        {% blocktrans %}Based on {{ review_count }} Ratings &amp; {{ review_count }} Reviews{% endblocktrans %}
+                    </p>
+
+                    <div class="premium-rating-breakdown">
+                        {% for item in rating_breakdown %}
+                            <div class="premium-rating-row">
+                                <span>{{ item.star }} {% translate "Star" %}</span>
+                                <div class="premium-rating-track">
+                                    <div class="premium-rating-fill" style="--bar-width: {{ item.percent }}%;"></div>
+                                </div>
+                                <strong>{{ item.count }}</strong>
+                            </div>
+                        {% endfor %}
+                    </div>
+
+                    <div class="premium-verified-badge">
+                        <span><i class="bi bi-shield-check"></i></span>
+                        <p>{% translate "Verified Purchases Only" %}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        {% if request.session.registration_email and not user_review %}
+            <div class="modal fade" id="addReviewModal" tabindex="-1" aria-labelledby="addReviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content review-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addReviewModalLabel">{% translate "Write Review" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="{% url 'core:review_add' product.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <div class="modal-body">
+                                <label class="form-label d-block">{% translate "Rating" %}</label>
+                                <div class="star-rating-input mb-3" aria-label="Choose rating">
+                                    <input type="radio" id="rating-5" name="rating" value="5" required>
+                                    <label for="rating-5" title="5 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="rating-4" name="rating" value="4">
+                                    <label for="rating-4" title="4 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="rating-3" name="rating" value="3">
+                                    <label for="rating-3" title="3 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="rating-2" name="rating" value="2">
+                                    <label for="rating-2" title="2 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="rating-1" name="rating" value="1">
+                                    <label for="rating-1" title="1 star"><i class="bi bi-star-fill"></i></label>
+                                </div>
+                                <label class="form-label">{% translate "Review" %}</label>
+                                <textarea class="form-control review-textarea" name="review" rows="4" placeholder="{% translate "Write your review..." %}" required></textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                                <button type="submit" class="btn btn-primary">{% translate "Submit Review" %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if user_review %}
+            <div class="modal fade" id="editReviewModal" tabindex="-1" aria-labelledby="editReviewModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content review-modal">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editReviewModalLabel">{% translate "Edit Review" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <form method="post" action="{% url 'core:review_edit' product.id user_review.id %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="next" value="{{ request.path }}">
+                            <div class="modal-body">
+                                <label class="form-label d-block">{% translate "Rating" %}</label>
+                                <div class="star-rating-input mb-3" aria-label="Choose rating">
+                                    <input type="radio" id="edit-rating-5" name="rating" value="5" {% if user_review.rating == 5 %}checked{% endif %} required>
+                                    <label for="edit-rating-5" title="5 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="edit-rating-4" name="rating" value="4" {% if user_review.rating == 4 %}checked{% endif %}>
+                                    <label for="edit-rating-4" title="4 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="edit-rating-3" name="rating" value="3" {% if user_review.rating == 3 %}checked{% endif %}>
+                                    <label for="edit-rating-3" title="3 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="edit-rating-2" name="rating" value="2" {% if user_review.rating == 2 %}checked{% endif %}>
+                                    <label for="edit-rating-2" title="2 stars"><i class="bi bi-star-fill"></i></label>
+                                    <input type="radio" id="edit-rating-1" name="rating" value="1" {% if user_review.rating == 1 %}checked{% endif %}>
+                                    <label for="edit-rating-1" title="1 star"><i class="bi bi-star-fill"></i></label>
+                                </div>
+                                <label class="form-label">{% translate "Review" %}</label>
+                                <textarea class="form-control review-textarea" name="review" rows="4" required>{{ user_review.review }}</textarea>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                                <button type="submit" class="btn btn-primary">{% translate "Update Review" %}</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+
+        {% if request.GET.review_popup and messages %}
+            <div class="modal fade" id="reviewMessageModal" tabindex="-1" aria-labelledby="reviewMessageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" style="max-width: 420px;">
+                    <div class="modal-content review-message-modal">
+                        <div class="modal-header border-0 justify-content-end pb-0">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body text-center px-4 pb-4 pt-0">
+                            <div class="review-message-icon">
+                                <i class="bi bi-check-lg"></i>
+                            </div>
+                            <h5 class="modal-title mb-2" id="reviewMessageModalLabel">{% translate "Review Updated" %}</h5>
+                            {% for message in messages %}
+                                <p class="text-muted mb-0">{{ message }}</p>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+    <script>
+    setTimeout(function () {
+      var sk = document.getElementById('page-skeleton');
+      var pg = document.getElementById('page-content');
+      sk.style.display = 'none';
+      pg.style.opacity = '0';
+      pg.style.display = '';
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          pg.style.opacity = '1';
+        });
+      });
+    }, 500);
+
+        document.addEventListener('DOMContentLoaded', function () {
+            var messageModal = document.getElementById('reviewMessageModal');
+            if (messageModal) {
+                bootstrap.Modal.getOrCreateInstance(messageModal).show();
+            }
+
+            var reviewCard = document.querySelector('.premium-review-card');
+            if (reviewCard) {
+                reviewCard.classList.add('is-visible');
+            }
+        });
+    </script>
+{% endblock %}

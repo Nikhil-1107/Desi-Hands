@@ -1,0 +1,103 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Order Management" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_orders %}active{% endblock %}
+
+{% block admin_content %}
+<div class="mb-4">
+    <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Order Management" %}</h1>
+    <p class="text-muted">{% translate "Track buyer orders, update fulfilment status, or review invoicing details." %}</p>
+</div>
+
+<!-- Search & Filters -->
+<div class="admin-card p-4 mb-4 bg-white">
+    <form method="get" action="{% url 'core:admin_order_list' %}" class="row g-3">
+        <div class="col-12 col-md-6">
+            <label class="form-label text-muted small fw-bold">{% translate "Search" %}</label>
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0 admin-form-control" name="q" value="{{ query }}" placeholder="{% translate 'Search by Order ID or customer name...' %}">
+            </div>
+        </div>
+        <div class="col-12 col-md-4">
+            <label class="form-label text-muted small fw-bold">{% translate "Order Status" %}</label>
+            <select class="form-select admin-form-control" name="status">
+                <option value="">{% translate "All Orders" %}</option>
+                {% for status_val, status_lbl in status_choices %}
+                    <option value="{{ status_val }}" {% if selected_status == status_val %}selected{% endif %}>{% translate status_lbl %}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-12 col-md-2 d-grid align-self-end">
+            <button type="submit" class="btn btn-outline-secondary btn-admin">{% translate "Apply Filters" %}</button>
+        </div>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="admin-table-container">
+
+
+
+    <table class="table admin-table align-middle">
+        <thead>
+            <tr>
+                <th>{% translate "Order ID" %}</th>
+                <th>{% translate "Customer Name" %}</th>
+                <th>{% translate "Total Amount" %}</th>
+                <th>{% translate "Payment Method" %}</th>
+                <th>{% translate "Payment" %}</th>
+                <th>{% translate "Status" %}</th>
+                <th>{% translate "Date Placed" %}</th>
+                <th style="width: 220px;" class="text-end">{% translate "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for order in orders %}
+            <tr>
+                <td><strong class="text-dark">{{ order.order_id }}</strong></td>
+                <td>{{ order.user.fullname }}</td>
+                <td><strong>{% translate "Rs." %} {{ order.total_amount }}</strong></td>
+                <td>{% translate order.payment_method %}</td>
+                <td>
+                    {% if order.is_paid %}
+                        <span class="badge bg-success-subtle text-success border border-success-subtle">{% translate "Paid" %}</span>
+                    {% else %}
+                        <span class="badge bg-warning-subtle text-warning border border-warning-subtle">{% translate "Pending" %}</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <span class="admin-badge badge-{{ order.order_status|lower }}">
+                        {% translate order.order_status %}
+                    </span>
+                </td>
+                <td>{{ order.created_at|date:"M d, Y h:i A" }}</td>
+                <td class="text-end">
+                    <div class="d-flex justify-content-end gap-2 flex-wrap">
+                        {% if order.payment_method == "Cash on Delivery" and not order.is_paid %}
+                            <form method="post" action="{% url 'core:admin_order_mark_paid' order.pk %}">
+                                {% csrf_token %}
+                                <input type="hidden" name="next" value="list">
+                                <button type="submit" class="btn btn-sm btn-outline-success btn-admin px-3">
+                                    {% translate "Mark Paid" %}
+                                </button>
+                            </form>
+                        {% endif %}
+                        <a href="{% url 'core:admin_order_details' order.pk %}" class="btn btn-sm btn-admin btn-admin-primary px-3" title="{% translate 'View Details' %}">
+                            {% translate "Manage" %} <i class="bi bi-chevron-right ms-1 small"></i>
+                        </a>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="8" class="text-center py-4 text-muted">{% translate "No orders found matching your filters/queries." %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

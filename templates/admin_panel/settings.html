@@ -1,0 +1,50 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Admin Settings" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_settings %}active{% endblock %}
+
+{% block admin_content %}
+<div class="mb-4">
+    <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Settings" %}</h1>
+    <p class="text-muted">{% translate "Configure store metadata and administrative defaults." %}</p>
+</div>
+
+<div class="row">
+    <div class="col-12 col-lg-8">
+        <div class="admin-card p-4 bg-white mb-4">
+            <h5 class="fw-bold mb-4 border-bottom pb-2">{% translate "Store Configuration" %}</h5>
+            
+            <form method="post">
+                {% csrf_token %}
+                
+                <div class="mb-3 admin-form-group">
+                    <label>{% translate "Store Name" %}</label>
+                    <input type="text" class="form-control admin-form-control" value="DesiHands" readonly>
+                    <span class="text-muted small">{% translate "The name shown on the storefront headers and emails." %}</span>
+                </div>
+
+                <div class="mb-3 admin-form-group">
+                    <label>{% translate "Contact Email Address" %}</label>
+                    <input type="email" class="form-control admin-form-control" value="support@desihands.com" required>
+                    <span class="text-muted small">{% translate "Where customer contact queries are sent." %}</span>
+                </div>
+
+                <div class="mb-3 admin-form-group">
+                    <label>{% translate "Customer Support Number" %}</label>
+                    <input type="text" class="form-control admin-form-control" value="+91 98765 43210" required>
+                </div>
+
+                <div class="mb-4 admin-form-group">
+                    <label>{% translate "Store Address" %}</label>
+                    <textarea class="form-control admin-form-control" rows="3" required>101, Artisan Enclave, Jaipur, Rajasthan, India - 302001</textarea>
+                </div>
+
+                <button type="submit" class="btn btn-admin btn-admin-primary">
+                    {% translate "Save Settings" %}
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

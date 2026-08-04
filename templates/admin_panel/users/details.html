@@ -1,0 +1,139 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+{% load currency_filters %}
+
+{% block title %}{% translate "User Details" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_users %}active{% endblock %}
+
+{% block admin_content %}
+<div class="mb-4">
+    <nav aria-label="breadcrumb">
+        <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{% url 'core:admin_user_list' %}" class="text-decoration-none text-muted">{% translate "Users" %}</a></li>
+            <li class="breadcrumb-item active" aria-current="page">{% translate "Customer Details" %}</li>
+        </ol>
+    </nav>
+    <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Customer Details" %}</h1>
+    <p class="text-muted">{% translate "Detailed overview of customer profile and orders." %}</p>
+</div>
+
+<div class="row g-4">
+    <!-- Profile Card -->
+    <div class="col-12 col-lg-4">
+        <div class="admin-card p-4 text-center bg-white mb-4">
+            <div class="mb-3">
+                {% if user_obj.profile_image %}
+                    <img src="{{ user_obj.profile_image.url }}" alt="{{ user_obj.fullname }}" class="rounded-circle border p-1" style="width: 110px; height: 110px; object-fit: cover;">
+                {% else %}
+                    <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted fw-bold mx-auto border" style="width: 110px; height: 110px; font-size: 2.2rem;">
+                        {{ user_obj.fullname|slice:":1" }}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <h4 class="fw-bold mb-1">{{ user_obj.fullname }}</h4>
+            <p class="text-muted small mb-3">{% blocktrans with joined_at=user_obj.created_at|date:"M d, Y" %}Customer since {{ joined_at }}{% endblocktrans %}</p>
+
+            {% if user_obj.is_blocked %}
+                <span class="badge bg-danger-subtle text-danger border border-danger-subtle rounded-pill px-3 py-1 mb-4">{% translate "Blocked" %}</span>
+            {% else %}
+                <span class="badge bg-success-subtle text-success border border-success-subtle rounded-pill px-3 py-1 mb-4">{% translate "Active" %}</span>
+            {% endif %}
+
+            <div class="d-grid gap-2 mt-2">
+                <a href="{% url 'core:admin_user_toggle_block' user_obj.pk %}" class="btn {% if user_obj.is_blocked %}btn-success{% else %}btn-warning{% endif %} btn-admin text-white">
+                    <i class="bi {% if user_obj.is_blocked %}bi-check-circle{% else %}bi-slash-circle{% endif %} me-1"></i>
+                    {% if user_obj.is_blocked %}{% translate "Unblock Account" %}{% else %}{% translate "Block Account" %}{% endif %}
+                </a>
+                <button class="btn btn-outline-danger btn-admin" data-bs-toggle="modal" data-bs-target="#deleteModal">
+                    <i class="bi bi-trash me-1"></i> {% translate "Delete Account" %}
+                </button>
+            </div>
+
+            <!-- Delete Confirmation Modal -->
+            <div class="modal fade" id="deleteModal" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content border-0 shadow" style="border-radius: 16px;">
+                        <div class="modal-header border-bottom-0">
+                            <h5 class="modal-title fw-bold">{% translate "Delete Customer Account" %}</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}"></button>
+                        </div>
+                        <div class="modal-body text-start py-3">
+                            {% blocktrans with customer_name=user_obj.fullname %}Are you sure you want to permanently delete the customer account for <strong>{{ customer_name }}</strong>? All cart contents, reviews, and wishlists associated with this user will be removed.{% endblocktrans %}
+                        </div>
+                        <div class="modal-footer border-top-0">
+                            <button type="button" class="btn btn-light btn-admin" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                            <a href="{% url 'core:admin_user_delete' user_obj.pk %}" class="btn btn-danger btn-admin">{% translate "Delete" %}</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="admin-card p-4 bg-white">
+            <h5 class="fw-bold mb-3 border-bottom pb-2">{% translate "Contact Details" %}</h5>
+            
+            <div class="mb-3">
+                <div class="text-muted small fw-bold uppercase">{% translate "Email Address" %}</div>
+                <div>{{ user_obj.email }}</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="text-muted small fw-bold uppercase">{% translate "Mobile Number" %}</div>
+                <div>{{ user_obj.mobile }}</div>
+            </div>
+
+            <div class="mb-3">
+                <div class="text-muted small fw-bold uppercase">{% translate "Billing & Shipping Address" %}</div>
+                <div class="lh-sm">{{ user_obj.address }}</div>
+                <div class="mt-1">{{ user_obj.city }}, {{ user_obj.state }} - {{ user_obj.pincode }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Orders History -->
+    <div class="col-12 col-lg-8">
+        <div class="admin-table-container">
+            <div class="p-3 border-bottom bg-white">
+                <h5 class="mb-0 fw-bold">{% blocktrans with order_count=orders.count %}Order History ({{ order_count }} Orders){% endblocktrans %}</h5>
+            </div>
+            <table class="table admin-table align-middle">
+                <thead>
+                    <tr>
+                        <th>{% translate "Order ID" %}</th>
+                        <th>{% translate "Status" %}</th>
+                        <th>{% translate "Total Amount" %}</th>
+                        <th>{% translate "Payment Method" %}</th>
+                        <th>{% translate "Date" %}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for order in orders %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'core:admin_order_details' order.pk %}" class="text-decoration-none fw-bold text-dark">
+                                {{ order.order_id }}
+                            </a>
+                        </td>
+                        <td>
+                            <span class="admin-badge badge-{{ order.order_status|lower }}">
+                                {% translate order.order_status %}
+                            </span>
+                        </td>
+                        <td>{{ order.total_amount|convert_price:request }}</td>
+                        <td>{% translate order.payment_method %}</td>
+                        <td>{{ order.created_at|date:"M d, Y h:i A" }}</td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center py-4 text-muted">
+                            {% translate "This customer has not placed any orders yet." %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

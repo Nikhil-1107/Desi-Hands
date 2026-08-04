@@ -1,0 +1,102 @@
+{% extends "admin_panel/base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Category Management" %} | {% translate "DesiHands Admin" %}{% endblock %}
+{% block active_categories %}active{% endblock %}
+
+{% block admin_content %}
+<div class="d-flex flex-column flex-sm-row justify-content-between align-items-sm-center gap-3 mb-4">
+    <div>
+        <h1 class="h3 mb-0 fw-bold" style="color: var(--admin-primary-dark);">{% translate "Category Management" %}</h1>
+        <p class="text-muted mb-0">{% translate "Create, edit, or delete product categories." %}</p>
+    </div>
+    <div>
+        <a href="{% url 'core:admin_category_add' %}" class="btn btn-admin btn-admin-primary">
+            <i class="bi bi-plus-circle me-1"></i> {% translate "Add Category" %}
+        </a>
+    </div>
+</div>
+
+<!-- Search & Filter Card -->
+<div class="admin-card p-4 mb-4 bg-white">
+    <form method="get" action="{% url 'core:admin_category_list' %}" class="row g-3">
+        <div class="col-12 col-md-8">
+            <div class="input-group">
+                <span class="input-group-text bg-white border-end-0"><i class="bi bi-search text-muted"></i></span>
+                <input type="text" class="form-control border-start-0 admin-form-control" name="q" value="{{ query }}" placeholder="{% translate 'Search categories by name...' %}">
+            </div>
+        </div>
+        <div class="col-12 col-md-4 d-grid">
+            <button type="submit" class="btn btn-outline-secondary btn-admin">{% translate "Apply Search" %}</button>
+        </div>
+    </form>
+</div>
+
+<!-- Table -->
+<div class="admin-table-container">
+
+
+    <table class="table admin-table align-middle">
+        <thead>
+            <tr>
+                <th style="width: 80px;">{% translate "Image" %}</th>
+                <th>{% translate "Category Name" %}</th>
+                <th>{% translate "Description" %}</th>
+                <th>{% translate "Products Count" %}</th>
+                <th style="width: 160px;" class="text-end">{% translate "Actions" %}</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for cat in categories %}
+            <tr>
+                <td>
+                    {% if cat.image %}
+                        <img src="{{ cat.image.url }}" alt="{{ cat.name }}" class="rounded-circle" style="width: 48px; height: 48px; object-fit: cover;">
+                    {% else %}
+                        <div class="rounded-circle bg-light d-flex align-items-center justify-content-center text-muted" style="width: 48px; height: 48px; font-weight: 600;">
+                            {{ cat.name|slice:":1" }}
+                        </div>
+                    {% endif %}
+                </td>
+                <td><strong class="text-dark">{{ cat.name }}</strong></td>
+                <td><span class="text-muted text-truncate d-inline-block" style="max-width: 320px;">{{ cat.description }}</span></td>
+                <td><span class="badge bg-light text-dark fw-bold">{{ cat.prod_count }} {% translate "Products" %}</span></td>
+                <td class="text-end">
+                    <a href="{% url 'core:admin_category_edit' cat.pk %}" class="btn btn-sm btn-outline-secondary me-1" title="{% translate 'Edit' %}">
+                        <i class="bi bi-pencil"></i>
+                    </a>
+                    <button class="btn btn-sm btn-outline-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ cat.pk }}" title="{% translate 'Delete' %}">
+                        <i class="bi bi-trash"></i>
+                    </button>
+
+                    <!-- Delete Confirmation Modal -->
+                    <div class="modal fade" id="deleteModal{{ cat.pk }}" tabindex="-1" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered">
+                            <div class="modal-content border-0 shadow" style="border-radius: 16px;">
+                                <div class="modal-header border-bottom-0">
+                                    <h5 class="modal-title fw-bold">{% translate "Delete Category" %}</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="{% translate 'Close' %}"></button>
+                                </div>
+                                <div class="modal-body text-start py-3">
+                                    {% blocktrans with category_name=cat.name %}Are you sure you want to delete the category <strong>{{ category_name }}</strong>? This action cannot be undone.{% endblocktrans %}
+                                </div>
+                                <div class="modal-footer border-top-0">
+                                    <button type="button" class="btn btn-light btn-admin" data-bs-dismiss="modal">{% translate "Cancel" %}</button>
+                                    <a href="{% url 'core:admin_category_delete' cat.pk %}" class="btn btn-danger btn-admin">{% translate "Delete" %}</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="5" class="text-center py-4 text-muted">{% translate "No categories found matching your query." %}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

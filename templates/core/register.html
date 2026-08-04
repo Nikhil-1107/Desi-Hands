@@ -1,0 +1,221 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% block title %}{% translate "Register" %} | DesiHands{% endblock %}
+
+{% block extra_css %}
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/css/intlTelInput.css">
+<style>
+    /* ===== intl-tel-input Custom Overrides ===== */
+    .iti {
+        width: 100%;
+    }
+    .iti__flag-container {
+        z-index: 2;
+    }
+    .iti__selected-flag {
+        background: transparent !important;
+        border-right: 1.5px solid var(--border, #e0d6cc);
+        padding: 0 10px 0 12px;
+        border-radius: 8px 0 0 8px;
+        transition: background 0.2s ease;
+    }
+    .iti__selected-flag:hover,
+    .iti__selected-flag:focus {
+        background: rgba(139, 103, 68, 0.06) !important;
+    }
+    .iti__country-list {
+        border-radius: 12px;
+        border: 1.5px solid var(--border, #e0d6cc);
+        box-shadow: 0 12px 36px rgba(44, 35, 24, 0.12);
+        max-height: 220px;
+        margin-top: 4px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.88rem;
+    }
+    .iti__country-list .iti__country {
+        padding: 8px 12px;
+        transition: background 0.15s ease;
+    }
+    .iti__country-list .iti__country:hover,
+    .iti__country-list .iti__country.iti__highlight {
+        background-color: rgba(139, 103, 68, 0.08);
+    }
+    .iti__country-list .iti__country.iti__active {
+        background-color: rgba(139, 103, 68, 0.12);
+    }
+    .iti__search-input {
+        border: 1.5px solid var(--border, #e0d6cc) !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        font-family: 'Jost', sans-serif !important;
+        font-size: 0.88rem !important;
+        margin: 8px !important;
+        width: calc(100% - 16px) !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .iti__search-input:focus {
+        border-color: #8B6744 !important;
+        box-shadow: 0 0 0 3px rgba(139, 103, 68, 0.12) !important;
+        outline: none;
+    }
+    .iti__dial-code {
+        color: #8B6744;
+        font-weight: 500;
+    }
+    #id_mobile_display {
+        padding-left: 52px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="auth-section py-5">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12 col-lg-8">
+                <div class="auth-card bg-white border rounded-3 p-4 p-md-5">
+                    <h1 class="h3 mb-4">{% translate "Create Account" %}</h1>
+
+                    <form method="post" enctype="multipart/form-data" novalidate>
+                        {% csrf_token %}
+
+                        {% if form.non_field_errors %}
+                            <div class="alert alert-danger">
+                                {{ form.non_field_errors|striptags }}
+                            </div>
+                        {% endif %}
+
+                        <div class="row g-3">
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.fullname.id_for_label }}">{% translate "Full Name" %}</label>
+                                {{ form.fullname }}
+                                {% if form.fullname.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.fullname.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.email.id_for_label }}">{% translate "Email" %}</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.email.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="id_mobile_display">{% translate "Mobile" %}</label>
+                                <input type="tel" id="id_mobile_display" class="form-control" placeholder="{% translate 'Enter mobile number' %}" value="{{ form.mobile.value|default:'' }}">
+                                <input type="hidden" name="mobile" id="id_mobile_full">
+                                {% if form.mobile.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.mobile.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.profile_image.id_for_label }}">{% translate "Profile Image" %}</label>
+                                {{ form.profile_image }}
+                                {% if form.profile_image.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.profile_image.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12">
+                                <label class="form-label" for="{{ form.address.id_for_label }}">{% translate "Address" %}</label>
+                                {{ form.address }}
+                                {% if form.address.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.address.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label" for="{{ form.city.id_for_label }}">{% translate "City" %}</label>
+                                {{ form.city }}
+                                {% if form.city.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.city.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label" for="{{ form.state.id_for_label }}">{% translate "State" %}</label>
+                                {{ form.state }}
+                                {% if form.state.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.state.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-4">
+                                <label class="form-label" for="{{ form.pincode.id_for_label }}">{% translate "Pincode" %}</label>
+                                {{ form.pincode }}
+                                {% if form.pincode.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.pincode.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.password.id_for_label }}">{% translate "Password" %}</label>
+                                {{ form.password }}
+                                {% if form.password.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.password.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+
+                            <div class="col-12 col-md-6">
+                                <label class="form-label" for="{{ form.confirm_password.id_for_label }}">{% translate "Confirm Password" %}</label>
+                                {{ form.confirm_password }}
+                                {% if form.confirm_password.errors %}
+                                    <div class="invalid-feedback d-block">{{ form.confirm_password.errors|striptags }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary mt-4 w-100" type="submit">{% translate "Register" %}</button>
+                    </form>
+
+                    <p class="text-center mt-3 mb-0">
+                        {% translate "Already registered?" %}
+                        <a href="{% url 'core:login' %}">{% translate "Login" %}</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- intl-tel-input JS -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/utils.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('#id_mobile_display');
+        const hiddenInput = document.querySelector('#id_mobile_full');
+
+        const iti = window.intlTelInput(phoneInput, {
+            initialCountry: 'in',
+            preferredCountries: ['in', 'us', 'gb', 'ae', 'ca', 'au'],
+            separateDialCode: true,
+            utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/utils.js',
+        });
+
+        // Sync full number to hidden field on any change
+        function syncNumber() {
+            hiddenInput.value = iti.getNumber();
+        }
+        phoneInput.addEventListener('input', syncNumber);
+        phoneInput.addEventListener('countrychange', syncNumber);
+
+        // Sync on form submit
+        phoneInput.closest('form').addEventListener('submit', function() {
+            syncNumber();
+        });
+
+        // If re-rendering with existing value, sync immediately
+        if (phoneInput.value) {
+            syncNumber();
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,1178 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load currency_filters %}
+
+{% block title %}{% translate "My Account" %} | DesiHands{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ============================================================
+   PROFILE / ACCOUNT DASHBOARD STYLES
+   ============================================================ */
+
+.profile-sidebar {
+    background-color: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    overflow: hidden;
+}
+
+.profile-user-card {
+    padding: 30px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, rgba(139, 103, 68, 0.05), rgba(109, 82, 53, 0.02));
+    border-bottom: 1px solid var(--border);
+}
+
+.profile-avatar-container {
+    position: relative;
+    width: 100px;
+    height: 100px;
+    margin: 0 auto 16px;
+}
+
+.profile-avatar-edit-badge {
+    position: absolute;
+    bottom: 2px;
+    right: 2px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: var(--accent);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+    border: 2px solid var(--warm-white);
+    transition: all 0.2s ease;
+    font-size: 0.9rem;
+    z-index: 10;
+}
+
+.profile-avatar-edit-badge:hover {
+    background-color: var(--accent-deep);
+    transform: scale(1.1);
+}
+
+.profile-avatar {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid var(--warm-white);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.profile-avatar-placeholder {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--parchment);
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--font-display);
+    font-size: 2.2rem;
+    font-weight: 700;
+    border: 3px solid var(--warm-white);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+
+.profile-user-name {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--brown-dark);
+    margin-bottom: 4px;
+}
+
+.profile-user-role {
+    font-size: 0.78rem;
+    font-weight: 600;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: var(--accent);
+}
+
+/* Tab Navigation */
+.profile-nav-group {
+    padding: 15px 10px;
+}
+
+.profile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 18px;
+    color: var(--brown-mid);
+    text-decoration: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.25s ease;
+}
+
+.profile-nav-link:hover {
+    background-color: var(--parchment);
+    color: var(--accent);
+}
+
+.profile-nav-link.active {
+    background-color: var(--accent);
+    color: #fff !important;
+    box-shadow: 0 4px 12px rgba(139, 103, 68, 0.25);
+}
+
+.profile-nav-link i {
+    font-size: 1.1rem;
+}
+
+/* Content Cards */
+.profile-content-card {
+    background-color: var(--warm-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-soft);
+    min-height: 480px;
+}
+
+.profile-content-header {
+    padding: 24px 30px;
+    border-bottom: 1px solid var(--border);
+    background: linear-gradient(135deg, rgba(139, 103, 68, 0.03), rgba(109, 82, 53, 0.01));
+}
+
+.profile-content-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-content-header h2 i {
+    color: var(--accent);
+}
+
+.profile-content-body {
+    padding: 30px;
+}
+
+/* Detail Display Grid */
+.detail-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 24px;
+}
+
+.detail-item {
+    padding: 16px 20px;
+    background-color: rgba(139, 103, 68, 0.02);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+}
+
+.detail-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--brown-body);
+    margin-bottom: 6px;
+}
+
+.detail-value {
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--brown-dark);
+}
+
+/* Orders list */
+.order-history-list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.order-history-card {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    overflow: hidden;
+    background: var(--warm-white);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.order-history-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-soft);
+}
+
+.order-history-header {
+    background-color: var(--parchment);
+    padding: 16px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    border-bottom: 1px solid var(--border);
+}
+
+.order-history-id {
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: var(--brown-dark);
+}
+
+.order-history-date {
+    font-size: 0.8rem;
+    color: var(--brown-body);
+}
+
+.order-history-body {
+    padding: 20px;
+}
+
+.order-history-item-row {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 10px 0;
+    border-bottom: 1px dashed var(--border);
+}
+
+.order-history-item-row:last-child {
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
+.order-history-item-img {
+    width: 48px;
+    height: 48px;
+    object-fit: cover;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+}
+
+.order-history-item-placeholder {
+    width: 48px;
+    height: 48px;
+    border-radius: 6px;
+    background-color: var(--placeholder-bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--accent);
+}
+
+.order-history-item-name {
+    font-weight: 500;
+    font-size: 0.88rem;
+    color: var(--brown-dark);
+}
+
+.order-history-item-qty {
+    font-size: 0.78rem;
+    color: var(--brown-body);
+}
+
+.order-history-footer {
+    padding: 14px 20px;
+    background-color: rgba(139, 103, 68, 0.02);
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+}
+
+.order-history-total {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--brown-dark);
+}
+
+.order-history-total span {
+    color: var(--accent);
+    font-weight: 700;
+}
+
+/* Status Badges */
+.status-badge {
+    padding: 4px 10px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    border-radius: 12px;
+}
+
+.status-pending { background-color: rgba(196, 154, 90, 0.15); color: #7a5718; }
+.status-confirmed { background-color: rgba(90, 110, 82, 0.12); color: var(--sage); }
+.status-shipped { background-color: rgba(59, 130, 246, 0.12); color: #2563eb; }
+.status-delivered { background-color: rgba(90, 110, 82, 0.12); color: var(--sage); }
+.status-cancelled { background-color: rgba(239, 68, 68, 0.12); color: #dc2626; }
+
+/* Form Controls */
+.profile-content-body .form-label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    color: var(--brown-mid);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+}
+
+.profile-content-body .form-control {
+    border-radius: 8px;
+    padding: 10px 14px;
+}
+
+.profile-content-body .form-control:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(139, 103, 68, 0.12);
+}
+
+.btn-profile-save {
+    background: linear-gradient(135deg, #8B6744, #6D5235);
+    color: #fff;
+    border: none;
+    padding: 12px 30px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(139, 103, 68, 0.2);
+}
+
+.btn-profile-save:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(139, 103, 68, 0.3);
+    color: #fff;
+}
+
+@media (max-width: 991px) {
+    .profile-sidebar {
+        margin-bottom: 30px;
+    }
+}
+</style>
+
+<!-- intl-tel-input CSS -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/css/intlTelInput.css">
+<style>
+    /* ===== intl-tel-input Custom Overrides ===== */
+    .iti {
+        width: 100%;
+    }
+    .iti__flag-container {
+        z-index: 2;
+    }
+    .iti__selected-flag {
+        background: transparent !important;
+        border-right: 1.5px solid var(--border, #e0d6cc);
+        padding: 0 10px 0 12px;
+        border-radius: 8px 0 0 8px;
+        transition: background 0.2s ease;
+    }
+    .iti__selected-flag:hover,
+    .iti__selected-flag:focus {
+        background: rgba(139, 103, 68, 0.06) !important;
+    }
+    .iti__country-list {
+        border-radius: 12px;
+        border: 1.5px solid var(--border, #e0d6cc);
+        box-shadow: 0 12px 36px rgba(44, 35, 24, 0.12);
+        max-height: 220px;
+        margin-top: 4px;
+        font-family: 'Jost', sans-serif;
+        font-size: 0.88rem;
+        z-index: 1050; /* Ensure it floats over form content */
+    }
+    .iti__country-list .iti__country {
+        padding: 8px 12px;
+        transition: background 0.15s ease;
+    }
+    .iti__country-list .iti__country:hover,
+    .iti__country-list .iti__country.iti__highlight {
+        background-color: rgba(139, 103, 68, 0.08);
+    }
+    .iti__country-list .iti__country.iti__active {
+        background-color: rgba(139, 103, 68, 0.12);
+    }
+    .iti__search-input {
+        border: 1.5px solid var(--border, #e0d6cc) !important;
+        border-radius: 8px !important;
+        padding: 8px 12px !important;
+        font-family: 'Jost', sans-serif !important;
+        font-size: 0.88rem !important;
+        margin: 8px !important;
+        width: calc(100% - 16px) !important;
+        transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .iti__search-input:focus {
+        border-color: #8B6744 !important;
+        box-shadow: 0 0 0 3px rgba(139, 103, 68, 0.12) !important;
+        outline: none;
+    }
+    .iti__dial-code {
+        color: #8B6744;
+        font-weight: 500;
+    }
+    #id_profile_mobile_display {
+        padding-left: 52px;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<style>
+
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+</style>
+
+<div id="page-skeleton">
+  <section class="py-5">
+    <div class="container">
+
+      <div class="row">
+        <div class="col-12 col-lg-4 col-xl-3">
+          <div class="profile-sidebar">
+            <div class="profile-user-card">
+              <div class="profile-avatar-container">
+                <div class="sk" style="height:100px;width:100px;border-radius:50%;"></div>
+                <div class="sk" style="height:32px;width:32px;border-radius:50%;position:absolute;bottom:2px;right:2px;"></div>
+              </div>
+              <div class="sk" style="height:30px;width:220px;border-radius:6px;margin:0 auto 8px;"></div>
+              <div class="sk" style="height:14px;width:160px;border-radius:30px;margin:0 auto;"></div>
+            </div>
+
+            <nav class="profile-nav-group nav flex-column" id="sk-accountTabs">
+              <div class="sk" style="height:46px;width:100%;border-radius:10px;"></div>
+              <div class="sk" style="height:46px;width:100%;border-radius:10px;margin-top:12px;"></div>
+              <div class="sk" style="height:46px;width:100%;border-radius:10px;margin-top:12px;"></div>
+              <div class="sk" style="height:46px;width:100%;border-radius:10px;margin-top:12px;"></div>
+              <div class="sk" style="height:10px;width:80%;border-radius:10px;margin:14px auto 0;"></div>
+              <div class="sk" style="height:40px;width:70%;border-radius:10px;margin-top:12px;"></div>
+            </nav>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-8 col-xl-9">
+          <div class="tab-content" id="accountTabsContent">
+
+            <div class="tab-pane fade show active" id="sk-tab-profile">
+              <div class="profile-content-card">
+                <div class="profile-content-header">
+                  <div class="sk" style="height:18px;width:240px;border-radius:6px;"></div>
+                </div>
+                <div class="profile-content-body">
+                  <div class="detail-grid">
+                    <div class="detail-item">
+                      <div class="sk" style="height:12px;width:85px;border-radius:4px;margin-bottom:10px;"></div>
+                      <div class="sk" style="height:16px;width:140px;border-radius:6px;"></div>
+                    </div>
+                    <div class="detail-item">
+                      <div class="sk" style="height:12px;width:100px;border-radius:4px;margin-bottom:10px;"></div>
+                      <div class="sk" style="height:16px;width:160px;border-radius:6px;"></div>
+                    </div>
+                    <div class="detail-item">
+                      <div class="sk" style="height:12px;width:120px;border-radius:4px;margin-bottom:10px;"></div>
+                      <div class="sk" style="height:16px;width:140px;border-radius:6px;"></div>
+                    </div>
+                    <div class="detail-item">
+                      <div class="sk" style="height:12px;width:60px;border-radius:4px;margin-bottom:10px;"></div>
+                      <div class="sk" style="height:16px;width:110px;border-radius:6px;"></div>
+                    </div>
+                    <div class="detail-item">
+                      <div class="sk" style="height:12px;width:55px;border-radius:4px;margin-bottom:10px;"></div>
+                      <div class="sk" style="height:16px;width:120px;border-radius:6px;"></div>
+                    </div>
+                    <div class="detail-item">
+                      <div class="sk" style="height:12px;width:65px;border-radius:4px;margin-bottom:10px;"></div>
+                      <div class="sk" style="height:16px;width:120px;border-radius:6px;"></div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 pt-3 border-top">
+                    <div class="sk" style="height:12px;width:160px;border-radius:4px;margin-bottom:10px;"></div>
+                    <div class="sk" style="height:46px;width:100%;border-radius:10px;"></div>
+                  </div>
+
+                  <div class="mt-4 text-end">
+                    <div class="sk" style="height:44px;width:200px;border-radius:8px;display:inline-block;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="sk-tab-edit">
+              <div class="profile-content-card">
+                <div class="profile-content-header">
+                  <div class="sk" style="height:18px;width:280px;border-radius:6px;"></div>
+                </div>
+                <div class="profile-content-body">
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <div class="sk" style="height:12px;width:140px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="sk" style="height:12px;width:170px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="sk" style="height:12px;width:170px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="sk" style="height:12px;width:160px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                  </div>
+
+                  <div class="mb-3">
+                    <div class="sk" style="height:12px;width:170px;border-radius:4px;margin-bottom:8px;"></div>
+                    <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                  </div>
+
+                  <div class="row g-3">
+                    <div class="col-md-4">
+                      <div class="sk" style="height:12px;width:90px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="sk" style="height:12px;width:70px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="sk" style="height:12px;width:90px;border-radius:4px;margin-bottom:8px;"></div>
+                      <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                    </div>
+                  </div>
+
+                  <div class="mt-4 text-end">
+                    <div class="sk" style="height:44px;width:220px;border-radius:8px;display:inline-block;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="sk-tab-orders">
+              <div class="profile-content-card">
+                <div class="profile-content-header">
+                  <div class="sk" style="height:18px;width:240px;border-radius:6px;"></div>
+                </div>
+                <div class="profile-content-body">
+                  <div class="order-history-list">
+                    <div class="order-history-card">
+                      <div class="sk" style="height:52px;width:100%;border-radius:0;"></div>
+                      <div class="sk" style="height:160px;width:100%;border-radius:0;"></div>
+                      <div class="sk" style="height:76px;width:100%;border-radius:0;"></div>
+                    </div>
+                    <div class="order-history-card">
+                      <div class="sk" style="height:52px;width:100%;border-radius:0;margin-top:20px;"></div>
+                      <div class="sk" style="height:160px;width:100%;border-radius:0; margin-top:12px;"></div>
+                      <div class="sk" style="height:76px;width:100%;border-radius:0; margin-top:12px;"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane fade" id="sk-tab-password">
+              <div class="profile-content-card">
+                <div class="profile-content-header">
+                  <div class="sk" style="height:18px;width:240px;border-radius:6px;"></div>
+                </div>
+                <div class="profile-content-body" style="max-width: 500px;">
+                  <div class="mb-3">
+                    <div class="sk" style="height:12px;width:140px;border-radius:4px;margin-bottom:8px;"></div>
+                    <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="sk" style="height:12px;width:160px;border-radius:4px;margin-bottom:8px;"></div>
+                    <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                  </div>
+                  <div class="mb-3">
+                    <div class="sk" style="height:12px;width:210px;border-radius:4px;margin-bottom:8px;"></div>
+                    <div class="sk" style="height:44px;width:100%;border-radius:8px;"></div>
+                  </div>
+                  <div class="mt-4">
+                    <div class="sk" style="height:44px;width:220px;border-radius:8px;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+</div>
+
+<div id="page-content" style="display:none;">
+<section class="py-5">
+    <div class="container">
+
+
+        <div class="row">
+            <!-- Sidebar Navigation -->
+            <div class="col-12 col-lg-4 col-xl-3">
+                <div class="profile-sidebar">
+                    <!-- User Avatar & Basic Info -->
+                    <div class="profile-user-card">
+                        <div class="profile-avatar-container">
+                            {% if registration.profile_image %}
+                            <img src="{{ registration.profile_image.url }}" class="profile-avatar" alt="{{ registration.fullname }}">
+                            {% else %}
+                            <div class="profile-avatar-placeholder">
+                                {{ registration.fullname|slice:":1"|upper }}
+                            </div>
+                            {% endif %}
+                            <div class="profile-avatar-edit-badge" onclick="triggerAvatarUpload()" title="{% translate "Change Profile Photo" %}">
+                                <i class="bi bi-pencil-fill"></i>
+                            </div>
+                        </div>
+                        
+                        <!-- Hidden Direct Upload Form -->
+                        <form method="post" enctype="multipart/form-data" id="avatarForm" style="display: none;">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="change_avatar">
+                            <input type="file" name="profile_image" id="avatarInput" accept="image/*" onchange="submitAvatarForm()">
+                        </form>
+                        <h1 class="profile-user-name">{{ registration.fullname }}</h1>
+                        <span class="profile-user-role">{% translate "Customer" %}</span>
+                    </div>
+
+                    <!-- Navigation Tabs -->
+                    <nav class="profile-nav-group nav flex-column" id="accountTabs" role="tablist">
+                        <a class="profile-nav-link active" id="tab-profile-btn" data-bs-toggle="pill" href="#tab-profile" role="tab" aria-controls="tab-profile" aria-selected="true">
+                            <i class="bi bi-person"></i> {% translate "My Profile" %}
+                        </a>
+                        <a class="profile-nav-link" id="tab-edit-btn" data-bs-toggle="pill" href="#tab-edit" role="tab" aria-controls="tab-edit" aria-selected="false">
+                            <i class="bi bi-pencil-square"></i> {% translate "Edit Profile" %}
+                        </a>
+                        <a class="profile-nav-link" id="tab-orders-btn" data-bs-toggle="pill" href="#tab-orders" role="tab" aria-controls="tab-orders" aria-selected="false">
+                            <i class="bi bi-bag-check"></i> {% translate "My Orders" %}
+                            {% if orders %}
+                            <span class="badge bg-primary ms-auto" style="border-radius: 8px;">{{ orders|length }}</span>
+                            {% endif %}
+                        </a>
+                        <a class="profile-nav-link" id="tab-password-btn" data-bs-toggle="pill" href="#tab-password" role="tab" aria-controls="tab-password" aria-selected="false">
+                            <i class="bi bi-shield-lock"></i> {% translate "Change Password" %}
+                        </a>
+                        <hr class="my-2 border-light">
+                        <a class="profile-nav-link text-danger" href="#" data-bs-toggle="modal" data-bs-target="#logoutModal">
+                            <i class="bi bi-box-arrow-right"></i> {% translate "Logout" %}
+                        </a>
+                    </nav>
+                </div>
+            </div>
+
+            <!-- Tab Contents -->
+            <div class="col-12 col-lg-8 col-xl-9">
+                <div class="tab-content" id="accountTabsContent">
+
+                    <!-- Tab 1: Profile Details -->
+                    <div class="tab-pane fade show active" id="tab-profile" role="tabpanel" aria-labelledby="tab-profile-btn">
+                        <div class="profile-content-card">
+                            <div class="profile-content-header">
+                                <h2><i class="bi bi-person-badge"></i> {% translate "Profile Details" %}</h2>
+                            </div>
+                            <div class="profile-content-body">
+                                <div class="detail-grid">
+                                    <div class="detail-item">
+                                        <div class="detail-label">{% translate "Full Name" %}</div>
+                                        <div class="detail-value">{{ registration.fullname }}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">{% translate "Email Address" %}</div>
+                                        <div class="detail-value">{{ registration.email }}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">{% translate "Mobile Number" %}</div>
+                                        <div class="detail-value">{{ registration.mobile }}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">{% translate "City" %}</div>
+                                        <div class="detail-value">{{ registration.city|default:"Not provided" }}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">{% translate "State" %}</div>
+                                        <div class="detail-value">{{ registration.state|default:"Not provided" }}</div>
+                                    </div>
+                                    <div class="detail-item">
+                                        <div class="detail-label">{% translate "Pincode" %}</div>
+                                        <div class="detail-value">{{ registration.pincode|default:"Not provided" }}</div>
+                                    </div>
+                                </div>
+                                <div class="mt-4 pt-3 border-top">
+                                    <div class="detail-label mb-2">{% translate "Street Address" %}</div>
+                                    <div class="detail-value p-3 border rounded-3 bg-light" style="line-height: 1.6;">
+                                        {{ registration.address|default:"No address specified." }}
+                                    </div>
+                                </div>
+                                <div class="mt-4 text-end">
+                                    <button class="btn btn-profile-save" onclick="document.getElementById('tab-edit-btn').click();">
+                                        <i class="bi bi-pencil-square me-1"></i> {% translate "Edit Profile" %}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 2: Edit Profile -->
+                    <div class="tab-pane fade" id="tab-edit" role="tabpanel" aria-labelledby="tab-edit-btn">
+                        <div class="profile-content-card">
+                            <div class="profile-content-header">
+                                <h2><i class="bi bi-pencil-square"></i> {% translate "Edit Profile Information" %}</h2>
+                            </div>
+                            <div class="profile-content-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="edit_profile">
+                                    
+                                    <div class="row g-3">
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ edit_profile_form.fullname.id_for_label }}" class="form-label">{% translate "Full Name" %}</label>
+                                                {{ edit_profile_form.fullname }}
+                                                {% if edit_profile_form.fullname.errors %}
+                                                <div class="text-danger small mt-1">{{ edit_profile_form.fullname.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ edit_profile_form.email.id_for_label }}" class="form-label">{% translate "Email (Read-only)" %}</label>
+                                                {{ edit_profile_form.email }}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="id_profile_mobile_display" class="form-label">{% translate "Mobile Number" %}</label>
+                                                <input type="tel" id="id_profile_mobile_display" class="form-control" placeholder="{% translate 'Enter mobile number' %}" value="{{ edit_profile_form.mobile.value|default:'' }}">
+                                                <input type="hidden" name="mobile" id="id_profile_mobile_full">
+                                                {% if edit_profile_form.mobile.errors %}
+                                                <div class="text-danger small mt-1">{{ edit_profile_form.mobile.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="mb-3">
+                                                <label for="{{ edit_profile_form.profile_image.id_for_label }}" class="form-label">{% translate "Profile Image" %}</label>
+                                                {{ edit_profile_form.profile_image }}
+                                                {% if edit_profile_form.profile_image.errors %}
+                                                <div class="text-danger small mt-1">{{ edit_profile_form.profile_image.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="{{ edit_profile_form.address.id_for_label }}" class="form-label">{% translate "Street Address" %}</label>
+                                        {{ edit_profile_form.address }}
+                                        {% if edit_profile_form.address.errors %}
+                                        <div class="text-danger small mt-1">{{ edit_profile_form.address.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="row g-3">
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="{{ edit_profile_form.city.id_for_label }}" class="form-label">{% translate "City" %}</label>
+                                                {{ edit_profile_form.city }}
+                                                {% if edit_profile_form.city.errors %}
+                                                <div class="text-danger small mt-1">{{ edit_profile_form.city.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="{{ edit_profile_form.state.id_for_label }}" class="form-label">{% translate "State" %}</label>
+                                                {{ edit_profile_form.state }}
+                                                {% if edit_profile_form.state.errors %}
+                                                <div class="text-danger small mt-1">{{ edit_profile_form.state.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <div class="mb-3">
+                                                <label for="{{ edit_profile_form.pincode.id_for_label }}" class="form-label">{% translate "Pincode" %}</label>
+                                                {{ edit_profile_form.pincode }}
+                                                {% if edit_profile_form.pincode.errors %}
+                                                <div class="text-danger small mt-1">{{ edit_profile_form.pincode.errors }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-4 text-end">
+                                        <button type="submit" class="btn btn-profile-save">
+                                            <i class="bi bi-check-circle me-1"></i> {% translate "Save Changes" %}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 3: Order History -->
+                    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-btn">
+                        <div class="profile-content-card">
+                            <div class="profile-content-header">
+                                <h2><i class="bi bi-bag-check"></i> {% translate "Order History" %}</h2>
+                            </div>
+                            <div class="profile-content-body">
+                                {% if orders %}
+                                <div class="order-history-list">
+                                    {% for order in orders %}
+                                    <div class="order-history-card">
+                                        <div class="order-history-header">
+                                            <div>
+                                                <span class="order-history-id">{% translate "Order ID" %}: {{ order.order_id }}</span>
+                                                <div class="order-history-date mt-1">{% translate "Placed on" %}: {{ order.created_at|date:"d M Y, h:i A" }}</div>
+                                            </div>
+                                            <div>
+                                                <span class="status-badge 
+                                                    {% if order.order_status == 'Pending' %}status-pending
+                                                    {% elif order.order_status == 'Confirmed' %}status-confirmed
+                                                    {% elif order.order_status == 'Shipped' %}status-shipped
+                                                    {% elif order.order_status == 'Delivered' %}status-delivered
+                                                    {% else %}status-cancelled{% endif %}">
+                                                    {{ order.order_status }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                        <div class="order-history-body">
+                                            {% for item in order.items.all %}
+                                            <div class="order-history-item-row">
+                                                {% if item.product.product_image %}
+                                                <img src="{{ item.product.product_image.url }}" class="order-history-item-img" alt="{{ item.product_name }}">
+                                                {% else %}
+                                                <div class="order-history-item-placeholder">
+                                                    {{ item.product_name|slice:":1" }}
+                                                </div>
+                                                {% endif %}
+                                                <div class="flex-grow-1">
+                                                    <div class="order-history-item-name">{{ item.product_name }}</div>
+                                                    <div class="order-history-item-qty">{{ item.unit_price|convert_price:request }} × {{ item.quantity }}</div>
+                                                </div>
+                                                <div class="fw-semibold text-dark">{{ item.line_total|convert_price:request }}</div>
+                                            </div>
+                                            {% endfor %}
+                                        </div>
+                                        <div class="order-history-footer">
+                                            <div>
+                                                <span class="small text-muted d-block">{% translate "Payment Method" %}: {{ order.payment_method }}</span>
+                                                <span class="small text-muted d-block">
+                                                    {% translate "Payment Status" %}: 
+                                                    {% if order.is_paid %}
+                                                    <span class="text-success fw-semibold"><i class="bi bi-check-circle-fill"></i> {% translate "Paid" %}</span>
+                                                    {% else %}
+                                                    <span class="text-warning fw-semibold"><i class="bi bi-clock"></i> {% translate "Pending Payment" %}</span>
+                                                    {% endif %}
+                                                </span>
+                                            </div>
+                                            <div class="d-flex align-items-center gap-3">
+                                                <button class="btn btn-sm btn-outline-secondary py-2 px-3 fw-bold" style="border-radius: 8px; font-size: 0.78rem; letter-spacing: 0.5px;" type="button" data-bs-toggle="collapse" data-bs-target="#track-order-{{ order.order_id }}" aria-expanded="false" aria-controls="track-order-{{ order.order_id }}">
+                                                    <i class="bi bi-geo-alt me-1"></i> {% translate "Track Order" %}
+                                                </button>
+                                                <div class="order-history-total mb-0">
+                                                    {% translate "Grand Total" %}: <span>{{ order.total_amount|convert_price:request }}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <!-- Collapsible Tracking Details -->
+                                        <div class="collapse" id="track-order-{{ order.order_id }}">
+                                            <div class="p-4 border-top bg-light rounded-bottom-12">
+                                                <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+                                                    <span class="fw-semibold text-dark" style="font-size: 0.88rem;">{% translate "Order Tracking Status" %}</span>
+                                                    
+                                                    {% if order.order_status == 'Pending' or order.order_status == 'Confirmed' or order.order_status == 'Shipped' %}
+                                                    <span class="badge bg-warning text-dark px-3 py-2 fw-semibold" style="border-radius: 20px; font-size: 0.78rem;">
+                                                        <i class="bi bi-truck me-1"></i> {% translate "Estimated Delivery" %}: {{ order.estimated_delivery_start|date:"d M" }} - {{ order.estimated_delivery_end|date:"d M, Y" }}
+                                                    </span>
+                                                    {% elif order.order_status == 'Delivered' %}
+                                                    <span class="badge bg-success text-white px-3 py-2 fw-semibold" style="border-radius: 20px; font-size: 0.78rem;">
+                                                        <i class="bi bi-check-circle-fill me-1"></i> {% translate "Delivered on" %} {{ order.estimated_delivery_end|date:"d M, Y" }}
+                                                    </span>
+                                                    {% else %}
+                                                    <span class="badge bg-danger text-white px-3 py-2 fw-semibold" style="border-radius: 20px; font-size: 0.78rem;">
+                                                        <i class="bi bi-x-circle-fill me-1"></i> {% translate "Cancelled" %}
+                                                    </span>
+                                                    {% endif %}
+                                                </div>
+
+                                                <div class="position-relative my-4">
+                                                    <!-- Progress Line Background -->
+                                                    <div style="position: absolute; top: 16px; left: 12.5%; right: 12.5%; height: 4px; background-color: var(--border); z-index: 1;"></div>
+                                                    
+                                                    <!-- Progress Line Fill -->
+                                                    <div style="position: absolute; top: 16px; left: 12.5%; height: 4px; z-index: 2; transition: width 0.4s ease;
+                                                        {% if order.order_status == 'Pending' %}width: 0%; background-color: var(--sage);
+                                                        {% elif order.order_status == 'Confirmed' %}width: 25%; background-color: var(--sage);
+                                                        {% elif order.order_status == 'Shipped' %}width: 50%; background-color: var(--sage);
+                                                        {% elif order.order_status == 'Delivered' %}width: 75%; background-color: var(--sage);
+                                                        {% elif order.order_status == 'Cancelled' %}width: 75%; background-color: #dc3545;
+                                                        {% endif %}">
+                                                    </div>
+
+                                                    <!-- Steps -->
+                                                    <div class="d-flex justify-content-between position-relative" style="z-index: 3;">
+                                                        
+                                                        <!-- Step 1: Placed -->
+                                                        <div class="text-center" style="width: 25%;">
+                                                            <div class="d-flex align-items-center justify-content-center rounded-circle border mx-auto mb-2" 
+                                                                 style="width: 36px; height: 36px; 
+                                                                 {% if order.order_status == 'Cancelled' %}background-color: #dc3545; border-color: #dc3545; color: #fff;
+                                                                 {% else %}background-color: var(--sage); border-color: var(--sage); color: #fff;{% endif %}">
+                                                                <i class="bi bi-file-earmark-text"></i>
+                                                            </div>
+                                                            <div class="fw-bold" style="font-size: 0.72rem; color: var(--brown-dark);">{% translate "PLACED" %}</div>
+                                                        </div>
+
+                                                        <!-- Step 2: Confirmed -->
+                                                        <div class="text-center" style="width: 25%;">
+                                                            <div class="d-flex align-items-center justify-content-center rounded-circle border mx-auto mb-2" 
+                                                                 style="width: 36px; height: 36px; transition: all 0.3s;
+                                                                 {% if order.order_status == 'Cancelled' %}background-color: #dc3545; border-color: #dc3545; color: #fff;
+                                                                 {% elif order.order_status == 'Confirmed' or order.order_status == 'Shipped' or order.order_status == 'Delivered' %}background-color: var(--sage); border-color: var(--sage); color: #fff;
+                                                                 {% else %}background-color: #fff; border-color: var(--border); color: var(--brown-body);{% endif %}">
+                                                                <i class="bi bi-bag-check"></i>
+                                                            </div>
+                                                            <div class="fw-bold" style="font-size: 0.72rem; 
+                                                                 {% if order.order_status == 'Cancelled' or order.order_status == 'Confirmed' or order.order_status == 'Shipped' or order.order_status == 'Delivered' %}color: var(--brown-dark);{% else %}color: var(--brown-body);{% endif %}">
+                                                                 {% translate "CONFIRMED" %}
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Step 3: Shipped -->
+                                                        <div class="text-center" style="width: 25%;">
+                                                            <div class="d-flex align-items-center justify-content-center rounded-circle border mx-auto mb-2" 
+                                                                 style="width: 36px; height: 36px; transition: all 0.3s;
+                                                                 {% if order.order_status == 'Cancelled' and order.order_status == 'Shipped' %}background-color: #dc3545; border-color: #dc3545; color: #fff;
+                                                                 {% elif order.order_status == 'Shipped' or order.order_status == 'Delivered' %}background-color: var(--sage); border-color: var(--sage); color: #fff;
+                                                                 {% else %}background-color: #fff; border-color: var(--border); color: var(--brown-body);{% endif %}">
+                                                                <i class="bi bi-truck"></i>
+                                                            </div>
+                                                            <div class="fw-bold" style="font-size: 0.72rem; 
+                                                                 {% if order.order_status == 'Shipped' or order.order_status == 'Delivered' %}color: var(--brown-dark);{% else %}color: var(--brown-body);{% endif %}">
+                                                                 {% translate "SHIPPED" %}
+                                                            </div>
+                                                        </div>
+
+                                                        <!-- Step 4: Delivered / Cancelled -->
+                                                        <div class="text-center" style="width: 25%;">
+                                                            {% if order.order_status == 'Cancelled' %}
+                                                            <div class="d-flex align-items-center justify-content-center rounded-circle border mx-auto mb-2" 
+                                                                 style="width: 36px; height: 36px; background-color: #dc3545; border-color: #dc3545; color: #fff;">
+                                                                <i class="bi bi-x-circle"></i>
+                                                            </div>
+                                                            <div class="fw-bold" style="font-size: 0.72rem; color: #dc3545;">{% translate "CANCELLED" %}</div>
+                                                            {% else %}
+                                                            <div class="d-flex align-items-center justify-content-center rounded-circle border mx-auto mb-2" 
+                                                                 style="width: 36px; height: 36px; transition: all 0.3s;
+                                                                 {% if order.order_status == 'Delivered' %}background-color: var(--sage); border-color: var(--sage); color: #fff;
+                                                                 {% else %}background-color: #fff; border-color: var(--border); color: var(--brown-body);{% endif %}">
+                                                                <i class="bi bi-house-door"></i>
+                                                            </div>
+                                                            <div class="fw-bold" style="font-size: 0.72rem; 
+                                                                 {% if order.order_status == 'Delivered' %}color: var(--brown-dark);{% else %}color: var(--brown-body);{% endif %}">
+                                                                 {% translate "DELIVERED" %}
+                                                            </div>
+                                                            {% endif %}
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                </div>
+                                {% else %}
+                                <div class="text-center py-5">
+                                    <i class="bi bi-bag-x text-muted" style="font-size: 3.5rem;"></i>
+                                    <h3 class="h5 mt-3 text-dark">{% translate "No orders found" %}</h3>
+                                    <p class="text-muted">{% translate "You haven't placed any orders yet." %}</p>
+                                    <a href="{% url 'core:product_list' %}" class="btn btn-primary mt-2">
+                                        {% translate "Explore Products" %}
+                                    </a>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tab 4: Change Password -->
+                    <div class="tab-pane fade" id="tab-password" role="tabpanel" aria-labelledby="tab-password-btn">
+                        <div class="profile-content-card">
+                            <div class="profile-content-header">
+                                <h2><i class="bi bi-shield-lock"></i> {% translate "Change Password" %}</h2>
+                            </div>
+                            <div class="profile-content-body" style="max-width: 500px;">
+                                <form method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="action" value="change_password">
+
+                                    <div class="mb-3">
+                                        <label for="old_password" class="form-label">{% translate "Old Password" %}</label>
+                                        {{ change_password_form.old_password }}
+                                        {% if change_password_form.old_password.errors %}
+                                        <div class="text-danger small mt-1">{{ change_password_form.old_password.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="new_password" class="form-label">{% translate "New Password" %}</label>
+                                        {{ change_password_form.new_password }}
+                                        {% if change_password_form.new_password.errors %}
+                                        <div class="text-danger small mt-1">{{ change_password_form.new_password.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="mb-3">
+                                        <label for="confirm_password" class="form-label">{% translate "Confirm New Password" %}</label>
+                                        {{ change_password_form.confirm_password }}
+                                        {% if change_password_form.confirm_password.errors %}
+                                        <div class="text-danger small mt-1">{{ change_password_form.confirm_password.errors }}</div>
+                                        {% endif %}
+                                    </div>
+
+                                    <div class="mt-4">
+                                        <button type="submit" class="btn btn-profile-save">
+                                            {% translate "Update Password" %}
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+setTimeout(function () {
+  var sk = document.getElementById('page-skeleton');
+  var pg = document.getElementById('page-content');
+  if (sk) sk.style.display = 'none';
+  if (pg) {
+    pg.style.opacity = '0';
+    pg.style.display = '';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        pg.style.opacity = '1';
+      });
+    });
+  }
+}, 500);
+
+    // Handle switching tabs based on query parameters
+    document.addEventListener("DOMContentLoaded", function() {
+        const urlParams = new URLSearchParams(window.location.search);
+        const tab = urlParams.get('tab');
+        
+        if (tab) {
+            let tabBtn = document.getElementById('tab-' + tab + '-btn');
+            if (tabBtn) {
+                // Trigger bootstrap click to switch tabs
+                tabBtn.click();
+            }
+        }
+    });
+
+    function triggerAvatarUpload() {
+        document.getElementById('avatarInput').click();
+    }
+
+    function submitAvatarForm() {
+        const input = document.getElementById('avatarInput');
+        if (input.files && input.files.length > 0) {
+            document.getElementById('avatarForm').submit();
+        }
+    }
+</script>
+
+<!-- intl-tel-input JS -->
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/intlTelInput.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/utils.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const phoneInput = document.querySelector('#id_profile_mobile_display');
+        const hiddenInput = document.querySelector('#id_profile_mobile_full');
+
+        if (phoneInput) {
+            const iti = window.intlTelInput(phoneInput, {
+                initialCountry: 'in',
+                preferredCountries: ['in', 'us', 'gb', 'ae', 'ca', 'au'],
+                separateDialCode: true,
+                utilsScript: 'https://cdn.jsdelivr.net/npm/intl-tel-input@18.5.3/build/js/utils.js',
+            });
+
+            // Sync full number to hidden field on any change
+            function syncNumber() {
+                hiddenInput.value = iti.getNumber();
+            }
+            phoneInput.addEventListener('input', syncNumber);
+            phoneInput.addEventListener('countrychange', syncNumber);
+
+            // Sync on form submit
+            const form = phoneInput.closest('form');
+            if (form) {
+                form.addEventListener('submit', function() {
+                    syncNumber();
+                });
+            }
+
+            // If re-rendering with existing value, sync immediately and initialize flag properly
+            if (phoneInput.value) {
+                // If value doesn't start with '+', dial code won't match, let's prefix it or let intlTelInput parse
+                if (!phoneInput.value.startsWith('+')) {
+                    // Try setting it by parsing or prepend plus if it looks like country code is missing
+                    // Let's let intl-tel-input set the number
+                    iti.setNumber(phoneInput.value);
+                }
+                syncNumber();
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,58 @@
+{#
+  Reusable admin-panel skeleton rows to show while data is loading.
+  Usage:
+    {% include "admin_panel/partials/skeleton_admin_table.html" with rows=8 columns=6 %}
+#}
+
+{% comment %}
+  Note: Django template "with" values are strings/numbers.
+{% endcomment %}
+
+{#
+  Render up to 12 rows; callers can pass `rows` (default 7).
+  For deterministic server-side output we just render 12 and hide extras.
+#}
+
+
+<style>
+  /* Admin skeleton */
+  .admin-skel {
+    background: #EDE3D6;
+    border-radius: 10px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .admin-skel::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+
+  .admin-skel-table-row {
+    height: 58px;
+    border-bottom: 1px solid rgba(233,236,239,0.9);
+  }
+</style>
+
+{# Render up to 12 rows; consumers can control by passing rows and JS can optionally trim.
+   For deterministic server render, just show the default count from caller by wrapping in an element.
+#}
+
+<div class="admin-skel-table" data-rows="{{ rows|default:7 }}">
+  {% for _r in "...................................."|slice:"0:" %}
+    {% if forloop.counter0 < rows|default:7 %}
+      <div class="admin-skel-table-row d-flex align-items-center px-3">
+        <div class="admin-skel" style="height:14px;width:90px;border-radius:6px;opacity:.9;"></div>
+      </div>
+    {% endif %}
+  {% endfor %}
+
+</div>
+

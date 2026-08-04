@@ -1,0 +1,484 @@
+{% extends "base.html" %}
+{% load i18n %}
+{% load currency_filters %}
+
+{% block title %}{% translate "Products" %} | DesiHands{% endblock %}
+
+{% block extra_css %}
+<style>
+
+/* ---------- Breadcrumbs ---------- */
+.premium-breadcrumbs {
+    font-size: 0.88rem;
+    font-family: var(--font-body);
+}
+.premium-breadcrumbs .breadcrumb-item a {
+    color: var(--accent);
+    text-decoration: none;
+    transition: color 0.2s ease;
+}
+.premium-breadcrumbs .breadcrumb-item a:hover {
+    color: var(--accent-deep);
+}
+.premium-breadcrumbs .breadcrumb-item.active {
+    color: var(--brown-body);
+    opacity: 0.8;
+}
+.premium-breadcrumbs .breadcrumb-item + .breadcrumb-item::before {
+    color: var(--border);
+    content: "/";
+}
+
+/* ---------- Search and Filter Form ---------- */
+.premium-filter-form {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: 24px;
+    padding: 24px;
+    box-shadow: 0 4px 20px rgba(44, 35, 24, 0.03);
+}
+.premium-filter-form .form-label {
+    font-family: var(--font-body);
+    font-weight: 600;
+    font-size: 0.85rem;
+    color: var(--brown-dark);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+.premium-filter-form .form-control,
+.premium-filter-form .form-select {
+    border-radius: 14px;
+    border: 1.5px solid var(--border);
+    padding: 12px 16px;
+    font-size: 0.95rem;
+    color: var(--brown-dark);
+    transition: all 0.25s ease;
+}
+.premium-filter-form .form-control:focus,
+.premium-filter-form .form-select:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(196, 154, 90, 0.15);
+}
+.btn-filter-apply {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 14px;
+    font-weight: 600;
+    padding: 12px 24px;
+    border: none;
+    transition: all 0.25s ease;
+}
+.btn-filter-apply:hover {
+    background: var(--accent-deep);
+    color: #fff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(139, 103, 68, 0.2);
+}
+
+/* ---------- Admin Actions ---------- */
+.product-admin-actions {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+    margin-top: 4px;
+}
+.product-admin-actions a {
+    flex: 1;
+    text-align: center;
+}
+.btn-outline-edit {
+    border: 1.5px solid var(--border);
+    color: var(--brown-mid);
+    background: transparent;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-outline-edit:hover {
+    background: var(--parchment);
+    color: var(--accent);
+    border-color: var(--accent);
+}
+.btn-outline-delete {
+    border: 1.5px solid rgba(220, 53, 69, 0.15);
+    color: #dc3545;
+    background: transparent;
+    padding: 6px 10px;
+    border-radius: 10px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+.btn-outline-delete:hover {
+    background: rgba(220, 53, 69, 0.05);
+    border-color: #dc3545;
+}
+
+/* ---------- Pagination ---------- */
+.premium-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+}
+.pagination-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 1.5px solid var(--border);
+    background: #ffffff;
+    color: var(--brown-dark);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-decoration: none;
+    transition: all 0.25s ease;
+    cursor: pointer;
+}
+.pagination-btn:hover:not(.disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+    background: var(--parchment);
+}
+.pagination-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+}
+.pagination-btn.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+    pointer-events: none;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+<style>
+  .sk {
+    background: #EDE3D6;
+    border-radius: 6px;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .sk::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(90deg, transparent 0%, rgba(255,253,249,0.72) 50%, transparent 100%);
+    animation: dh-shimmer 1.6s infinite;
+  }
+  @keyframes dh-shimmer {
+    0%   { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+  }
+  #page-content { transition: opacity 0.3s ease; }
+</style>
+
+<div id="page-skeleton">
+  <section class="py-5">
+    <div class="container">
+      <nav aria-label="breadcrumb" class="mb-4">
+        <ol class="breadcrumb premium-breadcrumbs mb-0">
+          <li class="breadcrumb-item"><div class="sk" style="height:12px;width:60px;border-radius:4px;"></div></li>
+          <li class="breadcrumb-item active" aria-current="page"><div class="sk" style="height:12px;width:90px;border-radius:4px;"></div></li>
+        </ol>
+      </nav>
+
+      <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+        <div style="flex:1;">
+          <div class="sk" style="height:30px;width:280px;border-radius:6px;"></div>
+          <div class="sk" style="height:14px;width:420px;border-radius:4px;margin-top:10px;"></div>
+        </div>
+        <div class="sk" style="height:44px;width:200px;border-radius:12px;"></div>
+      </div>
+
+      <div class="premium-filter-form mb-5">
+        <div class="row g-3 align-items-end">
+          <div class="col-12 col-md-5">
+            <div class="sk" style="height:12px;width:160px;border-radius:4px;margin-bottom:10px;"></div>
+            <div class="sk" style="height:48px;width:100%;border-radius:14px;"></div>
+          </div>
+          <div class="col-12 col-md-5">
+            <div class="sk" style="height:12px;width:180px;border-radius:4px;margin-bottom:10px;"></div>
+            <div class="sk" style="height:48px;width:100%;border-radius:14px;"></div>
+          </div>
+          <div class="col-12 col-md-2 d-grid">
+            <div class="sk" style="height:48px;width:100%;border-radius:14px;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5">
+        <div class="col product-card-col"><div class="product-grid-card">
+          <div class="card-img-wrapper"><div class="sk sk-prod-img" style="height:250px;width:100%;border-radius:0;"></div></div>
+          <div class="card-details-wrapper" style="padding:24px;display:flex;flex-direction:column;gap:10px;">
+            <div class="sk" style="height:22px;width:120px;border-radius:30px;"></div>
+            <div class="sk" style="height:18px;width:75%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:100%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:65%;border-radius:4px;"></div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+              <div class="sk" style="height:12px;width:70%;border-radius:4px;"></div>
+              <div class="sk" style="height:12px;width:60%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div class="card-bottom-wrapper" style="padding:0 24px 24px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="sk" style="height:22px;width:120px;border-radius:4px;"></div>
+              <div class="sk" style="height:22px;width:110px;border-radius:30px;"></div>
+            </div>
+            <div class="sk" style="height:18px;width:100%;border-radius:50px;"></div>
+          </div>
+        </div></div>
+        <div class="col product-card-col"><div class="product-grid-card">
+          <div class="card-img-wrapper"><div class="sk sk-prod-img" style="height:250px;width:100%;border-radius:0;"></div></div>
+          <div class="card-details-wrapper" style="padding:24px;display:flex;flex-direction:column;gap:10px;">
+            <div class="sk" style="height:22px;width:100px;border-radius:30px;"></div>
+            <div class="sk" style="height:18px;width:70%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:100%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:60%;border-radius:4px;"></div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+              <div class="sk" style="height:12px;width:65%;border-radius:4px;"></div>
+              <div class="sk" style="height:12px;width:55%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div class="card-bottom-wrapper" style="padding:0 24px 24px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="sk" style="height:22px;width:100px;border-radius:4px;"></div>
+              <div class="sk" style="height:22px;width:100px;border-radius:30px;"></div>
+            </div>
+            <div class="sk" style="height:18px;width:100%;border-radius:50px;"></div>
+          </div>
+        </div></div>
+        <div class="col product-card-col"><div class="product-grid-card">
+          <div class="card-img-wrapper"><div class="sk sk-prod-img" style="height:250px;width:100%;border-radius:0;"></div></div>
+          <div class="card-details-wrapper" style="padding:24px;display:flex;flex-direction:column;gap:10px;">
+            <div class="sk" style="height:22px;width:110px;border-radius:30px;"></div>
+            <div class="sk" style="height:18px;width:80%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:100%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:68%;border-radius:4px;"></div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+              <div class="sk" style="height:12px;width:60%;border-radius:4px;"></div>
+              <div class="sk" style="height:12px;width:50%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div class="card-bottom-wrapper" style="padding:0 24px 24px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="sk" style="height:22px;width:115px;border-radius:4px;"></div>
+              <div class="sk" style="height:22px;width:105px;border-radius:30px;"></div>
+            </div>
+            <div class="sk" style="height:18px;width:100%;border-radius:50px;"></div>
+          </div>
+        </div></div>
+        <div class="col product-card-col"><div class="product-grid-card">
+          <div class="card-img-wrapper"><div class="sk sk-prod-img" style="height:250px;width:100%;border-radius:0;"></div></div>
+          <div class="card-details-wrapper" style="padding:24px;display:flex;flex-direction:column;gap:10px;">
+            <div class="sk" style="height:22px;width:90px;border-radius:30px;"></div>
+            <div class="sk" style="height:18px;width:65%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:100%;border-radius:4px;"></div>
+            <div class="sk" style="height:12px;width:55%;border-radius:4px;"></div>
+            <div style="margin-top:6px;display:flex;flex-direction:column;gap:8px;">
+              <div class="sk" style="height:12px;width:58%;border-radius:4px;"></div>
+              <div class="sk" style="height:12px;width:48%;border-radius:4px;"></div>
+            </div>
+          </div>
+          <div class="card-bottom-wrapper" style="padding:0 24px 24px;display:flex;flex-direction:column;gap:12px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div class="sk" style="height:22px;width:105px;border-radius:4px;"></div>
+              <div class="sk" style="height:22px;width:95px;border-radius:30px;"></div>
+            </div>
+            <div class="sk" style="height:18px;width:100%;border-radius:50px;"></div>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="premium-pagination" id="paginationContainer">
+        <div class="sk" style="height:40px;width:40px;border-radius:50%;"></div>
+        <div class="sk" style="height:40px;width:40px;border-radius:50%;"></div>
+        <div class="sk" style="height:40px;width:40px;border-radius:50%;"></div>
+      </div>
+    </div>
+  </section>
+</div>
+
+<div id="page-content" style="display:none;">
+<section class="py-5">
+    <div class="container">
+        
+        <!-- Breadcrumbs -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb premium-breadcrumbs mb-0">
+                <li class="breadcrumb-item"><a href="/">{% translate "Home" %}</a></li>
+                <li class="breadcrumb-item active" aria-current="page">{% translate "Products" %}</li>
+            </ol>
+        </nav>
+
+        <!-- Page Header Section -->
+        <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3 mb-5">
+            <div>
+                <h1 class="h3 mb-1" style="font-family: var(--font-display); font-weight: 700; color: var(--brown-dark);">{% translate "Our Products" %}</h1>
+                <p class="text-muted mb-0">{% translate "Browse unique, handcrafted goods straight from creative makers." %}</p>
+            </div>
+
+            {% if request.user.is_staff %}
+                <a class="btn btn-primary" href="{% url 'core:product_add' %}" style="border-radius: 12px; padding: 10px 20px;">
+                    <i class="bi bi-plus-circle me-1"></i> {% translate "Add Product" %}
+                </a>
+            {% endif %}
+        </div>
+
+        <!-- Filter Form -->
+        <form class="premium-filter-form mb-5" method="get">
+            <div class="row g-3 align-items-end">
+                <div class="col-12 col-md-5">
+                    <label class="form-label" for="productSearch">{% translate "Search by name" %}</label>
+                    <input class="form-control" id="productSearch" type="search" name="q"
+                           value="{{ search_query }}" placeholder="{% translate "Search unique crafts..." %}">
+                </div>
+
+                <div class="col-12 col-md-5">
+                    <label class="form-label" for="categoryFilter">{% translate "Filter by category" %}</label>
+                    <select class="form-select" id="categoryFilter" name="category">
+                        <option value="">{% translate "All Categories" %}</option>
+                        {% for category in categories %}
+                            <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+                                {{ category.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-12 col-md-2 d-grid">
+                    <button class="btn-filter-apply" type="submit">{% translate "Apply Filter" %}</button>
+                </div>
+            </div>
+        </form>
+
+        <!-- Products 4-column Grid -->
+        {% if products %}
+            <div class="row row-cols-1 row-cols-md-2 row-cols-lg-4 g-4 mb-5" id="productListContainer">
+                {% for product in products %}
+                    <div class="col product-card-col">
+                        <div class="product-grid-card">
+                            
+                            <!-- Top: Large Product Image -->
+                            <div class="card-img-wrapper">
+                                {% if product.product_image %}
+                                    <img src="{{ product.product_image.url }}" alt="{{ product.product_name }}">
+                                {% else %}
+                                    <div class="product-image-placeholder">
+                                        <span>{{ product.product_name|slice:":1" }}</span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <!-- Middle: Product Details -->
+                            <div class="card-details-wrapper">
+                                <span class="badge-category">{{ product.category.name }}</span>
+                                <h2 class="product-name-heading">{{ product.product_name }}</h2>
+                                <p class="product-desc-text">{{ product.description }}</p>
+
+                                <div class="product-meta-details">
+                                    <span><i class="bi bi-person me-1"></i> {% translate "Seller" %}: {{ product.seller_name }}</span>
+                                    <span><i class="bi bi-stack me-1"></i> {% translate "Stock" %}: {{ product.stock }} {% translate "items" %}</span>
+                                </div>
+                            </div>
+
+                            <!-- Bottom: Price & Button -->
+                            <div class="card-bottom-wrapper">
+                                <div class="price-availability-row">
+                                    <div class="product-price-display">
+                                        {{ product.price|convert_price:request }}
+                                    </div>
+                                    <div>
+                                        {% if product.is_available %}
+                                            <span class="badge-availability badge-available">
+                                                <i class="bi bi-check-circle me-1"></i> {% translate "Available" %}
+                                            </span>
+                                        {% else %}
+                                            <span class="badge-availability badge-unavailable">
+                                                <i class="bi bi-dash-circle me-1"></i> {% translate "Out of Stock" %}
+                                            </span>
+                                        {% endif %}
+                                    </div>
+                                </div>
+
+                                <a class="product-details-btn" href="{% url 'core:product_detail' product.id %}">
+                                    <span>{% translate "View Details" %}</span>
+                                    <i class="bi bi-chevron-right"></i>
+                                </a>
+
+                                {% if request.user.is_staff %}
+                                    <div class="product-admin-actions">
+                                        <a class="btn-outline-edit text-decoration-none" href="{% url 'core:product_edit' product.id %}">
+                                            <i class="bi bi-pencil-square"></i> {% translate "Edit" %}
+                                        </a>
+                                        <a class="btn-outline-delete text-decoration-none" href="{% url 'core:product_delete' product.id %}">
+                                            <i class="bi bi-trash3"></i> {% translate "Delete" %}
+                                        </a>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <!-- Modern Pagination -->
+            <div class="premium-pagination" id="paginationContainer"></div>
+        {% else %}
+            <div class="bg-white border rounded-4 p-5 text-center shadow-sm">
+                <div class="text-muted mb-3" style="font-size: 3rem;">
+                    <i class="bi bi-search"></i>
+                </div>
+                <h2 class="h5 mb-2" style="font-family: var(--font-display); font-weight: 700; color: var(--brown-dark);">{% translate "No products found" %}</h2>
+                <p class="text-muted mb-0">{% translate "Try adjusting your search or category filters." %}</p>
+            </div>
+        {% endif %}
+    </div>
+</section>
+</div>
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+setTimeout(function () {
+  var sk = document.getElementById('page-skeleton');
+  var pg = document.getElementById('page-content');
+  if (sk) sk.style.display = 'none';
+  if (pg) {
+    pg.style.opacity = '0';
+    pg.style.display = '';
+    requestAnimationFrame(function () {
+      requestAnimationFrame(function () {
+        pg.style.opacity = '1';
+      });
+    });
+  }
+}, 500);
+
+// NOTE: This page previously implemented client-side pagination by hiding cards with
+// `display:none !important`. That caused only the first few products to appear.
+// We now render *all* products from the server queryset so every active product is visible.
+document.addEventListener('DOMContentLoaded', function () {
+    const cards = document.querySelectorAll('.product-card-col');
+    if (!cards || cards.length === 0) return;
+
+    // Ensure no script hides product cards.
+    cards.forEach((card) => {
+        card.style.setProperty('display', '', 'important');
+    });
+
+    const paginationContainer = document.getElementById('paginationContainer');
+    if (paginationContainer) paginationContainer.style.display = 'none';
+});
+</script>
+{% endblock %}

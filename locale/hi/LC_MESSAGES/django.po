@@ -1,0 +1,1339 @@
+# DesiHands Hindi Translations
+# Copyright (C) 2026 DesiHands
+# This file is distributed under the same license as the DesiHands project.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: DesiHands 1.0\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-06-24 11:00+0530\n"
+"PO-Revision-Date: 2026-06-24 11:00+0530\n"
+"Last-Translator: DesiHands Team\n"
+"Language-Team: Hindi\n"
+"Language: hi\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+# ===== Navbar (base.html) =====
+
+msgid "HOME"
+msgstr "होम"
+
+msgid "PRODUCTS"
+msgstr "उत्पाद"
+
+msgid "CATEGORIES"
+msgstr "श्रेणियाँ"
+
+msgid "ABOUT"
+msgstr "हमारे बारे में"
+
+msgid "CONTACT"
+msgstr "संपर्क"
+
+msgid "My Profile"
+msgstr "मेरी प्रोफ़ाइल"
+
+msgid "My Orders"
+msgstr "मेरे ऑर्डर"
+
+msgid "Change Password"
+msgstr "पासवर्ड बदलें"
+
+msgid "Logout"
+msgstr "लॉगआउट"
+
+msgid "Login"
+msgstr "लॉगिन"
+
+msgid "Register"
+msgstr "पंजीकरण"
+
+# ===== Footer (base.html) =====
+
+msgid "DesiHands connects customers with handcrafted products inspired by local skill, culture, and care."
+msgstr "DesiHands ग्राहकों को स्थानीय कौशल, संस्कृति और देखभाल से प्रेरित हस्तनिर्मित उत्पादों से जोड़ता है।"
+
+msgid "Quick Links"
+msgstr "त्वरित लिंक"
+
+msgid "Home"
+msgstr "होम"
+
+msgid "Categories"
+msgstr "श्रेणियाँ"
+
+msgid "Products"
+msgstr "उत्पाद"
+
+msgid "About"
+msgstr "हमारे बारे में"
+
+msgid "Contact"
+msgstr "संपर्क"
+
+msgid "Customer Service"
+msgstr "ग्राहक सेवा"
+
+msgid "My Account"
+msgstr "मेरा खाता"
+
+msgid "My Cart"
+msgstr "मेरी कार्ट"
+
+msgid "FAQs"
+msgstr "अक्सर पूछे जाने वाले प्रश्न"
+
+msgid "Shipping Policy"
+msgstr "शिपिंग नीति"
+
+msgid "Privacy Policy"
+msgstr "गोपनीयता नीति"
+
+msgid "Contact Information"
+msgstr "संपर्क जानकारी"
+
+msgid "India"
+msgstr "भारत"
+
+msgid "Mon – Sat, 9:00 AM – 7:00 PM"
+msgstr "सोम – शनि, सुबह 9:00 – शाम 7:00 बजे"
+
+# ===== Logout Modal (base.html) =====
+
+msgid "Confirm Logout"
+msgstr "लॉगआउट की पुष्टि करें"
+
+msgid "Are you sure you want to log out of your DesiHands account?"
+msgstr "क्या आप वाकई अपने DesiHands खाते से लॉगआउट करना चाहते हैं?"
+
+msgid "Cancel"
+msgstr "रद्द करें"
+
+# ===== Home Page =====
+
+msgid "HANDMADE WITH HEART"
+msgstr "दिल से बना हस्तनिर्मित"
+
+msgid "Handmade."
+msgstr "हस्तनिर्मित।"
+
+msgid "Made with Love."
+msgstr "प्यार से बनाया गया।"
+
+msgid "Thoughtful products crafted by talented artisans across India."
+msgstr "भारत भर के प्रतिभाशाली कारीगरों द्वारा सोच-समझकर बनाए गए उत्पाद।"
+
+msgid "SHOP NOW"
+msgstr "अभी खरीदें"
+
+msgid "EXPLORE COLLECTION"
+msgstr "संग्रह देखें"
+
+msgid "Handcrafted"
+msgstr "हस्तनिर्मित"
+
+msgid "Quality Assured"
+msgstr "गुणवत्ता की गारंटी"
+
+msgid "Fast Delivery"
+msgstr "तेज़ डिलीवरी"
+
+msgid "Featured Categories"
+msgstr "विशेष श्रेणियाँ"
+
+msgid "Find your favourite craft by category."
+msgstr "श्रेणी के अनुसार अपनी पसंदीदा शिल्प खोजें।"
+
+msgid "View All"
+msgstr "सभी देखें"
+
+msgid "Featured categories will appear here once added."
+msgstr "विशेष श्रेणियाँ जोड़ने पर यहाँ दिखाई देंगी।"
+
+msgid "Latest Products"
+msgstr "नवीनतम उत्पाद"
+
+msgid "Fresh handmade arrivals from DesiHands sellers."
+msgstr "DesiHands विक्रेताओं से ताज़े हस्तनिर्मित उत्पाद।"
+
+msgid "Seller"
+msgstr "विक्रेता"
+
+msgid "Stock"
+msgstr "स्टॉक"
+
+msgid "items"
+msgstr "वस्तुएँ"
+
+msgid "Rs."
+msgstr "₹"
+
+msgid "Available"
+msgstr "उपलब्ध"
+
+msgid "Out of Stock"
+msgstr "स्टॉक में नहीं"
+
+msgid "View Details"
+msgstr "विवरण देखें"
+
+msgid "Latest products will appear here once added."
+msgstr "नवीनतम उत्पाद जोड़ने पर यहाँ दिखाई देंगे।"
+
+msgid "WHY DESIHANDS"
+msgstr "क्यों चुनें DESIHANDS"
+
+msgid "Why Choose Us"
+msgstr "हमें क्यों चुनें"
+
+msgid "A thoughtful marketplace for handmade products crafted with passion."
+msgstr "जुनून से बनाए गए हस्तनिर्मित उत्पादों के लिए एक विचारशील बाज़ार।"
+
+msgid "Authentic Craft"
+msgstr "प्रामाणिक शिल्प"
+
+msgid "Products reflect real skill, cultural detail, and maker-led creativity."
+msgstr "उत्पाद वास्तविक कौशल, सांस्कृतिक विवरण और निर्माता-प्रेरित रचनात्मकता को दर्शाते हैं।"
+
+msgid "Local Sellers"
+msgstr "स्थानीय विक्रेता"
+
+msgid "Support independent artisans and discover unique collections."
+msgstr "स्वतंत्र कारीगरों का समर्थन करें और अनूठे संग्रह खोजें।"
+
+msgid "Easy Shopping"
+msgstr "आसान खरीदारी"
+
+msgid "Browse categories, explore products, and order with confidence."
+msgstr "श्रेणियाँ ब्राउज़ करें, उत्पाद खोजें और विश्वास के साथ ऑर्डर करें।"
+
+msgid "HELP CENTER"
+msgstr "सहायता केंद्र"
+
+msgid "Frequently Asked Questions"
+msgstr "अक्सर पूछे जाने वाले प्रश्न"
+
+msgid "Everything you need to know about shopping at DesiHands."
+msgstr "DesiHands पर खरीदारी के बारे में वह सब कुछ जो आपको जानना चाहिए।"
+
+msgid "Are all products handmade?"
+msgstr "क्या सभी उत्पाद हस्तनिर्मित हैं?"
+
+msgid "Yes. Every product is carefully crafted by skilled artisans and local makers."
+msgstr "हाँ। हर उत्पाद कुशल कारीगरों और स्थानीय निर्माताओं द्वारा सावधानीपूर्वक बनाया गया है।"
+
+msgid "How long does delivery take?"
+msgstr "डिलीवरी में कितना समय लगता है?"
+
+msgid "Orders are usually delivered within 3-7 business days depending on location."
+msgstr "ऑर्डर आमतौर पर स्थान के आधार पर 3-7 कार्य दिवसों में डिलीवर किए जाते हैं।"
+
+msgid "Can I return a product?"
+msgstr "क्या मैं कोई उत्पाद वापस कर सकता/सकती हूँ?"
+
+msgid "Yes. Products can be returned within 7 days if they are damaged or incorrect."
+msgstr "हाँ। यदि उत्पाद क्षतिग्रस्त या गलत हैं तो उन्हें 7 दिनों के भीतर वापस किया जा सकता है।"
+
+msgid "Is online payment secure?"
+msgstr "क्या ऑनलाइन भुगतान सुरक्षित है?"
+
+msgid "Absolutely. All transactions are processed through secure payment gateways."
+msgstr "बिल्कुल। सभी लेनदेन सुरक्षित भुगतान गेटवे के माध्यम से संसाधित किए जाते हैं।"
+
+# ===== About Page =====
+
+msgid "About Us"
+msgstr "हमारे बारे में"
+
+msgid "OUR STORY"
+msgstr "हमारी कहानी"
+
+msgid "Crafted by Hand,"
+msgstr "हाथों से बनाया गया,"
+
+msgid "Connected by Heart."
+msgstr "दिल से जुड़ा हुआ।"
+
+msgid "DesiHands began with a simple belief — that handmade things carry a warmth no factory can replicate. We built a home for India's artisans to share that warmth with the world."
+msgstr "DesiHands एक सरल विश्वास से शुरू हुआ — कि हस्तनिर्मित चीज़ों में एक ऐसी गर्माहट होती है जो कोई कारखाना नहीं बना सकता। हमने भारत के कारीगरों के लिए उस गर्माहट को दुनिया के साथ साझा करने का एक घर बनाया।"
+
+msgid "Who We Are"
+msgstr "हम कौन हैं"
+
+msgid "A Marketplace Built on Trust & Tradition"
+msgstr "विश्वास और परंपरा पर बना बाज़ार"
+
+msgid "DesiHands was founded to close the distance between skilled local makers and the people who value their craft. Every seller on our platform is a real artisan — a potter, a weaver, a woodworker — running their own small business with our support behind them."
+msgstr "DesiHands की स्थापना कुशल स्थानीय निर्माताओं और उनकी शिल्पकला को महत्व देने वाले लोगों के बीच की दूरी को कम करने के लिए की गई थी। हमारे प्लेटफ़ॉर्म पर हर विक्रेता एक वास्तविक कारीगर है — एक कुम्हार, एक बुनकर, एक लकड़ी का कारीगर — जो हमारे समर्थन से अपना छोटा व्यवसाय चला रहा है।"
+
+msgid "We handle the technology so makers can focus on what they do best: creating. From listing a product to packing an order, every step is designed to be simple, fair, and transparent — for sellers and shoppers alike."
+msgstr "हम तकनीक संभालते हैं ताकि निर्माता वह कर सकें जो वे सबसे अच्छा करते हैं: बनाना। उत्पाद सूचीबद्ध करने से लेकर ऑर्डर पैक करने तक, हर कदम सरल, निष्पक्ष और पारदर्शी होने के लिए डिज़ाइन किया गया है — विक्रेताओं और खरीदारों दोनों के लिए।"
+
+msgid "Verified local artisans"
+msgstr "सत्यापित स्थानीय कारीगर"
+
+msgid "Fair maker pricing"
+msgstr "निष्पक्ष निर्माता मूल्य निर्धारण"
+
+msgid "Quality checked products"
+msgstr "गुणवत्ता जाँचे गए उत्पाद"
+
+msgid "The Process"
+msgstr "प्रक्रिया"
+
+msgid "How DesiHands Works"
+msgstr "DesiHands कैसे काम करता है"
+
+msgid "From the maker's workbench to your doorstep — every order follows a simple, transparent journey."
+msgstr "निर्माता की कार्यशाला से आपके दरवाज़े तक — हर ऑर्डर एक सरल, पारदर्शी यात्रा का अनुसरण करता है।"
+
+msgid "Discover"
+msgstr "खोजें"
+
+msgid "Browse curated categories and find products made by artisans near you and across India."
+msgstr "क्यूरेटेड श्रेणियाँ ब्राउज़ करें और अपने आस-पास और पूरे भारत में कारीगरों द्वारा बनाए गए उत्पाद खोजें।"
+
+msgid "Connect"
+msgstr "जुड़ें"
+
+msgid "Every listing tells the maker's story, so you know exactly who crafted what you're buying."
+msgstr "हर लिस्टिंग निर्माता की कहानी बताती है, ताकि आप जान सकें कि आप जो खरीद रहे हैं उसे किसने बनाया।"
+
+msgid "Order Securely"
+msgstr "सुरक्षित रूप से ऑर्डर करें"
+
+msgid "Add to cart, checkout safely, and track your order every step of the way."
+msgstr "कार्ट में जोड़ें, सुरक्षित रूप से चेकआउट करें और अपने ऑर्डर को हर कदम पर ट्रैक करें।"
+
+msgid "Receive & Enjoy"
+msgstr "प्राप्त करें और आनंद लें"
+
+msgid "Your handmade piece arrives carefully packed, ready to be loved for years to come."
+msgstr "आपका हस्तनिर्मित उत्पाद सावधानीपूर्वक पैक होकर आता है, आने वाले वर्षों तक प्यार पाने के लिए तैयार।"
+
+msgid "What We Stand For"
+msgstr "हम किसके लिए खड़े हैं"
+
+msgid "Our Values"
+msgstr "हमारे मूल्य"
+
+msgid "These principles guide every decision we make — from the sellers we onboard to the products we feature."
+msgstr "ये सिद्धांत हमारे हर निर्णय का मार्गदर्शन करते हैं — जिन विक्रेताओं को हम जोड़ते हैं से लेकर जिन उत्पादों को हम प्रदर्शित करते हैं।"
+
+msgid "Authenticity"
+msgstr "प्रामाणिकता"
+
+msgid "Every product is genuinely handmade — no mass production, ever."
+msgstr "हर उत्पाद वास्तव में हस्तनिर्मित है — कभी भी बड़े पैमाने पर उत्पादन नहीं।"
+
+msgid "Quality"
+msgstr "गुणवत्ता"
+
+msgid "Each listing is reviewed so you can shop with full confidence."
+msgstr "हर लिस्टिंग की समीक्षा की जाती है ताकि आप पूरे विश्वास के साथ खरीदारी कर सकें।"
+
+msgid "Community"
+msgstr "समुदाय"
+
+msgid "We grow alongside the makers — their success is our success."
+msgstr "हम निर्माताओं के साथ बढ़ते हैं — उनकी सफलता हमारी सफलता है।"
+
+msgid "Sustainability"
+msgstr "स्थिरता"
+
+msgid "Handmade means thoughtful, slower production — better for the planet."
+msgstr "हस्तनिर्मित का अर्थ है विचारशील, धीमा उत्पादन — ग्रह के लिए बेहतर।"
+
+msgid "Ready to discover something handmade?"
+msgstr "कुछ हस्तनिर्मित खोजने के लिए तैयार हैं?"
+
+msgid "Explore thoughtful, authentic products crafted by real artisans from across India."
+msgstr "पूरे भारत के वास्तविक कारीगरों द्वारा बनाए गए विचारशील, प्रामाणिक उत्पादों का अन्वेषण करें।"
+
+# ===== Contact Page =====
+
+msgid "Contact Us"
+msgstr "संपर्क करें"
+
+msgid "CONTACT US"
+msgstr "संपर्क करें"
+
+msgid "Let's Connect"
+msgstr "आइए जुड़ें"
+
+msgid "We are here to support India's local artisans and assist you in finding the perfect, authentic handmade products."
+msgstr "हम भारत के स्थानीय कारीगरों का समर्थन करने और आपको सही, प्रामाणिक हस्तनिर्मित उत्पाद खोजने में सहायता करने के लिए यहाँ हैं।"
+
+msgid "Get In Touch"
+msgstr "संपर्क में रहें"
+
+msgid "We'd Love to Hear From You"
+msgstr "हम आपसे सुनना पसंद करेंगे"
+
+msgid "Whether you have queries about your orders, seek custom artisan pieces, or want to register as an independent creator, choose any of our support channels below."
+msgstr "चाहे आपके ऑर्डर के बारे में प्रश्न हों, कस्टम कारीगर उत्पाद चाहिए हों, या स्वतंत्र रचनाकार के रूप में पंजीकरण करना हो, नीचे हमारे किसी भी सहायता चैनल का चयन करें।"
+
+msgid "Artisan Hub"
+msgstr "कारीगर केंद्र"
+
+msgid "Email Us"
+msgstr "हमें ईमेल करें"
+
+msgid "Call / WhatsApp"
+msgstr "कॉल / व्हाट्सएप"
+
+msgid "Send Us a Message"
+msgstr "हमें संदेश भेजें"
+
+msgid "Full Name"
+msgstr "पूरा नाम"
+
+msgid "Email Address"
+msgstr "ईमेल पता"
+
+msgid "Subject"
+msgstr "विषय"
+
+msgid "Message"
+msgstr "संदेश"
+
+msgid "Send Message"
+msgstr "संदेश भेजें"
+
+msgid "Message Sent!"
+msgstr "संदेश भेज दिया गया!"
+
+msgid "Awesome"
+msgstr "बहुत बढ़िया"
+
+# ===== Login Page =====
+
+msgid "Email"
+msgstr "ईमेल"
+
+msgid "Password"
+msgstr "पासवर्ड"
+
+msgid "New to DesiHands?"
+msgstr "DesiHands पर नए हैं?"
+
+msgid "Create an account"
+msgstr "खाता बनाएं"
+
+msgid "Admin Login"
+msgstr "एडमिन लॉगिन"
+
+# ===== Register Page =====
+
+msgid "Create Account"
+msgstr "खाता बनाएं"
+
+msgid "Mobile"
+msgstr "मोबाइल"
+
+msgid "Profile Image"
+msgstr "प्रोफ़ाइल छवि"
+
+msgid "Address"
+msgstr "पता"
+
+msgid "City"
+msgstr "शहर"
+
+msgid "State"
+msgstr "राज्य"
+
+msgid "Pincode"
+msgstr "पिनकोड"
+
+msgid "Confirm Password"
+msgstr "पासवर्ड की पुष्टि करें"
+
+msgid "Already registered?"
+msgstr "पहले से पंजीकृत हैं?"
+
+# ===== Category List Page =====
+
+msgid "Find unique, quality crafts curated by category."
+msgstr "श्रेणी के अनुसार अनूठे, गुणवत्ता वाले शिल्प खोजें।"
+
+msgid "Add Category"
+msgstr "श्रेणी जोड़ें"
+
+msgid "Artisan Choice"
+msgstr "कारीगर की पसंद"
+
+msgid "Created"
+msgstr "बनाया गया"
+
+msgid "100% Authentic Craft"
+msgstr "100% प्रामाणिक शिल्प"
+
+msgid "View Products"
+msgstr "उत्पाद देखें"
+
+msgid "Edit"
+msgstr "संपादित करें"
+
+msgid "Delete"
+msgstr "हटाएं"
+
+msgid "No Categories Yet"
+msgstr "अभी तक कोई श्रेणी नहीं"
+
+msgid "Featured craft categories will appear here once added."
+msgstr "विशेष शिल्प श्रेणियाँ जोड़ने पर यहाँ दिखाई देंगी।"
+
+# ===== Product List Page =====
+
+msgid "Our Products"
+msgstr "हमारे उत्पाद"
+
+msgid "Browse unique, handcrafted goods straight from creative makers."
+msgstr "रचनात्मक निर्माताओं से सीधे अनूठे, हस्तनिर्मित सामान ब्राउज़ करें।"
+
+msgid "Add Product"
+msgstr "उत्पाद जोड़ें"
+
+msgid "Search by name"
+msgstr "नाम से खोजें"
+
+msgid "Search unique crafts..."
+msgstr "अनूठे शिल्प खोजें..."
+
+msgid "Filter by category"
+msgstr "श्रेणी के अनुसार फ़िल्टर करें"
+
+msgid "All Categories"
+msgstr "सभी श्रेणियाँ"
+
+msgid "Apply Filter"
+msgstr "फ़िल्टर लागू करें"
+
+msgid "No products found"
+msgstr "कोई उत्पाद नहीं मिला"
+
+msgid "Try adjusting your search or category filters."
+msgstr "अपनी खोज या श्रेणी फ़िल्टर समायोजित करके देखें।"
+
+# ===== Product Detail Page =====
+
+msgid "Back to Products"
+msgstr "उत्पादों पर वापस जाएं"
+
+msgid "Unavailable"
+msgstr "अनुपलब्ध"
+
+msgid "Quantity"
+msgstr "मात्रा"
+
+msgid "Add to Cart"
+msgstr "कार्ट में जोड़ें"
+
+msgid "Add & View Cart"
+msgstr "जोड़ें और कार्ट देखें"
+
+msgid "Login to Add to Cart"
+msgstr "कार्ट में जोड़ने के लिए लॉगिन करें"
+
+msgid "This product is not available for purchase right now."
+msgstr "यह उत्पाद अभी खरीदने के लिए उपलब्ध नहीं है।"
+
+msgid "Edit Product"
+msgstr "उत्पाद संपादित करें"
+
+msgid "Delete Product"
+msgstr "उत्पाद हटाएं"
+
+msgid "Voices From Buyers"
+msgstr "खरीदारों की आवाज़"
+
+msgid "Customer Reviews"
+msgstr "ग्राहक समीक्षाएं"
+
+msgid "Edit Review"
+msgstr "समीक्षा संपादित करें"
+
+msgid "Write Review"
+msgstr "समीक्षा लिखें"
+
+msgid "No reviews yet. Be the first to write one."
+msgstr "अभी तक कोई समीक्षा नहीं। पहली समीक्षा लिखने वाले बनें।"
+
+msgid "See All Reviews"
+msgstr "सभी समीक्षाएं देखें"
+
+msgid "Overall Score"
+msgstr "कुल स्कोर"
+
+msgid "Ratings Summary"
+msgstr "रेटिंग सारांश"
+
+msgid "Based on {{ review_count }} Ratings &amp; {{ review_count }} Reviews"
+msgstr "{{ review_count }} रेटिंग और {{ review_count }} समीक्षाओं के आधार पर"
+
+msgid "Star"
+msgstr "स्टार"
+
+msgid "Verified Purchases Only"
+msgstr "केवल सत्यापित खरीद"
+
+msgid "Rating"
+msgstr "रेटिंग"
+
+msgid "Review"
+msgstr "समीक्षा"
+
+msgid "Write your review..."
+msgstr "अपनी समीक्षा लिखें..."
+
+msgid "Submit Review"
+msgstr "समीक्षा जमा करें"
+
+msgid "Update Review"
+msgstr "समीक्षा अपडेट करें"
+
+msgid "Review Updated"
+msgstr "समीक्षा अपडेट की गई"
+
+# ===== Cart Page =====
+
+msgid "Cart"
+msgstr "कार्ट"
+
+msgid "Shopping Cart"
+msgstr "शॉपिंग कार्ट"
+
+msgid "Review your items and update quantities before checkout."
+msgstr "चेकआउट से पहले अपने सामान की समीक्षा करें और मात्रा अपडेट करें।"
+
+msgid "Continue Shopping"
+msgstr "खरीदारी जारी रखें"
+
+msgid "Product"
+msgstr "उत्पाद"
+
+msgid "Price"
+msgstr "कीमत"
+
+msgid "Line Total"
+msgstr "कुल मूल्य"
+
+msgid "Action"
+msgstr "कार्रवाई"
+
+msgid "Added"
+msgstr "जोड़ा गया"
+
+msgid "Update"
+msgstr "अपडेट"
+
+msgid "Remove"
+msgstr "हटाएं"
+
+msgid "Cart Summary"
+msgstr "कार्ट सारांश"
+
+msgid "Items"
+msgstr "सामान"
+
+msgid "Total Quantity"
+msgstr "कुल मात्रा"
+
+msgid "Grand Total"
+msgstr "कुल योग"
+
+msgid "Proceed to Checkout"
+msgstr "चेकआउट के लिए आगे बढ़ें"
+
+msgid "Your cart is empty"
+msgstr "आपकी कार्ट खाली है"
+
+msgid "Browse products and add items to your cart."
+msgstr "उत्पाद ब्राउज़ करें और अपनी कार्ट में सामान जोड़ें।"
+
+msgid "Browse Products"
+msgstr "उत्पाद ब्राउज़ करें"
+
+# ===== Profile Page =====
+
+msgid "My Account"
+msgstr "मेरा खाता"
+
+msgid "Change Profile Photo"
+msgstr "प्रोफ़ाइल फ़ोटो बदलें"
+
+msgid "Customer"
+msgstr "ग्राहक"
+
+msgid "Edit Profile"
+msgstr "प्रोफ़ाइल संपादित करें"
+
+msgid "Profile Details"
+msgstr "प्रोफ़ाइल विवरण"
+
+msgid "Mobile Number"
+msgstr "मोबाइल नंबर"
+
+msgid "Street Address"
+msgstr "गली का पता"
+
+msgid "Edit Profile Information"
+msgstr "प्रोफ़ाइल जानकारी संपादित करें"
+
+msgid "Email (Read-only)"
+msgstr "ईमेल (केवल पढ़ने के लिए)"
+
+msgid "Save Changes"
+msgstr "परिवर्तन सहेजें"
+
+msgid "Order History"
+msgstr "ऑर्डर इतिहास"
+
+msgid "Order ID"
+msgstr "ऑर्डर आईडी"
+
+msgid "Placed on"
+msgstr "तारीख"
+
+msgid "Payment Method"
+msgstr "भुगतान विधि"
+
+msgid "Payment Status"
+msgstr "भुगतान स्थिति"
+
+msgid "Paid"
+msgstr "भुगतान हो गया"
+
+msgid "Pending Payment"
+msgstr "भुगतान बाकी"
+
+msgid "Track Order"
+msgstr "ऑर्डर ट्रैक करें"
+
+msgid "Order Tracking Status"
+msgstr "ऑर्डर ट्रैकिंग स्थिति"
+
+msgid "Estimated Delivery"
+msgstr "अनुमानित डिलीवरी"
+
+msgid "Delivered on"
+msgstr "डिलीवर किया गया"
+
+msgid "Cancelled"
+msgstr "रद्द"
+
+msgid "PLACED"
+msgstr "ऑर्डर दिया गया"
+
+msgid "CONFIRMED"
+msgstr "पुष्टि हुई"
+
+msgid "SHIPPED"
+msgstr "भेज दिया गया"
+
+msgid "DELIVERED"
+msgstr "डिलीवर किया गया"
+
+msgid "CANCELLED"
+msgstr "रद्द किया गया"
+
+msgid "No orders found"
+msgstr "कोई ऑर्डर नहीं मिला"
+
+msgid "You haven't placed any orders yet."
+msgstr "आपने अभी तक कोई ऑर्डर नहीं दिया है।"
+
+msgid "Explore Products"
+msgstr "उत्पाद देखें"
+
+msgid "Old Password"
+msgstr "पुराना पासवर्ड"
+
+msgid "New Password"
+msgstr "नया पासवर्ड"
+
+msgid "Confirm New Password"
+msgstr "नया पासवर्ड पुष्टि करें"
+
+msgid "Update Password"
+msgstr "पासवर्ड अपडेट करें"
+
+# ===== Admin Panel — Sidebar (base.html) =====
+
+msgid "Dashboard"
+msgstr "डैशबोर्ड"
+
+msgid "Users"
+msgstr "उपयोगकर्ता"
+
+msgid "Orders"
+msgstr "ऑर्डर"
+
+msgid "Reviews"
+msgstr "समीक्षाएं"
+
+msgid "Revenue & Sales"
+msgstr "राजस्व और बिक्री"
+
+msgid "Reports & Analytics"
+msgstr "रिपोर्ट और विश्लेषण"
+
+msgid "Contact Messages"
+msgstr "संपर्क संदेश"
+
+msgid "Settings"
+msgstr "सेटिंग्स"
+
+msgid "Toggle sidebar"
+msgstr "साइडबार टॉगल करें"
+
+msgid "Hindi"
+msgstr "हिंदी"
+
+msgid "English"
+msgstr "अंग्रेज़ी"
+
+msgid "DesiHands Administrator"
+msgstr "DesiHands प्रशासक"
+
+msgid "DesiHands Admin Panel"
+msgstr "DesiHands एडमिन पैनल"
+
+msgid "DesiHands Admin"
+msgstr "DesiHands एडमिन"
+
+msgid "Close"
+msgstr "बंद करें"
+
+# ===== Admin Panel — Dashboard =====
+
+msgid "Dashboard Overview"
+msgstr "डैशबोर्ड अवलोकन"
+
+msgid "Welcome back! Here's what is happening on DesiHands today."
+msgstr "वापस स्वागत है! आज DesiHands पर क्या हो रहा है यह देखें।"
+
+msgid "Total Users"
+msgstr "कुल उपयोगकर्ता"
+
+msgid "Total Categories"
+msgstr "कुल श्रेणियाँ"
+
+msgid "Total Products"
+msgstr "कुल उत्पाद"
+
+msgid "Total Orders"
+msgstr "कुल ऑर्डर"
+
+msgid "Total Revenue"
+msgstr "कुल राजस्व"
+
+msgid "Daily Revenue"
+msgstr "दैनिक राजस्व"
+
+msgid "Weekly Revenue"
+msgstr "साप्ताहिक राजस्व"
+
+msgid "Monthly Revenue"
+msgstr "मासिक राजस्व"
+
+msgid "Yearly Revenue"
+msgstr "वार्षिक राजस्व"
+
+msgid "Pending Orders"
+msgstr "लंबित ऑर्डर"
+
+msgid "Delivered Orders"
+msgstr "डिलीवर किए गए ऑर्डर"
+
+msgid "Cancelled Orders"
+msgstr "रद्द किए गए ऑर्डर"
+
+msgid "Revenue & Orders Trend (Last 7 Days)"
+msgstr "राजस्व और ऑर्डर ट्रेंड (पिछले 7 दिन)"
+
+msgid "Category Distribution"
+msgstr "श्रेणी वितरण"
+
+msgid "Monthly Sales Trend"
+msgstr "मासिक बिक्री ट्रेंड"
+
+msgid "Order Status Distribution"
+msgstr "ऑर्डर स्थिति वितरण"
+
+msgid "Recent Orders"
+msgstr "हालिया ऑर्डर"
+
+msgid "Recent Users"
+msgstr "हालिया उपयोगकर्ता"
+
+msgid "Name"
+msgstr "नाम"
+
+msgid "Status"
+msgstr "स्थिति"
+
+msgid "Amount"
+msgstr "राशि"
+
+msgid "No recent orders."
+msgstr "कोई हालिया ऑर्डर नहीं।"
+
+msgid "No recent users."
+msgstr "कोई हालिया उपयोगकर्ता नहीं।"
+
+msgid "Revenue (Rs.)"
+msgstr "राजस्व (₹)"
+
+msgid "Orders Count"
+msgstr "ऑर्डर संख्या"
+
+msgid "Monthly Sales (Rs.)"
+msgstr "मासिक बिक्री (₹)"
+
+msgid "Pending"
+msgstr "लंबित"
+
+msgid "Confirmed"
+msgstr "पुष्टि हुई"
+
+msgid "Shipped"
+msgstr "भेज दिया गया"
+
+msgid "Delivered"
+msgstr "डिलीवर किया गया"
+
+# ===== Admin Panel — User Management =====
+
+msgid "User Management"
+msgstr "उपयोगकर्ता प्रबंधन"
+
+msgid "Manage registered customer accounts, view order history, block or delete accounts."
+msgstr "पंजीकृत ग्राहक खातों का प्रबंधन करें, ऑर्डर इतिहास देखें, खातों को ब्लॉक या हटाएं।"
+
+msgid "Add User"
+msgstr "उपयोगकर्ता जोड़ें"
+
+msgid "Search users by name, email, or mobile..."
+msgstr "नाम, ईमेल या मोबाइल से उपयोगकर्ता खोजें..."
+
+msgid "Apply Search"
+msgstr "खोज लागू करें"
+
+msgid "Avatar"
+msgstr "अवतार"
+
+msgid "Joined Date"
+msgstr "शामिल होने की तारीख"
+
+msgid "Actions"
+msgstr "कार्रवाइयाँ"
+
+msgid "Blocked"
+msgstr "ब्लॉक किया गया"
+
+msgid "Active"
+msgstr "सक्रिय"
+
+msgid "Delete Customer Account"
+msgstr "ग्राहक खाता हटाएं"
+
+msgid "No customer accounts found matching your query."
+msgstr "आपकी खोज से मेल खाता कोई ग्राहक खाता नहीं मिला।"
+
+# ===== Admin Panel — User Details =====
+
+msgid "User Details"
+msgstr "उपयोगकर्ता विवरण"
+
+msgid "Customer Details"
+msgstr "ग्राहक विवरण"
+
+msgid "Detailed overview of customer profile and orders."
+msgstr "ग्राहक प्रोफ़ाइल और ऑर्डर का विस्तृत अवलोकन।"
+
+msgid "Unblock Account"
+msgstr "खाता अनब्लॉक करें"
+
+msgid "Block Account"
+msgstr "खाता ब्लॉक करें"
+
+msgid "Delete Account"
+msgstr "खाता हटाएं"
+
+msgid "Contact Details"
+msgstr "संपर्क विवरण"
+
+msgid "Billing & Shipping Address"
+msgstr "बिलिंग और शिपिंग पता"
+
+msgid "Total Amount"
+msgstr "कुल राशि"
+
+msgid "Date"
+msgstr "तारीख"
+
+msgid "This customer has not placed any orders yet."
+msgstr "इस ग्राहक ने अभी तक कोई ऑर्डर नहीं दिया है।"
+
+# ===== Admin Panel — Add User =====
+
+msgid "Create a new customer account for DesiHands."
+msgstr "DesiHands के लिए एक नया ग्राहक खाता बनाएं।"
+
+msgid "Save User"
+msgstr "उपयोगकर्ता सहेजें"
+
+# ===== Admin Panel — Order Management =====
+
+msgid "Order Management"
+msgstr "ऑर्डर प्रबंधन"
+
+msgid "Track buyer orders, update fulfilment status, or review invoicing details."
+msgstr "खरीदार के ऑर्डर ट्रैक करें, पूर्ति स्थिति अपडेट करें, या चालान विवरण की समीक्षा करें।"
+
+msgid "Search by Order ID or customer name..."
+msgstr "ऑर्डर आईडी या ग्राहक नाम से खोजें..."
+
+msgid "Order Status"
+msgstr "ऑर्डर स्थिति"
+
+msgid "All Orders"
+msgstr "सभी ऑर्डर"
+
+msgid "Apply Filters"
+msgstr "फ़िल्टर लागू करें"
+
+msgid "Customer Name"
+msgstr "ग्राहक का नाम"
+
+msgid "Payment"
+msgstr "भुगतान"
+
+msgid "Date Placed"
+msgstr "ऑर्डर की तारीख"
+
+msgid "Mark Paid"
+msgstr "भुगतान चिह्नित करें"
+
+msgid "Manage"
+msgstr "प्रबंधित करें"
+
+msgid "No orders found matching your filters/queries."
+msgstr "आपके फ़िल्टर/खोज से मेल खाता कोई ऑर्डर नहीं मिला।"
+
+# ===== Admin Panel — Order Details =====
+
+msgid "Order Details"
+msgstr "ऑर्डर विवरण"
+
+msgid "Print Invoice"
+msgstr "चालान प्रिंट करें"
+
+msgid "Premium Handmade Marketplace"
+msgstr "प्रीमियम हस्तनिर्मित बाज़ार"
+
+msgid "INVOICE"
+msgstr "चालान"
+
+msgid "Customer Billing Info"
+msgstr "ग्राहक बिलिंग जानकारी"
+
+msgid "Phone"
+msgstr "फ़ोन"
+
+msgid "Shipping Address"
+msgstr "शिपिंग पता"
+
+msgid "Payment Details"
+msgstr "भुगतान विवरण"
+
+msgid "Method"
+msgstr "विधि"
+
+msgid "Fulfilment Status"
+msgstr "पूर्ति स्थिति"
+
+msgid "Order Line Items"
+msgstr "ऑर्डर लाइन आइटम"
+
+msgid "Product Details"
+msgstr "उत्पाद विवरण"
+
+msgid "Unit Price"
+msgstr "इकाई मूल्य"
+
+msgid "Qty"
+msgstr "मात्रा"
+
+msgid "Thank you for supporting independent artisans on DesiHands!"
+msgstr "DesiHands पर स्वतंत्र कारीगरों का समर्थन करने के लिए धन्यवाद!"
+
+msgid "Update Order Status"
+msgstr "ऑर्डर स्थिति अपडेट करें"
+
+msgid "Change Status to:"
+msgstr "स्थिति बदलें:"
+
+msgid "Update Fulfilment"
+msgstr "पूर्ति अपडेट करें"
+
+msgid "COD Payment"
+msgstr "COD भुगतान"
+
+msgid "Use this after receiving cash from the customer. Paid COD orders will be included in revenue."
+msgstr "ग्राहक से नकद प्राप्त करने के बाद इसका उपयोग करें। भुगतान किए गए COD ऑर्डर राजस्व में शामिल होंगे।"
+
+msgid "Mark as Paid"
+msgstr "भुगतान के रूप में चिह्नित करें"
+
+msgid "Customer Profile"
+msgstr "ग्राहक प्रोफ़ाइल"
+
+msgid "View Full Profile"
+msgstr "पूरी प्रोफ़ाइल देखें"
+
+# ===== Admin Panel — Review Management =====
+
+msgid "Review Management"
+msgstr "समीक्षा प्रबंधन"
+
+msgid "Monitor and manage customer ratings and product reviews."
+msgstr "ग्राहक रेटिंग और उत्पाद समीक्षाओं की निगरानी और प्रबंधन करें।"
+
+msgid "Search"
+msgstr "खोजें"
+
+msgid "Search by review text, product name, or user name..."
+msgstr "समीक्षा पाठ, उत्पाद नाम या उपयोगकर्ता नाम से खोजें..."
+
+msgid "Filter Rating"
+msgstr "रेटिंग फ़िल्टर"
+
+msgid "All Ratings"
+msgstr "सभी रेटिंग"
+
+msgid "Stars"
+msgstr "स्टार"
+
+msgid "Review Comment"
+msgstr "समीक्षा टिप्पणी"
+
+msgid "Date Submitted"
+msgstr "जमा करने की तारीख"
+
+msgid "Delete Review"
+msgstr "समीक्षा हटाएं"
+
+msgid "No reviews found matching your filters/queries."
+msgstr "आपके फ़िल्टर/खोज से मेल खाती कोई समीक्षा नहीं मिली।"
+
+# ===== Admin Panel — Revenue Reports =====
+
+msgid "Revenue Reports"
+msgstr "राजस्व रिपोर्ट"
+
+msgid "Detailed breakdown of total revenue generated by completed transactions."
+msgstr "पूर्ण लेनदेन द्वारा उत्पन्न कुल राजस्व का विस्तृत विवरण।"
+
+msgid "Export CSV Report"
+msgstr "CSV रिपोर्ट निर्यात करें"
+
+msgid "Completed Order Transactions"
+msgstr "पूर्ण ऑर्डर लेनदेन"
+
+msgid "Transaction Date"
+msgstr "लेनदेन तिथि"
+
+msgid "Revenue Amount"
+msgstr "राजस्व राशि"
+
+msgid "No completed transactions found to compute revenue."
+msgstr "राजस्व गणना के लिए कोई पूर्ण लेनदेन नहीं मिला।"
+
+# ===== Admin Panel — Sales Reports =====
+
+msgid "Sales Reports"
+msgstr "बिक्री रिपोर्ट"
+
+msgid "Analysis of items sold, category distribution, and top performing products."
+msgstr "बेची गई वस्तुओं, श्रेणी वितरण और शीर्ष प्रदर्शन वाले उत्पादों का विश्लेषण।"
+
+msgid "Export Sales CSV"
+msgstr "बिक्री CSV निर्यात करें"
+
+msgid "Product Sales & Performance"
+msgstr "उत्पाद बिक्री और प्रदर्शन"
+
+msgid "Product Name"
+msgstr "उत्पाद का नाम"
+
+msgid "Category"
+msgstr "श्रेणी"
+
+msgid "Quantity Sold"
+msgstr "बेची गई मात्रा"
+
+msgid "Total Revenue Generated"
+msgstr "उत्पन्न कुल राजस्व"
+
+msgid "units"
+msgstr "इकाइयाँ"
+
+msgid "No sales items have been logged yet."
+msgstr "अभी तक कोई बिक्री आइटम दर्ज नहीं किए गए हैं।"
+
+# ===== Admin Panel — Contact Messages =====
+
+msgid "Review messages sent by visitors through the public Contact page and reply via email."
+msgstr "सार्वजनिक संपर्क पृष्ठ के माध्यम से आगंतुकों द्वारा भेजे गए संदेशों की समीक्षा करें और ईमेल के माध्यम से उत्तर दें।"
+
+msgid "Sender Name"
+msgstr "भेजने वाले का नाम"
+
+msgid "Date Received"
+msgstr "प्राप्ति तिथि"
+
+msgid "Replied"
+msgstr "उत्तर दिया गया"
+
+msgid "Read"
+msgstr "पढ़ा गया"
+
+msgid "New"
+msgstr "नया"
+
+msgid "View Message"
+msgstr "संदेश देखें"
+
+msgid "View"
+msgstr "देखें"
+
+msgid "Delete Message"
+msgstr "संदेश हटाएं"
+
+msgid "Are you sure you want to delete this contact message?"
+msgstr "क्या आप वाकई इस संपर्क संदेश को हटाना चाहते हैं?"
+
+msgid "No contact messages found."
+msgstr "कोई संपर्क संदेश नहीं मिला।"
+
+# ===== Admin Panel — Contact Message Detail =====
+
+msgid "Contact Message Details"
+msgstr "संपर्क संदेश विवरण"
+
+msgid "Back to Messages"
+msgstr "संदेशों पर वापस जाएं"
+
+msgid "Message Detail"
+msgstr "संदेश विवरण"
+
+msgid "Review visitor's message details and send a direct reply to their email address."
+msgstr "आगंतुक के संदेश विवरण की समीक्षा करें और उनके ईमेल पते पर सीधा उत्तर भेजें।"
+
+msgid "From"
+msgstr "प्रेषक"
+
+msgid "Pending Reply"
+msgstr "उत्तर लंबित"
+
+msgid "Message Content"
+msgstr "संदेश सामग्री"
+
+msgid "Sent Reply Details"
+msgstr "भेजे गए उत्तर का विवरण"
+
+msgid "Send Reply"
+msgstr "उत्तर भेजें"
+
+msgid "Reply Body"
+msgstr "उत्तर का मुख्य भाग"
+
+msgid "Type your response here..."
+msgstr "अपना उत्तर यहाँ टाइप करें..."
+
+msgid "Send Response Email"
+msgstr "प्रतिक्रिया ईमेल भेजें"
+
+# ===== Admin Panel — Settings =====
+
+msgid "Admin Settings"
+msgstr "एडमिन सेटिंग्स"
+
+msgid "Configure store metadata and administrative defaults."
+msgstr "स्टोर मेटाडेटा और प्रशासनिक डिफ़ॉल्ट कॉन्फ़िगर करें।"
+
+msgid "Store Configuration"
+msgstr "स्टोर कॉन्फ़िगरेशन"
+
+msgid "Store Name"
+msgstr "स्टोर का नाम"
+
+msgid "The name shown on the storefront headers and emails."
+msgstr "स्टोरफ्रंट हेडर और ईमेल पर दिखाया जाने वाला नाम।"
+
+msgid "Contact Email Address"
+msgstr "संपर्क ईमेल पता"
+
+msgid "Where customer contact queries are sent."
+msgstr "जहाँ ग्राहक संपर्क प्रश्न भेजे जाते हैं।"
+
+msgid "Customer Support Number"
+msgstr "ग्राहक सहायता नंबर"
+
+msgid "Store Address"
+msgstr "स्टोर का पता"
+
+msgid "Save Settings"
+msgstr "सेटिंग्स सहेजें"
+
+# ===== Admin Panel — blocktrans entries =====
+
+#, python-format
+msgid "Customer since %(joined_at)s"
+msgstr "%(joined_at)s से ग्राहक"
+
+#, python-format
+msgid "Are you sure you want to permanently delete the customer account for <strong>%(customer_name)s</strong>? All cart contents, reviews, and wishlists associated with this user will be removed."
+msgstr "क्या आप वाकई <strong>%(customer_name)s</strong> के ग्राहक खाते को स्थायी रूप से हटाना चाहते हैं? इस उपयोगकर्ता से जुड़ी सभी कार्ट सामग्री, समीक्षाएं और विशलिस्ट हटा दी जाएंगी।"
+
+#, python-format
+msgid "Order History (%(order_count)s Orders)"
+msgstr "ऑर्डर इतिहास (%(order_count)s ऑर्डर)"
+
+#, python-format
+msgid "Are you sure you want to delete this review by <strong>%(customer_name)s</strong> on product <strong>%(product_name)s</strong>? This action cannot be undone."
+msgstr "क्या आप वाकई <strong>%(customer_name)s</strong> द्वारा उत्पाद <strong>%(product_name)s</strong> पर लिखी गई इस समीक्षा को हटाना चाहते हैं? यह कार्रवाई पूर्ववत नहीं की जा सकती।"
+
+#, python-format
+msgid "Placed on %(placed_at)s"
+msgstr "%(placed_at)s को ऑर्डर किया गया"
+
+#, python-format
+msgid "Order: %(order_id)s"
+msgstr "ऑर्डर: %(order_id)s"
+
+#, python-format
+msgid "Order Details: %(order_id)s"
+msgstr "ऑर्डर विवरण: %(order_id)s"
+
+#, python-format
+msgid "Received on: %(received_at)s"
+msgstr "प्राप्ति तिथि: %(received_at)s"
+
+#, python-format
+msgid "You replied to this inquiry. A copy of the message has been sent to %(email)s."
+msgstr "आपने इस पूछताछ का उत्तर दिया है। संदेश की एक प्रति %(email)s को भेजी गई है।"
+
+#, python-format
+msgid "Draft a reply below. Submitting will send an official response email to <strong class=\"text-dark\">%(email)s</strong> using your SMTP email server."
+msgstr "नीचे उत्तर का मसौदा तैयार करें। सबमिट करने से आपके SMTP ईमेल सर्वर का उपयोग करके <strong class=\"text-dark\">%(email)s</strong> को एक आधिकारिक प्रतिक्रिया ईमेल भेजा जाएगा।"
+
+msgid "Full Name"
+msgstr "पूरा नाम"
+
